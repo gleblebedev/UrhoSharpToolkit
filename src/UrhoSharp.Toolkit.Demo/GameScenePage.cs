@@ -64,8 +64,14 @@ namespace UrhoSharp.Toolkit.Demo
 
         public override void OnJoystickAxisMove(object sender, JoystickAxisMoveEventArguments args)
         {
-            Trace.WriteLine("OnJoystickAxisMove " + args.JoystickID + ", axis " + args.Axis + "/" + args.NumAxes);
+            Trace.WriteLine("OnJoystickAxisMove " + args.JoystickID + ", axis " + args.Axis + "/" + args.NumAxes+", postion="+args.Position);
             base.OnJoystickAxisMove(sender, args);
+        }
+
+        public override void OnJoystickHatMove(object sender, JoystickHatMoveEventArguments args)
+        {
+            Trace.WriteLine("OnJoystickHatMove " + args.JoystickID + ", hat " + args.Hat + "/" + args.NumHats + ", postion=" + args.Position);
+            base.OnJoystickHatMove(sender, args);
         }
 
         public override void OnKeyDown(object sender, KeyDownEventArguments args)
