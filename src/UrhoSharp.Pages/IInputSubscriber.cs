@@ -26,6 +26,8 @@ namespace UrhoSharp.Pages
         void OnTouchBegin(object sender, TouchBeginEventArguments args);
         void OnTouchEnd(object sender, TouchEndEventArguments args);
         void OnTouchMove(object sender, TouchMoveEventArguments args);
+        void OnTouchCancel(object sender, TouchCancelEventArguments args);
+
         void OnGestureRecorded(object sender, GestureRecordedEventArguments args);
         void OnGestureInput(object sender, GestureInputEventArguments args);
         void OnMultiGesture(object sender, MultiGestureEventArguments args);

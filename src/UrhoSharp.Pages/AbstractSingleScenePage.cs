@@ -2,14 +2,20 @@
 using Urho;
 using Urho.Audio;
 using UrhoSharp.Interfaces;
+using UrhoSharp.Rx;
 
 namespace UrhoSharp.Pages
 {
     public abstract class AbstractSingleScenePage : AbstractScenePage
     {
         private readonly UrhoRef<Camera> _camera = new UrhoRef<Camera>();
+
+        private readonly UrhoRef<SoundSource> _musicSoundSource = new UrhoRef<SoundSource>();
         private readonly UrhoRef<RenderPath> _renderPath = new UrhoRef<RenderPath>();
         private readonly UrhoRef<Scene> _scene = new UrhoRef<Scene>();
+
+        private readonly UrhoRef<Sound> _currentMusicTrack = new UrhoRef<Sound>();
+        private float _musicGain = 0.5f;
 
         public Scene Scene
         {
@@ -20,6 +26,7 @@ namespace UrhoSharp.Pages
                 {
                     _scene.Value = value;
                     InvalidateViewports();
+                    OnSceneChanged();
                 }
             }
         }
@@ -33,6 +40,7 @@ namespace UrhoSharp.Pages
                 {
                     _camera.Value = value;
                     InvalidateViewports();
+                    OnCameraChanged();
                 }
             }
         }
@@ -49,33 +57,6 @@ namespace UrhoSharp.Pages
                 }
             }
         }
-
-        public override void OnResumed()
-        {
-            base.OnResumed();
-
-            if (_currentMusicTrack.HasValue)
-                MusicSoundSource?.Play(_currentMusicTrack.Value);
-        }
-
-        public override void OnPaused()
-        {
-            base.OnPaused();
-
-            if (_musicSoundSource.HasValue)
-                _musicSoundSource.Value.Stop();
-        }
-
-        protected void PlayMusic(Sound track)
-        {
-            _currentMusicTrack.Value = track;
-            if (State == ScenePageState.Active)
-            {
-                MusicSoundSource?.Play(track);
-            }
-        }
-
-        private readonly UrhoRef<SoundSource> _musicSoundSource = new UrhoRef<SoundSource>();
 
         public float MusicGain
         {
@@ -111,14 +92,40 @@ namespace UrhoSharp.Pages
                 {
                     _musicSoundSource.Value.SetSoundType(SoundType.Music.ToString());
                     _musicSoundSource.Value.Gain = _musicGain;
-                    if (_currentMusicTrack.HasValue)
-                        _musicSoundSource.Value.Play(_currentMusicTrack.Value);
+                    if (_currentMusicTrack.HasValue) _musicSoundSource.Value.Play(_currentMusicTrack.Value);
                 }
             }
         }
 
-        private UrhoRef<Sound> _currentMusicTrack = new UrhoRef<Sound>();
-        private float _musicGain = 0.5f;
+        protected virtual void OnSceneChanged()
+        {
+        }
+
+        protected virtual void OnCameraChanged()
+        {
+        }
+
+        public override async void OnResumed()
+        {
+            base.OnResumed();
+
+            var track = _currentMusicTrack.Value;
+            if (track != null) await _scheduler.RunAsync(() => { MusicSoundSource?.Play(track); });
+        }
+
+        public override void OnPaused()
+        {
+            base.OnPaused();
+
+            if (_musicSoundSource.HasValue)
+                _musicSoundSource.Value.Stop();
+        }
+
+        protected void PlayMusic(Sound track)
+        {
+            _currentMusicTrack.Value = track;
+            if (State == ScenePageState.Active) MusicSoundSource?.Play(track);
+        }
 
         protected void CreateSimpleScene(float radius = 100.0f)
         {

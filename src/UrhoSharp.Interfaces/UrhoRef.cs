@@ -22,10 +22,7 @@ namespace UrhoSharp.Interfaces
             set => Set(value);
         }
 
-        public bool HasValue
-        {
-            get { return _value != null; }
-        }
+        public bool HasValue => _value != null;
 
         public void Dispose()
         {
@@ -57,6 +54,13 @@ namespace UrhoSharp.Interfaces
         public void Reset()
         {
             Set(null);
+        }
+
+        public override string ToString()
+        {
+            if (_value == null)
+                return "<null>";
+            return _value.ToString();
         }
     }
 }

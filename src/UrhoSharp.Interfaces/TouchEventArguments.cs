@@ -26,6 +26,13 @@ namespace UrhoSharp.Interfaces
             Y = args.Y;
         }
 
+        protected TouchEventArguments(TouchEventArguments args)
+        {
+            TouchID = args.TouchID;
+            X = args.X;
+            Y = args.Y;
+        }
+
         public int TouchID { get; }
         public int X { get; }
         public int Y { get; }

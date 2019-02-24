@@ -1,47 +1,83 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Support.V7.App;
-using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Widget;
+using Urho;
+using Urho.Droid;
+using UrhoSharp.Toolkit.Demo;
 
 namespace UrhoSharp.Toolkit.DroidDemo
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        private DemoGame app;
+        private UrhoSurfacePlaceholder surface;
+
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
-
-            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
-
-            var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            var mLayout = new AbsoluteLayout(this);
+            surface = UrhoSurface.CreateSurface(this); // (this, , true);
+            mLayout.AddView(surface);
+            SetContentView(mLayout);
+            app = (DemoGame) await surface.Show(typeof(DemoGame), new ApplicationOptions("Data"));
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        protected override void OnResume()
         {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
+            UrhoSurface.OnResume();
+            base.OnResume();
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
+        protected override void OnPause()
         {
-            var id = item.ItemId;
-            if (id == Resource.Id.action_settings) return true;
-
-            return base.OnOptionsItemSelected(item);
+            UrhoSurface.OnPause();
+            base.OnPause();
         }
 
-        private void FabOnClick(object sender, EventArgs eventArgs)
+        public override void OnLowMemory()
         {
-            var view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (View.IOnClickListener) null).Show();
+            UrhoSurface.OnLowMemory();
+            base.OnLowMemory();
+        }
+
+        protected override void OnDestroy()
+        {
+            UrhoSurface.OnDestroy();
+            base.OnDestroy();
+        }
+
+        //public override void OnBackPressed()
+        //{
+        //    if (app.GoBackIfPossible())
+        //    {
+        //        return;
+        //    }
+        //    base.OnBackPressed();
+        //}
+
+        public override bool DispatchKeyEvent(KeyEvent e)
+        {
+            if (e.KeyCode == Keycode.Back)
+                if (app.Navigation.StackSize > 1)
+                {
+                    Task.Run(() => app.Navigation.GoBackAsync());
+                    return true;
+                }
+
+            if (!UrhoSurface.DispatchKeyEvent(e))
+                return false;
+
+            return base.DispatchKeyEvent(e);
+        }
+
+        public override void OnWindowFocusChanged(bool hasFocus)
+        {
+            UrhoSurface.OnWindowFocusChanged(hasFocus);
+            base.OnWindowFocusChanged(hasFocus);
         }
     }
 }

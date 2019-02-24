@@ -1,97 +1,20 @@
-﻿using System;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using Urho;
+using UrhoSharp.Interfaces;
 using UrhoSharp.Pages;
 using UrhoSharp.Pages.InputDeviceAdapters;
-using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Toolkit
 {
     [TestFixture]
+    public class MouseAdapterTests
+    {
+    }
+
+    [TestFixture]
     public class KeyboardAdapterTests
     {
-        [Test]
-        public void GenCode()
-        {
-            var t = typeof(Input);
-            Func<string, string> lowerFirst = _ => _.Substring(0, 1).ToLower() + _.Substring(1);
-            foreach (var eventInfo in t.GetEvents())
-            {
-                var argType = eventInfo.EventHandlerType.GetGenericArguments()[0];
-
-                var urhoArgsType = argType.Name;
-                var inputArgsType = argType.Name.Replace("Args", "Arguments");
-
-                var backFieldName = "_" + lowerFirst(eventInfo.Name);
-
-                Console.WriteLine("        private EventHandler<" + inputArgsType + "> " + backFieldName + ";");
-                Console.WriteLine("        public event EventHandler<" + inputArgsType + "> " + eventInfo.Name);
-                Console.WriteLine("        {");
-                Console.WriteLine("            add");
-                Console.WriteLine("            {");
-                Console.WriteLine("                if (" + backFieldName + " == null)");
-                Console.WriteLine("                    _input." + eventInfo.Name + " += On" + eventInfo.Name + "; ");
-                Console.WriteLine("                " + backFieldName + " += value;");
-                Console.WriteLine("            }");
-                Console.WriteLine("            remove");
-                Console.WriteLine("            {");
-                Console.WriteLine("                " + backFieldName + " -= value;");
-                Console.WriteLine("                if (" + backFieldName + " == null)");
-                Console.WriteLine("                    _input." + eventInfo.Name + " -= On" + eventInfo.Name + ";");
-                Console.WriteLine("            }");
-                Console.WriteLine("        }");
-
-                Console.WriteLine("        private void On" + eventInfo.Name + "(" + urhoArgsType + " args)");
-                Console.WriteLine("        {");
-                Console.WriteLine("            " + backFieldName + "?.Invoke(this, new " + inputArgsType + "(args));");
-                Console.WriteLine("        }");
-            }
-        }
-
-        [Test]
-        public void GenCode2()
-        {
-            var t = typeof(Input);
-            foreach (var eventInfo in t.GetEvents())
-            {
-                var argType = eventInfo.EventHandlerType.GetGenericArguments()[0];
-
-                var urhoArgsType = argType.Name;
-                var inputArgsType = argType.Name.Replace("Args", "Arguments");
-
-                var properties = argType.GetProperties();
-
-                Console.WriteLine("    public class " + inputArgsType + " : EventArgs");
-                Console.WriteLine("    {");
-                Console.WriteLine("        public " + inputArgsType + "(" + urhoArgsType + " args)");
-                Console.WriteLine("        {");
-                foreach (var propertyInfo in properties)
-                    Console.WriteLine("            " + propertyInfo.Name + " = args." + propertyInfo.Name + ";");
-                Console.WriteLine("        }");
-                foreach (var propertyInfo in properties)
-                    Console.WriteLine("        public " + propertyInfo.PropertyType.Name + " " + propertyInfo.Name +
-                                      " { get; }");
-                Console.WriteLine("    }");
-                Console.WriteLine("");
-            }
-        }
-
-        [Test]
-        public void GenCode3()
-        {
-            var t = typeof(Input);
-            Func<string, string> lowerFirst = _ => _.Substring(0, 1).ToLower() + _.Substring(1);
-            foreach (var eventInfo in t.GetEvents())
-            {
-                var argType = eventInfo.EventHandlerType.GetGenericArguments()[0];
-
-                var inputArgsType = argType.Name.Replace("Args", "Arguments");
-
-                Console.WriteLine("        event EventHandler<" + inputArgsType + "> " + eventInfo.Name + ";");
-            }
-        }
-
         [Test]
         public void OnKeyDown_APage_EventSentThrough()
         {

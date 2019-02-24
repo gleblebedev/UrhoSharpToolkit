@@ -1,9 +1,13 @@
-﻿using UrhoSharp.Interfaces;
+﻿using System.Collections.Generic;
+using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public class JoystickAdapter : AbstractInputDeviceAdapter
     {
+        private readonly Dictionary<int, JoystickDeviceAdapter> _joysticks =
+            new Dictionary<int, JoystickDeviceAdapter>();
+
         public JoystickAdapter(IInput input) : base(input)
         {
             Input.JoystickAxisMove += OnJoystickAxisMove;
@@ -16,34 +20,54 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
 
         private void OnJoystickConnected(object sender, JoystickConnectedEventArguments args)
         {
-            if (Page == null)
-                return;
-
-            Page.OnJoystickConnected(sender, args);
+            GetOrCreateDeviceAdapter(args);
         }
 
         private void OnJoystickDisconnected(object sender, JoystickDisconnectedEventArguments args)
         {
-            if (Page == null)
-                return;
+            Page?.OnJoystickDisconnected(sender, args);
 
-            Page.OnJoystickDisconnected(sender, args);
+            _joysticks.Remove(args.JoystickID);
+        }
+
+        public override void AssignPage(IScenePage page)
+        {
+            base.AssignPage(page);
+
+            foreach (var joystickDeviceAdapter in _joysticks) joystickDeviceAdapter.Value.AssignPage(Page);
+        }
+
+        public override void ReleasePage(IScenePage page)
+        {
+            foreach (var joystickDeviceAdapter in _joysticks) joystickDeviceAdapter.Value.ReleasePage(Page);
+
+            base.ReleasePage(page);
+        }
+
+        private JoystickDeviceAdapter GetOrCreateDeviceAdapter(JoystickEventArguments args)
+        {
+            JoystickDeviceAdapter state;
+            if (!_joysticks.TryGetValue(args.JoystickID, out state))
+            {
+                state = new JoystickDeviceAdapter(args);
+                if (Page != null)
+                    state.AssignPage(Page);
+                _joysticks.Add(args.JoystickID, state);
+
+                Page?.OnJoystickConnected(this, new JoystickConnectedEventArguments(args));
+            }
+
+            return state;
         }
 
         private void OnJoystickButtonDown(object sender, JoystickButtonDownEventArguments args)
         {
-            if (Page == null)
-                return;
-
-            Page.OnJoystickButtonDown(sender, args);
+            GetOrCreateDeviceAdapter(args).OnJoystickButtonDown(args);
         }
 
         private void OnJoystickButtonUp(object sender, JoystickButtonUpEventArguments args)
         {
-            if (Page == null)
-                return;
-
-            Page.OnJoystickButtonUp(sender, args);
+            GetOrCreateDeviceAdapter(args).OnJoystickButtonUp(args);
         }
 
         private void OnJoystickAxisMove(object sender, JoystickAxisMoveEventArguments args)
@@ -51,7 +75,7 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             if (Page == null)
                 return;
 
-            Page.OnJoystickAxisMove(sender, args);
+            GetOrCreateDeviceAdapter(args).OnJoystickAxisMove(args);
         }
 
         private void OnJoystickHatMove(object sender, JoystickHatMoveEventArguments args)
@@ -59,7 +83,7 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             if (Page == null)
                 return;
 
-            Page.OnJoystickHatMove(sender, args);
+            GetOrCreateDeviceAdapter(args).OnJoystickHatMove(args);
         }
 
         public override void Dispose()

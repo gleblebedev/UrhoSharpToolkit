@@ -14,6 +14,35 @@ namespace UrhoSharp.Pages
             _container = container;
         }
 
+        public int StackSize
+        {
+            get
+            {
+                lock (_gate)
+                {
+                    return _stack.Count;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Asynchronously removes the top Page from the navigation stack if the page isn't the root page.
+        /// </summary>
+        public async Task<bool> GoBackAsync()
+        {
+            IScenePage top = null;
+            lock (_gate)
+            {
+                if (_stack.Count <= 1)
+                    return false;
+                _stack.Pop();
+                top = _stack.Peek();
+            }
+
+            await _container.SetCurrentPageAsync(top);
+            return true;
+        }
+
         /// <summary>
         ///     Asynchronously removes the top Page from the navigation stack.
         /// </summary>

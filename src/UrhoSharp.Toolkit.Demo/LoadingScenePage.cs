@@ -4,16 +4,14 @@ using Urho;
 using Urho.Gui;
 using Urho.Resources;
 using UrhoSharp.Pages;
-using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
 namespace UrhoSharp.Toolkit.Demo
 {
     public class LoadingScenePage : AbstractSingleScenePage, ILoadingProgress
     {
-        private IUrhoScheduler _scheduler;
-
         private readonly Text _text;
+        private IUrhoScheduler _scheduler;
 
         public LoadingScenePage(ResourceCache cache)
         {

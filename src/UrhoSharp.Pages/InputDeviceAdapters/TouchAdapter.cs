@@ -1,9 +1,13 @@
-﻿using UrhoSharp.Interfaces;
+﻿using System.Collections.Generic;
+using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public class TouchAdapter : AbstractInputDeviceAdapter
     {
+        private readonly Dictionary<int, TouchEventArguments> _activeTouches =
+            new Dictionary<int, TouchEventArguments>();
+
         public TouchAdapter(IInput input) : base(input)
         {
             Input.TouchBegin += OnTouchBegin;
@@ -16,6 +20,8 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             if (Page == null)
                 return;
 
+            _activeTouches[args.TouchID] = args;
+
             Page.OnTouchBegin(sender, args);
         }
 
@@ -24,7 +30,11 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             if (Page == null)
                 return;
 
-            Page.OnTouchEnd(sender, args);
+            if (_activeTouches.ContainsKey(args.TouchID))
+            {
+                _activeTouches.Remove(args.TouchID);
+                Page.OnTouchEnd(sender, args);
+            }
         }
 
         private void OnTouchMove(object sender, TouchMoveEventArguments args)
@@ -32,7 +42,18 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             if (Page == null)
                 return;
 
-            Page.OnTouchMove(sender, args);
+            if (_activeTouches.ContainsKey(args.TouchID))
+            {
+                _activeTouches[args.TouchID] = args;
+                Page.OnTouchMove(sender, args);
+            }
+        }
+
+        public override void ReleasePage(IScenePage page)
+        {
+            foreach (var touch in _activeTouches) page.OnTouchCancel(this, new TouchCancelEventArguments(touch.Value));
+            _activeTouches.Clear();
+            base.ReleasePage(page);
         }
 
         public override void Dispose()

@@ -11,25 +11,18 @@ namespace UrhoSharp.Pages
 {
     public abstract class AbstractScenePage : IScenePage
     {
+        private readonly UrhoRef<UIElement> _ui = new UrhoRef<UIElement>(new UIElement());
         private Viewport[] _activeViewports;
 
         private bool _invalidViewports = true;
 
         private Task _prepareTask;
 
-        private ScenePageState _state = ScenePageState.NotActive;
+        protected IUrhoScheduler _scheduler;
 
-        public ScenePageState State
-        {
-            get { return _state; }
-        }
+        public ScenePageState State { get; private set; } = ScenePageState.NotActive;
 
-        public ResourceCache ResourceCache
-        {
-            get { return Application.Current.ResourceCache; }
-        }
-
-        private readonly UrhoRef<UIElement> _ui = new UrhoRef<UIElement>(new UIElement());
+        public ResourceCache ResourceCache => Application.Current.ResourceCache;
 
         public IRenderer Renderer { get; private set; }
 
@@ -43,21 +36,18 @@ namespace UrhoSharp.Pages
 
         public Task LoadPageAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
-            _state = ScenePageState.Preparing;
+            _scheduler = scheduler;
+            State = ScenePageState.Preparing;
             return _prepareTask ?? (_prepareTask = PrepareAsync(scheduler, progress));
         }
 
         public void Activate(IRenderer renderer)
         {
-            _state = ScenePageState.Paused;
+            State = ScenePageState.Paused;
             Renderer = renderer;
             AddViewports();
             Application.Current.UI.Root.AddChild(UI);
             OnActivated();
-        }
-
-        public virtual void OnActivated()
-        {
         }
 
 
@@ -68,38 +58,26 @@ namespace UrhoSharp.Pages
 
         public void Resume()
         {
-            _state = ScenePageState.Active;
+            State = ScenePageState.Active;
             Application.Current.Input.SetMouseMode(MouseMode);
             Application.Current.Input.SetMouseGrabbed(MouseGrabbed);
             Application.Current.Input.SetMouseVisible(MouseVisible);
             OnResumed();
         }
 
-        public virtual void OnResumed()
-        {
-
-        }
-
         public void Pause()
         {
-            _state = ScenePageState.Paused;
+            State = ScenePageState.Paused;
             OnPaused();
         }
-        public virtual void OnPaused()
-        {
 
-        }
         public void Deactivate()
         {
             OnDeactivated();
-            _state = ScenePageState.NotActive;
+            State = ScenePageState.NotActive;
             RemoveViewports();
             Renderer = null;
             Application.Current.UI.Root.RemoveChild(UI);
-        }
-
-        public virtual void OnDeactivated()
-        {
         }
 
         public virtual void Update(float timeStep)
@@ -109,6 +87,22 @@ namespace UrhoSharp.Pages
                 ResetViewports();
                 _invalidViewports = false;
             }
+        }
+
+        public virtual void OnActivated()
+        {
+        }
+
+        public virtual void OnResumed()
+        {
+        }
+
+        public virtual void OnPaused()
+        {
+        }
+
+        public virtual void OnDeactivated()
+        {
         }
 
         protected virtual Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
@@ -228,6 +222,10 @@ namespace UrhoSharp.Pages
         }
 
         public virtual void OnTouchMove(object sender, TouchMoveEventArguments args)
+        {
+        }
+
+        public virtual void OnTouchCancel(object sender, TouchCancelEventArguments args)
         {
         }
 

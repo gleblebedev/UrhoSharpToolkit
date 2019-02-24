@@ -4,7 +4,7 @@ namespace UrhoSharp.Interfaces
 {
     public class JoystickButtonUpEventArguments : JoystickButtonEventArguments
     {
-        public JoystickButtonUpEventArguments(JoystickButtonUpEventArgs args) : base(args)
+        public JoystickButtonUpEventArguments(JoystickButtonUpEventArgs args, Input input) : base(args, input)
         {
         }
     }

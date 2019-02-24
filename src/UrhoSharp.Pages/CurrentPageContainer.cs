@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Urho;
-using UrhoSharp.Pages.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
+using UrhoSharp.Pages.InputDeviceAdapters;
 using UrhoSharp.Rx;
 
 namespace UrhoSharp.Pages
@@ -12,10 +12,12 @@ namespace UrhoSharp.Pages
     {
         private readonly object _gate = new object();
         private readonly IInput _input;
+        private readonly JoystickAdapter _joysticks;
         private readonly KeyboardAdapter _keyboard;
         private readonly MouseAdapter _mouse;
         private readonly IRenderer _renderer;
         private readonly IUrhoScheduler _scheduler;
+        private readonly TouchAdapter _touch;
 
         private IntVector2 _graphicsSize;
 
@@ -32,6 +34,8 @@ namespace UrhoSharp.Pages
             _scheduler = scheduler;
             _keyboard = new KeyboardAdapter(input);
             _mouse = new MouseAdapter(input);
+            _joysticks = new JoystickAdapter(input);
+            _touch = new TouchAdapter(input);
         }
 
         protected ILoadingProgress LoadingProgress => _loading as ILoadingProgress ?? DummyLoadingProgress.Instance;
@@ -40,18 +44,26 @@ namespace UrhoSharp.Pages
         public async Task SetCurrentPageAsync(IScenePage page)
         {
             if (CurrentPage != page)
-            {
-                await _scheduler.RunAsync(() => ReleaseCurrentPage());
-                CurrentPage = _loading;
-                await _scheduler.RunAsync(() => ActivateCurrentPage());
-                await page.LoadPageAsync(_scheduler, LoadingProgress);
-                await _scheduler.RunAsync(() =>
+                if (page == null)
                 {
-                    ReleaseCurrentPage();
-                    CurrentPage = page;
-                    ActivateCurrentPage();
-                });
-            }
+                    await _scheduler.RunAsync(() => { ReleaseCurrentPage(); });
+                }
+                else
+                {
+                    await _scheduler.RunAsync(() =>
+                    {
+                        ReleaseCurrentPage();
+                        CurrentPage = _loading;
+                        ActivateCurrentPage();
+                    });
+                    await page.LoadPageAsync(_scheduler, LoadingProgress);
+                    await _scheduler.RunAsync(() =>
+                    {
+                        ReleaseCurrentPage();
+                        CurrentPage = page;
+                        ActivateCurrentPage();
+                    });
+                }
         }
 
         public IScenePage CurrentPage { get; private set; }
@@ -87,6 +99,8 @@ namespace UrhoSharp.Pages
         {
             yield return _keyboard;
             yield return _mouse;
+            yield return _joysticks;
+            yield return _touch;
         }
 
         private void ActivateCurrentPage()

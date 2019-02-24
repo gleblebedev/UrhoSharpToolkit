@@ -254,7 +254,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickConnected(JoystickConnectedEventArgs args)
         {
-            _joystickConnected?.Invoke(this, new JoystickConnectedEventArguments(args));
+            _joystickConnected?.Invoke(this, new JoystickConnectedEventArguments(args, _input));
         }
 
         private EventHandler<JoystickDisconnectedEventArguments> _joystickDisconnected;
@@ -277,7 +277,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickDisconnected(JoystickDisconnectedEventArgs args)
         {
-            _joystickDisconnected?.Invoke(this, new JoystickDisconnectedEventArguments(args));
+            _joystickDisconnected?.Invoke(this, new JoystickDisconnectedEventArguments(args, _input));
         }
 
         private EventHandler<JoystickButtonDownEventArguments> _joystickButtonDown;
@@ -300,7 +300,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickButtonDown(JoystickButtonDownEventArgs args)
         {
-            _joystickButtonDown?.Invoke(this, new JoystickButtonDownEventArguments(args));
+            _joystickButtonDown?.Invoke(this, new JoystickButtonDownEventArguments(args, _input));
         }
 
         private EventHandler<JoystickButtonUpEventArguments> _joystickButtonUp;
@@ -323,7 +323,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickButtonUp(JoystickButtonUpEventArgs args)
         {
-            _joystickButtonUp?.Invoke(this, new JoystickButtonUpEventArguments(args));
+            _joystickButtonUp?.Invoke(this, new JoystickButtonUpEventArguments(args, _input));
         }
 
         private EventHandler<JoystickAxisMoveEventArguments> _joystickAxisMove;
@@ -346,7 +346,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickAxisMove(JoystickAxisMoveEventArgs args)
         {
-            _joystickAxisMove?.Invoke(this, new JoystickAxisMoveEventArguments(args));
+            _joystickAxisMove?.Invoke(this, new JoystickAxisMoveEventArguments(args, _input));
         }
 
         private EventHandler<JoystickHatMoveEventArguments> _joystickHatMove;
@@ -369,7 +369,7 @@ namespace UrhoSharp.Interfaces
 
         private void OnJoystickHatMove(JoystickHatMoveEventArgs args)
         {
-            _joystickHatMove?.Invoke(this, new JoystickHatMoveEventArguments(args));
+            _joystickHatMove?.Invoke(this, new JoystickHatMoveEventArguments(args, _input));
         }
 
         #endregion

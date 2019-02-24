@@ -54,7 +54,7 @@ namespace UrhoSharp.Pages
 
         private void UpdatePageState()
         {
-            var isPagePaused = _isMinimized;
+            var isPagePaused = _isMinimized || _isPaused || !_hasInputFocus;
             if (isPagePaused != _isPagePaused)
                 if (isPagePaused)
                     Pause();

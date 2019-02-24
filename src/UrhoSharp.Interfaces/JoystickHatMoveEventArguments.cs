@@ -4,7 +4,7 @@ namespace UrhoSharp.Interfaces
 {
     public class JoystickHatMoveEventArguments : JoystickEventArguments
     {
-        public JoystickHatMoveEventArguments(JoystickHatMoveEventArgs args) : base(args)
+        public JoystickHatMoveEventArguments(JoystickHatMoveEventArgs args, Input input) : base(args, input)
         {
             Button = args.Button;
             Position = args.Position;
