@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>UrhoSharp.Toolkit</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UrhoSharp" Version="1.9.67" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UrhoSharp.HierarchicalNavigation\UrhoSharp.HierarchicalNavigation.csproj" />
+  </ItemGroup>
+
+</Project>
