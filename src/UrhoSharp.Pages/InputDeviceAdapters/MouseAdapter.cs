@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.HierarchicalNavigation.InputDeviceAdapters
+namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public class MouseAdapter : AbstractInputDeviceAdapter
     {

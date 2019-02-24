@@ -3,7 +3,7 @@ using Urho;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public class AbstractNavigationApp : Application
     {
@@ -11,6 +11,8 @@ namespace UrhoSharp.HierarchicalNavigation
         private bool _isMinimized;
         private bool _isPagePaused;
         private bool _isPaused;
+
+        private IntVector2 _prevGraphicsSize;
         private UrhoManualScheduler _scheduler;
 
         public AbstractNavigationApp(ApplicationOptions options) : base(options)
@@ -35,12 +37,12 @@ namespace UrhoSharp.HierarchicalNavigation
 
         protected override void Start()
         {
+            base.Start();
             _scheduler = new UrhoManualScheduler();
+            InitNavigation();
             Paused += OnPaused;
             Resumed += OnResumed;
             Input.InputFocus += OnInputFocusChanged;
-            base.Start();
-            InitNavigation();
         }
 
         private void OnInputFocusChanged(InputFocusEventArgs args)
@@ -93,8 +95,6 @@ namespace UrhoSharp.HierarchicalNavigation
             Navigation = new NavigationStack(CurrentPageContainer);
         }
 
-        private IntVector2 _prevGraphicsSize;
-
         protected override void OnUpdate(float timeStep)
         {
             base.OnUpdate(timeStep);
@@ -103,6 +103,7 @@ namespace UrhoSharp.HierarchicalNavigation
                 _prevGraphicsSize = Graphics.Size;
                 CurrentPageContainer.Resize(_prevGraphicsSize);
             }
+
             _scheduler.Update(timeStep);
             CurrentPageContainer.OnUpdate(timeStep);
         }

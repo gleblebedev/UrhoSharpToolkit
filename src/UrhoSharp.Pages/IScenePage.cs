@@ -3,7 +3,7 @@ using Urho;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public interface IScenePage : IInputSubscriber
     {

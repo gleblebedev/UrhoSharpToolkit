@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public class DummyLoadingProgress : ILoadingProgress
     {

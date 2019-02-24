@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Urho;
-using UrhoSharp.HierarchicalNavigation;
+using UrhoSharp.Pages;
 
 namespace UrhoSharp.Toolkit.Demo
 {

@@ -1,8 +1,9 @@
 ﻿using System;
+using Urho;
 
 namespace UrhoSharp.Interfaces
 {
-    public class UrhoRef<T> where T : Urho.UrhoObject
+    public class UrhoRef<T> where T : RefCounted
     {
         private T _value;
 
@@ -19,6 +20,11 @@ namespace UrhoSharp.Interfaces
         {
             get => _value;
             set => Set(value);
+        }
+
+        public bool HasValue
+        {
+            get { return _value != null; }
         }
 
         public void Dispose()

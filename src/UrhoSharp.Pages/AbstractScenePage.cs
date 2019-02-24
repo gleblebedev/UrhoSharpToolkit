@@ -3,10 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Urho;
 using Urho.Gui;
+using Urho.Resources;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public abstract class AbstractScenePage : IScenePage
     {
@@ -16,6 +17,20 @@ namespace UrhoSharp.HierarchicalNavigation
 
         private Task _prepareTask;
 
+        private ScenePageState _state = ScenePageState.NotActive;
+
+        public ScenePageState State
+        {
+            get { return _state; }
+        }
+
+        public ResourceCache ResourceCache
+        {
+            get { return Application.Current.ResourceCache; }
+        }
+
+        private readonly UrhoRef<UIElement> _ui = new UrhoRef<UIElement>(new UIElement());
+
         public IRenderer Renderer { get; private set; }
 
         public virtual MouseMode MouseMode => MouseMode.Free;
@@ -24,43 +39,67 @@ namespace UrhoSharp.HierarchicalNavigation
 
         public virtual bool MouseVisible => true;
 
+        public UIElement UI => _ui.Value;
+
         public Task LoadPageAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
+            _state = ScenePageState.Preparing;
             return _prepareTask ?? (_prepareTask = PrepareAsync(scheduler, progress));
         }
 
-        public virtual void Activate(IRenderer renderer)
+        public void Activate(IRenderer renderer)
         {
+            _state = ScenePageState.Paused;
             Renderer = renderer;
             AddViewports();
             Application.Current.UI.Root.AddChild(UI);
+            OnActivated();
         }
+
+        public virtual void OnActivated()
+        {
+        }
+
+
         public virtual void Resize(IntVector2 size)
         {
             UI.SetSize(size.X, size.Y);
         }
-        public virtual void Resume()
+
+        public void Resume()
         {
+            _state = ScenePageState.Active;
             Application.Current.Input.SetMouseMode(MouseMode);
             Application.Current.Input.SetMouseGrabbed(MouseGrabbed);
             Application.Current.Input.SetMouseVisible(MouseVisible);
+            OnResumed();
         }
 
-        private UrhoRef<UIElement> _ui =new UrhoRef < UIElement > (new UIElement());
-        public UIElement UI
+        public virtual void OnResumed()
         {
-            get { return _ui.Value; }
+
         }
 
-        public virtual void Pause()
+        public void Pause()
         {
+            _state = ScenePageState.Paused;
+            OnPaused();
         }
-
-        public virtual void Deactivate()
+        public virtual void OnPaused()
         {
+
+        }
+        public void Deactivate()
+        {
+            OnDeactivated();
+            _state = ScenePageState.NotActive;
             RemoveViewports();
             Renderer = null;
             Application.Current.UI.Root.RemoveChild(UI);
+        }
+
+        public virtual void OnDeactivated()
+        {
         }
 
         public virtual void Update(float timeStep)

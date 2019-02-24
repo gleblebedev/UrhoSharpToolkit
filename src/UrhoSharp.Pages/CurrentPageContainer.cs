@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Urho;
-using UrhoSharp.HierarchicalNavigation.InputDeviceAdapters;
+using UrhoSharp.Pages.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public class CurrentPageContainer : ICurrentPageContainer, IDisposable
     {
@@ -16,6 +16,10 @@ namespace UrhoSharp.HierarchicalNavigation
         private readonly MouseAdapter _mouse;
         private readonly IRenderer _renderer;
         private readonly IUrhoScheduler _scheduler;
+
+        private IntVector2 _graphicsSize;
+
+        private bool _isCurrentPageActive;
 
         private bool _isPaused;
 
@@ -29,6 +33,8 @@ namespace UrhoSharp.HierarchicalNavigation
             _keyboard = new KeyboardAdapter(input);
             _mouse = new MouseAdapter(input);
         }
+
+        protected ILoadingProgress LoadingProgress => _loading as ILoadingProgress ?? DummyLoadingProgress.Instance;
 
 
         public async Task SetCurrentPageAsync(IScenePage page)
@@ -48,11 +54,6 @@ namespace UrhoSharp.HierarchicalNavigation
             }
         }
 
-        protected ILoadingProgress LoadingProgress
-        {
-            get { return (_loading as ILoadingProgress) ?? DummyLoadingProgress.Instance; }
-        }
-
         public IScenePage CurrentPage { get; private set; }
 
         public void OnUpdate(float timeStep)
@@ -62,10 +63,7 @@ namespace UrhoSharp.HierarchicalNavigation
                 foreach (var adapter in GetInputDeviceAdapters()) adapter.OnUpdate(timeStep);
             }
 
-            if (_isCurrentPageActive)
-            {
-                CurrentPage?.Update(timeStep);
-            }
+            if (_isCurrentPageActive) CurrentPage?.Update(timeStep);
         }
 
         public void Pause()
@@ -91,7 +89,6 @@ namespace UrhoSharp.HierarchicalNavigation
             yield return _mouse;
         }
 
-        private bool _isCurrentPageActive;
         private void ActivateCurrentPage()
         {
             lock (_gate)
@@ -130,7 +127,6 @@ namespace UrhoSharp.HierarchicalNavigation
             await _loading.LoadPageAsync(_scheduler, DummyLoadingProgress.Instance);
         }
 
-        private IntVector2 _graphicsSize;
         public void Resize(IntVector2 graphicsSize)
         {
             if (_graphicsSize == graphicsSize)

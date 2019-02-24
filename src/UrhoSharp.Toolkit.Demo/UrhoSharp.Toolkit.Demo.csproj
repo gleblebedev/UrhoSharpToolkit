@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UrhoSharp.HierarchicalNavigation\UrhoSharp.HierarchicalNavigation.csproj" />
+    <ProjectReference Include="..\UrhoSharp.Pages\UrhoSharp.Pages.csproj" />
   </ItemGroup>
 
 </Project>

@@ -66,9 +66,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UrhoSharp.HierarchicalNavigation\UrhoSharp.HierarchicalNavigation.csproj">
+    <ProjectReference Include="..\UrhoSharp.Pages\UrhoSharp.Pages.csproj">
       <Project>{a70b5c8f-3b11-44e3-913e-e28fc2459af2}</Project>
-      <Name>UrhoSharp.HierarchicalNavigation</Name>
+      <Name>UrhoSharp.Pages</Name>
     </ProjectReference>
     <ProjectReference Include="..\UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj">
       <Project>{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}</Project>

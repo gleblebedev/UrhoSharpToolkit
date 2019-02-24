@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UrhoSharp.HierarchicalNavigation.InputDeviceAdapters
+namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public interface IInputDeviceAdapter : IDisposable
     {

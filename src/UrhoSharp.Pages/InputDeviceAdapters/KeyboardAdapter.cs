@@ -2,7 +2,7 @@
 using Urho;
 using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.HierarchicalNavigation.InputDeviceAdapters
+namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public class KeyboardAdapter : AbstractInputDeviceAdapter
     {

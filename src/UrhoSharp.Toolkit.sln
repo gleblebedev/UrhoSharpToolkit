@@ -7,15 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Toolkit.DesktopDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Toolkit.DroidDemo", "UrhoSharp.Toolkit.DroidDemo\UrhoSharp.Toolkit.DroidDemo.csproj", "{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.HierarchicalNavigation", "UrhoSharp.HierarchicalNavigation\UrhoSharp.HierarchicalNavigation.csproj", "{A70B5C8F-3B11-44E3-913E-E28FC2459AF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Pages", "UrhoSharp.Pages\UrhoSharp.Pages.csproj", "{A70B5C8F-3B11-44E3-913E-E28FC2459AF2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Toolkit.Demo", "UrhoSharp.Toolkit.Demo\UrhoSharp.Toolkit.Demo.csproj", "{1D785460-D521-438E-A806-0AAC89738816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Toolkit.Tests", "UrhoSharp.Toolkit.Tests\UrhoSharp.Toolkit.Tests.csproj", "{405F8254-C3D5-4505-B882-F2AE6D2C0952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Rx", "UrhoSharp.Rx\UrhoSharp.Rx.csproj", "{D9A855C9-E291-4B83-AD83-8B5B31411AAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Rx", "UrhoSharp.Rx\UrhoSharp.Rx.csproj", "{D9A855C9-E291-4B83-AD83-8B5B31411AAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Interfaces", "UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj", "{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Interfaces", "UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj", "{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

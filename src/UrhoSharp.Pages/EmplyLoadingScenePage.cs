@@ -1,4 +1,4 @@
-﻿namespace UrhoSharp.HierarchicalNavigation
+﻿namespace UrhoSharp.Pages
 {
     public class EmplyLoadingScenePage : AbstractSingleScenePage, ILoadingProgress
     {

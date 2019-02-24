@@ -1,6 +1,6 @@
 ﻿using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.HierarchicalNavigation.InputDeviceAdapters
+namespace UrhoSharp.Pages.InputDeviceAdapters
 {
     public class TouchAdapter : AbstractInputDeviceAdapter
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Urho;
-using UrhoSharp.HierarchicalNavigation;
+using UrhoSharp.Pages;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
@@ -21,11 +21,9 @@ namespace UrhoSharp.Toolkit.Demo
 
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
-            for (int i = 0; i < 40; ++i)
-            {
+            for (var i = 0; i < 40; ++i)
                 //progress.ReportProgress(i,40,"Loading menu");
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
-            }
         }
 
         public override void OnKeyDown(object sender, KeyDownEventArguments args)

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Urho;
-using UrhoSharp.HierarchicalNavigation;
+using Urho.Resources;
+using UrhoSharp.Pages;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 
@@ -29,11 +30,18 @@ namespace UrhoSharp.Toolkit.Demo
 
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
-            for (int i = 0; i < 40; ++i)
+            for (var i = 0; i < 40; ++i)
             {
                 progress.ReportProgress(i, 40, "Loading game");
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
+        }
+
+        public override void OnActivated()
+        {
+            var music = ResourceCache.GetSound("Music/Lounge Game2.ogg");
+            music.Looped = true;
+            PlayMusic(music);
         }
 
         public override void OnKeyDown(object sender, KeyDownEventArguments args)

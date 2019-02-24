@@ -1,6 +1,6 @@
 ﻿using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public interface IInputSubscriber
     {

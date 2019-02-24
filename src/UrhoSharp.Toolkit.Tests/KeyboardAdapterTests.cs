@@ -2,8 +2,8 @@
 using NSubstitute;
 using NUnit.Framework;
 using Urho;
-using UrhoSharp.HierarchicalNavigation;
-using UrhoSharp.HierarchicalNavigation.InputDeviceAdapters;
+using UrhoSharp.Pages;
+using UrhoSharp.Pages.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Toolkit

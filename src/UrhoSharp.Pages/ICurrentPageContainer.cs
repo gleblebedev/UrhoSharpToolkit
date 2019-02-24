@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace UrhoSharp.HierarchicalNavigation
+namespace UrhoSharp.Pages
 {
     public interface ICurrentPageContainer
     {
