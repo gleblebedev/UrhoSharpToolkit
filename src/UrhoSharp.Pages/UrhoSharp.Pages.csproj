@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UrhoSharp.Input\UrhoSharp.Input.csproj" />
     <ProjectReference Include="..\UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj" />
     <ProjectReference Include="..\UrhoSharp.Rx\UrhoSharp.Rx.csproj" />
   </ItemGroup>

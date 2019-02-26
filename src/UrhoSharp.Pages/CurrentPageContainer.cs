@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Urho;
+using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
-using UrhoSharp.Pages.InputDeviceAdapters;
 using UrhoSharp.Rx;
 
 namespace UrhoSharp.Pages
@@ -11,13 +10,10 @@ namespace UrhoSharp.Pages
     public class CurrentPageContainer : ICurrentPageContainer, IDisposable
     {
         private readonly object _gate = new object();
-        private readonly IInput _input;
-        private readonly JoystickAdapter _joysticks;
-        private readonly KeyboardAdapter _keyboard;
-        private readonly MouseAdapter _mouse;
+        private readonly InputDispatcher _input;
+        private readonly InputProxy _inputProxy;
         private readonly IRenderer _renderer;
         private readonly IUrhoScheduler _scheduler;
-        private readonly TouchAdapter _touch;
 
         private IntVector2 _graphicsSize;
 
@@ -29,13 +25,10 @@ namespace UrhoSharp.Pages
 
         public CurrentPageContainer(IInput input, IRenderer renderer, IUrhoScheduler scheduler)
         {
-            _input = input;
+            _input = new InputDispatcher();
+            _inputProxy = new InputProxy(input, _input);
             _renderer = renderer;
             _scheduler = scheduler;
-            _keyboard = new KeyboardAdapter(input);
-            _mouse = new MouseAdapter(input);
-            _joysticks = new JoystickAdapter(input);
-            _touch = new TouchAdapter(input);
         }
 
         protected ILoadingProgress LoadingProgress => _loading as ILoadingProgress ?? DummyLoadingProgress.Instance;
@@ -70,11 +63,6 @@ namespace UrhoSharp.Pages
 
         public void OnUpdate(float timeStep)
         {
-            lock (_gate)
-            {
-                foreach (var adapter in GetInputDeviceAdapters()) adapter.OnUpdate(timeStep);
-            }
-
             if (_isCurrentPageActive) CurrentPage?.Update(timeStep);
         }
 
@@ -92,16 +80,9 @@ namespace UrhoSharp.Pages
 
         public void Dispose()
         {
-            foreach (var adapter in GetInputDeviceAdapters()) adapter.Dispose();
+            _inputProxy.Dispose();
         }
 
-        private IEnumerable<IInputDeviceAdapter> GetInputDeviceAdapters()
-        {
-            yield return _keyboard;
-            yield return _mouse;
-            yield return _joysticks;
-            yield return _touch;
-        }
 
         private void ActivateCurrentPage()
         {
@@ -114,7 +95,7 @@ namespace UrhoSharp.Pages
                 page.Resize(_graphicsSize);
                 if (!_isPaused)
                     page.Resume();
-                foreach (var adapter in GetInputDeviceAdapters()) adapter.AssignPage(page);
+                _input.Subscriber = page;
                 _isCurrentPageActive = true;
             }
         }
@@ -129,7 +110,7 @@ namespace UrhoSharp.Pages
                     return;
                 if (!_isPaused)
                     page.Pause();
-                foreach (var adapter in GetInputDeviceAdapters()) adapter.ReleasePage(page);
+                _input.Subscriber = null;
                 page.Deactivate();
                 _isCurrentPageActive = false;
             }

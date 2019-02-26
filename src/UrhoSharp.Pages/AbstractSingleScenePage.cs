@@ -10,11 +10,11 @@ namespace UrhoSharp.Pages
     {
         private readonly UrhoRef<Camera> _camera = new UrhoRef<Camera>();
 
+        private readonly UrhoRef<Sound> _currentMusicTrack = new UrhoRef<Sound>();
+
         private readonly UrhoRef<SoundSource> _musicSoundSource = new UrhoRef<SoundSource>();
         private readonly UrhoRef<RenderPath> _renderPath = new UrhoRef<RenderPath>();
         private readonly UrhoRef<Scene> _scene = new UrhoRef<Scene>();
-
-        private readonly UrhoRef<Sound> _currentMusicTrack = new UrhoRef<Sound>();
         private float _musicGain = 0.5f;
 
         public Scene Scene

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Urho;
+using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Pages;
 using UrhoSharp.Rx;
@@ -24,6 +25,9 @@ namespace UrhoSharp.Toolkit.Demo
             box.Position = new Vector3(0, 0, 4);
             var boxModel = box.CreateComponent<StaticModel>();
             boxModel.Model = ResourceCache.GetModel("Models/Box.mdl");
+
+            this.MapPointer(OnMouseMove, OnMouseCancel);
+            this.MapTouch(OnTouch, OnTouchMove2, OnTouchComplete, OnTouchCancel2);
         }
 
         public override MouseMode MouseMode => MouseMode.Absolute;
@@ -31,6 +35,36 @@ namespace UrhoSharp.Toolkit.Demo
         public override bool MouseGrabbed => true;
 
         public override bool MouseVisible => false;
+
+        private void OnMouseCancel()
+        {
+            Trace.WriteLine("OnMouseCancel");
+        }
+
+        private void OnMouseMove(PointerArgs args)
+        {
+            Trace.WriteLine("OnMouseMove " + args);
+        }
+
+        private void OnTouchCancel2()
+        {
+            Trace.WriteLine("OnTouchCancel");
+        }
+
+        private void OnTouch(TouchArgs args)
+        {
+            Trace.WriteLine("OnTouch " + args);
+        }
+
+        private void OnTouchComplete(TouchArgs args)
+        {
+            Trace.WriteLine("OnTouchComplete " + args);
+        }
+
+        private void OnTouchMove2(TouchArgs args)
+        {
+            Trace.WriteLine("OnTouchMove " + args);
+        }
 
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
@@ -64,13 +98,15 @@ namespace UrhoSharp.Toolkit.Demo
 
         public override void OnJoystickAxisMove(object sender, JoystickAxisMoveEventArguments args)
         {
-            Trace.WriteLine("OnJoystickAxisMove " + args.JoystickID + ", axis " + args.Axis + "/" + args.NumAxes+", postion="+args.Position);
+            Trace.WriteLine("OnJoystickAxisMove " + args.JoystickID + ", axis " + args.Axis + "/" + args.NumAxes +
+                            ", postion=" + args.Position);
             base.OnJoystickAxisMove(sender, args);
         }
 
         public override void OnJoystickHatMove(object sender, JoystickHatMoveEventArguments args)
         {
-            Trace.WriteLine("OnJoystickHatMove " + args.JoystickID + ", hat " + args.Hat + "/" + args.NumHats + ", postion=" + args.Position);
+            Trace.WriteLine("OnJoystickHatMove " + args.JoystickID + ", hat " + args.Hat + "/" + args.NumHats +
+                            ", postion=" + args.Position);
             base.OnJoystickHatMove(sender, args);
         }
 
@@ -86,11 +122,11 @@ namespace UrhoSharp.Toolkit.Demo
             base.OnKeyDown(sender, args);
         }
 
-        public override void OnTouchBegin(object sender, TouchBeginEventArguments args)
-        {
-            base.OnTouchBegin(sender, args);
+        //public override void OnTouchBegin(object sender, TouchBeginEventArguments args)
+        //{
+        //    base.OnTouchBegin(sender, args);
 
-            Task.Run(() => navigation.PushAsync(_menuPage));
-        }
+        //    Task.Run(() => navigation.PushAsync(_menuPage));
+        //}
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.Pages
+namespace UrhoSharp.Input
 {
     public interface IInputSubscriber
     {
@@ -21,6 +21,7 @@ namespace UrhoSharp.Pages
         void OnJoystickDisconnected(object sender, JoystickDisconnectedEventArguments args);
         void OnJoystickButtonDown(object sender, JoystickButtonDownEventArguments args);
         void OnJoystickButtonUp(object sender, JoystickButtonUpEventArguments args);
+        void OnJoystickButtonCancel(object sender, JoystickButtonCancelEventArguments args);
         void OnJoystickAxisMove(object sender, JoystickAxisMoveEventArguments args);
         void OnJoystickHatMove(object sender, JoystickHatMoveEventArguments args);
         void OnTouchBegin(object sender, TouchBeginEventArguments args);

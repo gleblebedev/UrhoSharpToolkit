@@ -11,6 +11,16 @@ namespace UrhoSharp.Interfaces
             IsController = args.IsController;
             NumAxes = args.NumAxes;
             NumButtons = args.NumButtons;
+            NumHats = args.NumHats;
+        }
+
+        public JoystickEventArguments(int joystickID, bool isController, int numAxes, int numButtons, int numHats)
+        {
+            JoystickID = joystickID;
+            IsController = isController;
+            NumAxes = numAxes;
+            NumButtons = numButtons;
+            NumHats = numHats;
         }
 
         public JoystickEventArguments(JoystickConnectedEventArgs args, Input input)

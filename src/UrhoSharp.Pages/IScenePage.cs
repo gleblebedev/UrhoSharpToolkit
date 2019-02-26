@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Urho;
+using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Rx;
 

@@ -13,6 +13,6 @@ namespace UrhoSharp.Interfaces
         UpRight = Up | Right,
         DownRight = Down | Right,
         UpLeft = Up | Left,
-        DownLeft = Down | Left,
+        DownLeft = Down | Left
     }
 }

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Rx", "UrhoSharp.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Interfaces", "UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj", "{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Input", "UrhoSharp.Input\UrhoSharp.Input.csproj", "{A54A49ED-E796-492B-9089-71791581582A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FE1878B-22A7-4810-BE2E-0FBC6B86EE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A54A49ED-E796-492B-9089-71791581582A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A54A49ED-E796-492B-9089-71791581582A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A54A49ED-E796-492B-9089-71791581582A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A54A49ED-E796-492B-9089-71791581582A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

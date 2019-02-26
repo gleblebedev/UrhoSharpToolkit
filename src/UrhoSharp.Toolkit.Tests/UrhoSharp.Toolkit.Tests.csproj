@@ -78,6 +78,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UrhoSharp.Input\UrhoSharp.Input.csproj">
+      <Project>{A54A49ED-E796-492B-9089-71791581582A}</Project>
+      <Name>UrhoSharp.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UrhoSharp.Pages\UrhoSharp.Pages.csproj">
       <Project>{a70b5c8f-3b11-44e3-913e-e28fc2459af2}</Project>
       <Name>UrhoSharp.Pages</Name>

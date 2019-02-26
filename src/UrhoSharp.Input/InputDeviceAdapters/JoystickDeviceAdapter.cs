@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Pages.InputDeviceAdapters
@@ -16,11 +17,13 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             IsController = args.IsController;
             NumAxis = args.NumAxes;
             NumButtons = args.NumButtons;
+            NumHats = args.NumHats;
         }
 
         public int NumButtons { get; }
 
         public int NumAxis { get; }
+        public int NumHats { get; }
 
         public bool IsController { get; }
 
@@ -28,7 +31,7 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
 
         public float DeadZone { get; set; } = 0.1f;
 
-        public IScenePage Page { get; private set; }
+        public IInputSubscriber Page { get; private set; }
 
         public void OnJoystickButtonDown(JoystickButtonDownEventArguments args)
         {
@@ -36,19 +39,25 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             Page?.OnJoystickButtonDown(this, args);
         }
 
-        public void AssignPage(IScenePage page)
+        public void AssignPage(IInputSubscriber page)
         {
             Page = page;
         }
 
-        public void ReleasePage(IScenePage page)
+        public void ReleasePage(IInputSubscriber page)
         {
+            OnFocusLost();
             Page = null;
         }
 
         public void OnJoystickButtonUp(JoystickButtonUpEventArguments args)
         {
             if (_activeButtons.Remove(args.Button)) Page?.OnJoystickButtonUp(this, args);
+        }
+
+        public void OnJoystickButtonCancel(JoystickButtonCancelEventArguments args)
+        {
+            if (_activeButtons.Remove(args.Button)) Page?.OnJoystickButtonCancel(this, args);
         }
 
         public void OnJoystickAxisMove(JoystickAxisMoveEventArguments args)
@@ -76,6 +85,17 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
         public void OnJoystickHatMove(JoystickHatMoveEventArguments args)
         {
             Page?.OnJoystickHatMove(this, args);
+        }
+
+        public void OnFocusLost()
+        {
+            if (Page == null)
+                return;
+            foreach (var activeButton in _activeButtons)
+                Page?.OnJoystickButtonCancel(this,
+                    new JoystickButtonCancelEventArguments(JoystickID, IsController, NumAxis, NumButtons, NumHats,
+                        activeButton));
+            _activeButtons.Clear();
         }
     }
 }

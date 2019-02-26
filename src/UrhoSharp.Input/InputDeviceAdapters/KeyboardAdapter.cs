@@ -9,13 +9,8 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
         private readonly Dictionary<Key, KeyDownEventArguments> _pressedKeys =
             new Dictionary<Key, KeyDownEventArguments>();
 
-        public KeyboardAdapter(IInput input) : base(input)
-        {
-            Input.KeyDown += OnKeyDown;
-            Input.KeyUp += OnKeyUp;
-        }
 
-        private void OnKeyUp(object sender, KeyUpEventArguments args)
+        public void OnKeyUp(object sender, KeyUpEventArguments args)
         {
             if (Page == null)
                 return;
@@ -28,7 +23,7 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             Page.OnKeyUp(sender, args);
         }
 
-        private void OnKeyDown(object sender, KeyDownEventArguments args)
+        public void OnKeyDown(object sender, KeyDownEventArguments args)
         {
             if (Page == null)
                 return;
@@ -36,17 +31,27 @@ namespace UrhoSharp.Pages.InputDeviceAdapters
             Page.OnKeyDown(sender, args);
         }
 
-        public override void ReleasePage(IScenePage page)
+        public void OnKeyCancel(object sender, KeyCancelEventArguments args)
         {
-            foreach (var argument in _pressedKeys) page.OnKeyCancel(this, new KeyCancelEventArguments(argument.Value));
-            _pressedKeys.Clear();
-            base.ReleasePage(page);
+            if (Page == null)
+                return;
+
+            KeyDownEventArguments prevArgs;
+            if (!_pressedKeys.TryGetValue(args.Key, out prevArgs))
+                return;
+
+            _pressedKeys.Remove(args.Key);
+            Page.OnKeyCancel(sender, args);
         }
 
-        public override void Dispose()
+        public override void OnFocusLost()
         {
-            Input.KeyDown -= OnKeyDown;
-            Input.KeyUp -= OnKeyUp;
+            if (Page != null)
+            {
+                foreach (var argument in _pressedKeys)
+                    Page.OnKeyCancel(this, new KeyCancelEventArguments(argument.Value));
+                _pressedKeys.Clear();
+            }
         }
     }
 }
