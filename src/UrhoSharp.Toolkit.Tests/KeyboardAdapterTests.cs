@@ -1,9 +1,9 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using Urho;
+using UrhoSharp.Input.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
 using UrhoSharp.Pages;
-using UrhoSharp.Pages.InputDeviceAdapters;
 
 namespace UrhoSharp.Toolkit
 {
