@@ -2,7 +2,7 @@
 using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.Pages.InputDeviceAdapters
+namespace UrhoSharp.Input.InputDeviceAdapters
 {
     public class JoystickAdapter : AbstractInputDeviceAdapter
     {

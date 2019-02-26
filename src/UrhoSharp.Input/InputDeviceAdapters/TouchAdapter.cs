@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.Pages.InputDeviceAdapters
+namespace UrhoSharp.Input.InputDeviceAdapters
 {
     public class TouchAdapter : AbstractInputDeviceAdapter
     {

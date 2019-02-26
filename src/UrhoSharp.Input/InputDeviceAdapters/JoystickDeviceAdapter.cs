@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 
-namespace UrhoSharp.Pages.InputDeviceAdapters
+namespace UrhoSharp.Input.InputDeviceAdapters
 {
     public class JoystickDeviceAdapter
     {

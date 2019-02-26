@@ -1,7 +1,7 @@
 ﻿using System;
 using UrhoSharp.Input;
 
-namespace UrhoSharp.Pages.InputDeviceAdapters
+namespace UrhoSharp.Input.InputDeviceAdapters
 {
     public abstract class AbstractInputDeviceAdapter : IInputDeviceAdapter
     {

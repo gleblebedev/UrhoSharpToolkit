@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using UrhoSharp.Input.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
-using UrhoSharp.Pages.InputDeviceAdapters;
 
 namespace UrhoSharp.Input
 {
