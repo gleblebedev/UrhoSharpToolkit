@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -113,6 +114,9 @@ namespace UrhoSharp.Editor.ViewModel
 
             var editor = scope.Resolve<EditorWindow>();
             editor.Show();
+
+            var w =_rootScope.Resolve<HubWindow>();
+            w.Dispatcher.BeginInvoke((Action)(() => w.Close()));
         }
 
         private static void PrepareContainer(ProjectReference reference, ContainerBuilder builder)

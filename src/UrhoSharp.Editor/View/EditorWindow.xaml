@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+        xmlns:wpf="clr-namespace:Urho.Extensions.Wpf;assembly=Urho.Extensions.Wpf"
         mc:Ignorable="d"
         Height="450" Width="800">
     <Window.Title>
@@ -36,7 +37,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <local:HierarchyView Grid.Row="0" Grid.Column="0" />
-            <Grid x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
+            <wpf:UrhoSurface x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
             <local:AssetsView Grid.Row="2" Grid.Column="0" />
             <local:InspectorView Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" />
             <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
