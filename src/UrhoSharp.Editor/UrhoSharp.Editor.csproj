@@ -89,14 +89,24 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Model\AssetFileEventArgs.cs" />
+    <Compile Include="Model\AssetsWatcher.cs" />
     <Compile Include="Model\ConfigurationContainer.cs" />
     <Compile Include="Model\EditorApp.cs" />
+    <Compile Include="Model\ExtensionMethods.cs" />
     <Compile Include="Model\HubConfiguration.cs" />
+    <Compile Include="Model\IConfigurationContainer.cs" />
     <Compile Include="Model\JsonFileContainer.cs" />
     <Compile Include="Model\ProjectConfiguration.cs" />
     <Compile Include="Model\ProjectReference.cs" />
+    <Compile Include="ViewModel\ActionCommand.cs" />
+    <Compile Include="ViewModel\AssetsViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
+    <Compile Include="ViewModel\FileSystemItemViewModel.cs" />
+    <Compile Include="ViewModel\FileViewModel.cs" />
+    <Compile Include="ViewModel\FolderViewModel.cs" />
     <Compile Include="ViewModel\HubWindowViewModel.cs" />
+    <Compile Include="ViewModel\ListTail.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
     <Compile Include="View\AssetsView.xaml.cs">
       <DependentUpon>AssetsView.xaml</DependentUpon>

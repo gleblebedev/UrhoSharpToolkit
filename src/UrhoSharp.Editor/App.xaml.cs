@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Autofac;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.View;
@@ -17,13 +18,23 @@ namespace UrhoSharp.Editor
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<HubWindow>().SingleInstance();
-            builder.RegisterType<EditorWindow>().InstancePerLifetimeScope();
-            builder.RegisterType<EditorViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<HubWindowViewModel>().SingleInstance();
             builder.RegisterGeneric(typeof(ConfigurationContainer<>)).AsSelf().SingleInstance();
+
+            // View models.
+            builder.RegisterType<AssetsViewModel>().InstancePerLifetimeScope();
+            builder.RegisterType<EditorViewModel>().InstancePerLifetimeScope();
+
+            // Views.
+            builder.RegisterType<EditorWindow>().InstancePerLifetimeScope();
+
+            // Misc.
+            builder.RegisterType<AssetsWatcher>().As<IObservable<AssetFileEventArgs>>().InstancePerLifetimeScope();
+
             _container = builder.Build();
             MainWindow = _container.Resolve<HubWindow>();
             MainWindow.Show();
+            ShutdownMode = ShutdownMode.OnLastWindowClose;
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)

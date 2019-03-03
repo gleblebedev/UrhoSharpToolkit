@@ -94,13 +94,16 @@ namespace UrhoSharp.Editor.ViewModel
         public void OpenProject(ProjectReference reference, bool initializeProject)
         {
             var scope = _rootScope.BeginLifetimeScope(_ => { PrepareContainer(reference, _); });
+            var proj = scope.Resolve<IConfigurationContainer<ProjectConfiguration>>();
             if (initializeProject)
             {
-                var proj = scope.Resolve<IConfigurationContainer<ProjectConfiguration>>();
                 if (string.IsNullOrWhiteSpace(proj.Value.Name))
                     proj.Value.Name = reference.Name;
                 proj.Save();
             }
+
+            foreach (var valueDataFolder in proj.Value.DataFolders)
+                Directory.CreateDirectory(Path.Combine(reference.Path, valueDataFolder));
 
             for (var index = 0; index < _configuration.Value.Projects.Count; index++)
             {
@@ -115,8 +118,8 @@ namespace UrhoSharp.Editor.ViewModel
             var editor = scope.Resolve<EditorWindow>();
             editor.Show();
 
-            var w =_rootScope.Resolve<HubWindow>();
-            w.Dispatcher.BeginInvoke((Action)(() => w.Close()));
+            var w = _rootScope.Resolve<HubWindow>();
+            w.Dispatcher.BeginInvoke((Action) (() => w.Close()));
         }
 
         private static void PrepareContainer(ProjectReference reference, ContainerBuilder builder)
@@ -125,6 +128,17 @@ namespace UrhoSharp.Editor.ViewModel
             builder.RegisterInstance(
                     new JsonFileContainer<ProjectConfiguration>(Path.Combine(reference.Path, ProjectFileName)))
                 .As<IConfigurationContainer<ProjectConfiguration>>();
+        }
+
+        public void ForgetProject(ProjectReference reference)
+        {
+            for (var index = 0; index < _configuration.Value.Projects.Count; index++)
+            {
+                var oldProject = _configuration.Value.Projects[index];
+                if (oldProject.Path == reference.Path) _configuration.Value.Projects.RemoveAt(index);
+            }
+
+            ResetProjects();
         }
     }
 }

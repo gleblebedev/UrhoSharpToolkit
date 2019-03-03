@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+             xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -12,15 +13,44 @@
             <ColumnDefinition Width="5px" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <TreeView />
+        <TreeView ItemsSource="{Binding Folders}" SelectedItemChanged="UpdateSelectedItem">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type viewModel:FolderViewModel}"
+                                          ItemsSource="{Binding Path=Folders}">
+                    <TreeViewItem Header="{Binding Path=Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <Grid Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock>Bread crumbs</TextBlock>
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Assets}" />
+            <ListView ItemsSource="{Binding SelectedFolder.Breadcrumbs}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="2" Command="{Binding OpenCommand}" Content="{Binding .}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView Grid.Row="1" ItemsSource="{Binding SelectedFolder.AllItems}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="2" Content="{Binding .}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>

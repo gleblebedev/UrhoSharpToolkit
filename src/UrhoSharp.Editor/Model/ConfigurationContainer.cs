@@ -6,12 +6,6 @@ using Newtonsoft.Json;
 
 namespace UrhoSharp.Editor.Model
 {
-    public interface IConfigurationContainer<T>
-    {
-        T Value { get; }
-        void Save();
-    }
-
     public class ConfigurationContainer<T> : IConfigurationContainer<T> where T : new()
     {
         private readonly Lazy<T> _value = new Lazy<T>(LoadOrCreateValue);
@@ -60,7 +54,7 @@ namespace UrhoSharp.Editor.Model
             {
                 using (var writer = new StreamWriter(file, new UTF8Encoding(false)))
                 {
-                    writer.Write(JsonConvert.SerializeObject(value));
+                    writer.Write(JsonConvert.SerializeObject(value, Formatting.Indented));
                 }
             }
         }

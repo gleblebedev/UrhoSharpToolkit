@@ -52,7 +52,7 @@ namespace UrhoSharp.Editor.Model
             {
                 using (var writer = new StreamWriter(file, new UTF8Encoding(false)))
                 {
-                    writer.Write(JsonConvert.SerializeObject(value));
+                    writer.Write(JsonConvert.SerializeObject(value, Formatting.Indented));
                 }
             }
         }

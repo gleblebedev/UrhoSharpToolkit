@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using System.IO;
+using System.Windows;
+using GalaSoft.MvvmLight.Command;
 using UrhoSharp.Editor.Model;
 
 namespace UrhoSharp.Editor.ViewModel
@@ -26,7 +28,15 @@ namespace UrhoSharp.Editor.ViewModel
 
         private void OpenProj()
         {
-            _parentVm.OpenProject(_reference, false);
+            if (!Directory.Exists(_reference.Path))
+            {
+                MessageBox.Show("Path " + _reference.Path + " not found.");
+                _parentVm.ForgetProject(_reference);
+            }
+            else
+            {
+                _parentVm.OpenProject(_reference, false);
+            }
         }
     }
 }

@@ -9,14 +9,18 @@ namespace UrhoSharp.Editor.ViewModel
         private readonly ProjectReference _projectReference;
 
         public EditorViewModel(ProjectReference projectReference,
-            IConfigurationContainer<ProjectConfiguration> configuration)
+            IConfigurationContainer<ProjectConfiguration> configuration,
+            AssetsViewModel assets)
         {
             _projectReference = projectReference;
             _configuration = configuration;
+            Assets = assets;
         }
 
         public string Name => _projectReference.Name;
 
         public string Path => _projectReference.Path;
+
+        public AssetsViewModel Assets { get; }
     }
 }
