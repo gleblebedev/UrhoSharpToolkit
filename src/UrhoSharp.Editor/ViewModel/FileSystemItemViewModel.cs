@@ -12,7 +12,7 @@ namespace UrhoSharp.Editor.ViewModel
     {
         protected readonly AssetsViewModel _assets;
         private readonly FileSystemItemViewModel _parent;
-        private readonly string _rootPath;
+        protected readonly string _rootPath;
         private ObservableCollection<FileSystemItemViewModel> _allItems;
         private ObservableCollection<FolderViewModel> _folders;
         private ICommand _viewInExplorerCommand;
@@ -24,7 +24,9 @@ namespace UrhoSharp.Editor.ViewModel
             _rootPath = rootPath;
             _parent = parent;
             _assets = assets;
-            Name = Path.GetFileName(FullPath);
+            Name = FullPath == rootPath
+                ? Path.GetFileName(Path.GetDirectoryName(fullPath))
+                : Path.GetFileName(FullPath);
         }
 
         public ICommand ViewInExplorerCommand =>

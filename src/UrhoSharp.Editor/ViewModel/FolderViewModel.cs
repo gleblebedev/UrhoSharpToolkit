@@ -9,9 +9,15 @@ namespace UrhoSharp.Editor.ViewModel
             : base(fullPath, rootPath, parent, assets)
         {
             OpenCommand = new ActionCommand(Select);
+            ExportPackageCommand = new ActionCommand(ExportPackage);
         }
 
         public ICommand OpenCommand { get; set; }
+        public ICommand ExportPackageCommand { get; set; }
+
+        private void ExportPackage()
+        {
+        }
 
         private void Select()
         {

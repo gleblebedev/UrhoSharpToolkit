@@ -24,7 +24,8 @@
                     <TextBlock Text="{Binding Name}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
+                                <MenuItem Header="Open Folder in File Explorer"
+                                          Command="{Binding ViewInExplorerCommand}" />
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                     </TextBlock>
@@ -49,61 +50,71 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                          Drop="ImportAssets" AllowDrop="True">
-                <ItemsControl ItemsSource="{Binding SelectedFolder.AllItems}"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type viewModel:FileViewModel}">
-                            <Grid Width="128">
-                                <Grid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
-                                    </ContextMenu>
-                                </Grid.ContextMenu>
-                                <Grid.InputBindings>
-                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DefaultCommand}" />
-                                </Grid.InputBindings>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="32" />
-                                </Grid.RowDefinitions>
-                                <Image Source="{Binding ., Converter={StaticResource iconSource}}"
-                                       VerticalAlignment="Top"
-                                       HorizontalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
-                                           Text="{Binding Name}" />
-                            </Grid>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type viewModel:FolderViewModel}">
-                            <Grid Width="128">
-                                <Grid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
-                                    </ContextMenu>
-                                </Grid.ContextMenu>
-                                <Grid.InputBindings>
-                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenCommand}" />
-                                </Grid.InputBindings>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="32" />
-                                </Grid.RowDefinitions>
-                                <Image Source="{Binding ., Converter={StaticResource iconSource}}"
-                                       VerticalAlignment="Top"
-                                       HorizontalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
-                                           Text="{Binding Name}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.Resources>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
+            <Grid Grid.Row="1"
+                  Drop="ImportAssets"
+                  AllowDrop="True"
+                  PreviewDragEnter="UIElement_OnPreviewDragEnter"
+                  PreviewDragOver="UIElement_OnPreviewDragOver"
+                  PreviewDrop="UIElement_OnPreviewDrop">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding SelectedFolder.AllItems}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl.Resources>
+                            <DataTemplate DataType="{x:Type viewModel:FileViewModel}">
+                                <Grid Width="128">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open File in File Explorer"
+                                                      Command="{Binding ViewInExplorerCommand}" />
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    <Grid.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditCommand}" />
+                                    </Grid.InputBindings>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                           VerticalAlignment="Top"
+                                           HorizontalAlignment="Center" />
+                                    <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
+                                               Text="{Binding Name}" />
+                                </Grid>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewModel:FolderViewModel}">
+                                <Grid Width="128">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open Folder in File Explorer"
+                                                      Command="{Binding ViewInExplorerCommand}" />
+                                            <MenuItem Header="Export Nuget Package"
+                                                      Command="{Binding ExportPackageCommand}" />
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    <Grid.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenCommand}" />
+                                    </Grid.InputBindings>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                           VerticalAlignment="Top"
+                                           HorizontalAlignment="Center" />
+                                    <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
+                                               Text="{Binding Name}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

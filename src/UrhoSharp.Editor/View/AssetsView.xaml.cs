@@ -41,13 +41,58 @@ namespace UrhoSharp.Editor.View
                     var container = items.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
                     if (container != null)
                         if (breadcrumbs.Count == 1)
+                        {
                             container.IsSelected = true;
+                        }
                         else
+                        {
+                            container.IsExpanded = true;
                             FindAndOpenFolder(new ListTail<FileSystemItemViewModel>(breadcrumbs, 1), container);
+                        }
                 }
         }
 
         private void ImportAssets(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Note that you can have more than one file.
+                var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
+
+                var vm = new ImportAssetsViewModel(files, ViewModel.SelectedFolder);
+                var dialog = new ImportAssetsWindow {DataContext = vm};
+                if (dialog.ShowDialog() == true) vm.ImportAssets();
+            }
+        }
+
+        private void PreviewDragFiles(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                e.Effects = DragDropEffects.None;
+                return;
+            }
+
+            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files == null || files.Length > 1)
+            {
+                e.Effects = DragDropEffects.None;
+                return;
+            }
+
+            e.Effects = DragDropEffects.Copy;
+            e.Handled = true;
+        }
+
+        private void UIElement_OnPreviewDragEnter(object sender, DragEventArgs e)
+        {
+        }
+
+        private void UIElement_OnPreviewDragOver(object sender, DragEventArgs e)
+        {
+        }
+
+        private void UIElement_OnPreviewDrop(object sender, DragEventArgs e)
         {
         }
     }

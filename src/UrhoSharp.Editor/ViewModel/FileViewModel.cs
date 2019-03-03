@@ -20,6 +20,8 @@ namespace UrhoSharp.Editor.ViewModel
 
         public ICommand EditCommand { get; }
 
+        public string ResourceName => new Uri(_rootPath).MakeRelativeUri(new Uri(FullPath)).ToString();
+
         private void Edit()
         {
             _assets.Edit(this);

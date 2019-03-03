@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Urho;
 using UrhoSharp.Pages;
 
@@ -29,16 +30,10 @@ namespace UrhoSharp.Editor.Model
 #endif
             await Navigation.PushAsync(new ScenePage("No scene.xml"));
         }
-    }
 
-    public class ScenePage : AbstractSingleScenePage
-    {
-        private readonly string _sceneName;
-
-        public ScenePage(string sceneName)
+        public void OpenModel(string resourceName)
         {
-            _sceneName = sceneName;
-            CreateSimpleScene();
+            Task.Run(() => Navigation.ResetTo(new ModelPage(resourceName)));
         }
     }
 }

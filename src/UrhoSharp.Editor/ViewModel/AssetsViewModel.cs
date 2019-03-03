@@ -35,6 +35,8 @@ namespace UrhoSharp.Editor.ViewModel
             foreach (var configurationDataFolder in _configuration.Value.DataFolders)
             {
                 var folder = Path.Combine(_projectReference.Path, configurationDataFolder);
+                if (!folder.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    folder += Path.DirectorySeparatorChar;
                 Folders.Add(new FolderViewModel(folder, folder, null, this));
             }
         }

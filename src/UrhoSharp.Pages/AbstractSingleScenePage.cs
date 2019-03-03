@@ -135,13 +135,14 @@ namespace UrhoSharp.Pages
 
         protected void CreateSimpleScene(BoundingBox bbox)
         {
-            Scene = new Scene();
-            var octree = Scene.CreateComponent<Octree>();
+            var scene = new Scene();
+            var octree = scene.CreateComponent<Octree>();
             octree.SetSize(bbox, 10);
-            var z = Scene.CreateComponent<Zone>();
+            var z = scene.CreateComponent<Zone>();
             z.SetBoundingBox(bbox);
-            var cameraNode = Scene.CreateChild();
+            var cameraNode = scene.CreateChild();
             Camera = cameraNode.CreateComponent<Camera>();
+            Scene = scene;
         }
 
         public override IList<Viewport> GetViewports()

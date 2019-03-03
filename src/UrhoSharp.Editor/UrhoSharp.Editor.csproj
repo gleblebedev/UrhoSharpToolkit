@@ -98,8 +98,10 @@
     <Compile Include="Model\HubConfiguration.cs" />
     <Compile Include="Model\IConfigurationContainer.cs" />
     <Compile Include="Model\JsonFileContainer.cs" />
+    <Compile Include="Model\ModelPage.cs" />
     <Compile Include="Model\ProjectConfiguration.cs" />
     <Compile Include="Model\ProjectReference.cs" />
+    <Compile Include="Model\ScenePage.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\AssetsViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="ViewModel\FileViewModel.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
     <Compile Include="ViewModel\HubWindowViewModel.cs" />
+    <Compile Include="ViewModel\ImportAssetsViewModel.cs" />
     <Compile Include="ViewModel\ListTail.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
     <Compile Include="View\AssetStoreWindow.xaml.cs">
@@ -115,11 +118,17 @@
     <Compile Include="View\AssetsView.xaml.cs">
       <DependentUpon>AssetsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ExportPackageWindow.xaml.cs">
+      <DependentUpon>ExportPackageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\HierarchyView.xaml.cs">
       <DependentUpon>HierarchyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HubWindow.xaml.cs">
       <DependentUpon>HubWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportAssetsWindow.xaml.cs">
+      <DependentUpon>ImportAssetsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InspectorView.xaml.cs">
       <DependentUpon>InspectorView.xaml</DependentUpon>
@@ -140,12 +149,18 @@
     <Compile Include="View\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\ExportPackageWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\HierarchyView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\HubWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="View\ImportAssetsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InspectorView.xaml">
       <Generator>MSBuild:Compile</Generator>

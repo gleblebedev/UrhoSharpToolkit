@@ -95,5 +95,19 @@ namespace UrhoSharp.Pages
 
             await _container.SetCurrentPageAsync(page);
         }
+
+        public async Task ResetTo(IScenePage page)
+        {
+            lock (_gate)
+            {
+                _stack.Clear();
+                if (page != null)
+                {
+                    _stack.Push(page);
+                }
+            }
+
+            await _container.SetCurrentPageAsync(page);
+        }
     }
 }
