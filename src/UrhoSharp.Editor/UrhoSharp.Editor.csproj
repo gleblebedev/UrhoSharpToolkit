@@ -89,6 +89,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Converters\PreviewSource.cs" />
     <Compile Include="Model\AssetFileEventArgs.cs" />
     <Compile Include="Model\AssetsWatcher.cs" />
     <Compile Include="Model\ConfigurationContainer.cs" />
@@ -108,6 +109,9 @@
     <Compile Include="ViewModel\HubWindowViewModel.cs" />
     <Compile Include="ViewModel\ListTail.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
+    <Compile Include="View\AssetStoreWindow.xaml.cs">
+      <DependentUpon>AssetStoreWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AssetsView.xaml.cs">
       <DependentUpon>AssetsView.xaml</DependentUpon>
     </Compile>
@@ -120,6 +124,9 @@
     <Compile Include="View\InspectorView.xaml.cs">
       <DependentUpon>InspectorView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\AssetStoreWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AssetsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +200,14 @@
       <Project>{d9a855c9-e291-4b83-ad83-8b5b31411aaf}</Project>
       <Name>UrhoSharp.Rx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\animation.png" />
+    <EmbeddedResource Include="Icons\cs.png" />
+    <EmbeddedResource Include="Icons\font.png" />
+    <EmbeddedResource Include="Icons\mesh.png" />
+    <EmbeddedResource Include="Icons\unknown.png" />
+    <EmbeddedResource Include="Icons\xml.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\UrhoSharp.1.9.67\build\net45\UrhoSharp.targets" Condition="Exists('..\packages\UrhoSharp.1.9.67\build\net45\UrhoSharp.targets')" />

@@ -6,18 +6,18 @@ namespace UrhoSharp.Input
 {
     public class InputMapping : IInputSubscriber
     {
-        private readonly InputDispatcher _unhandledInput = new InputDispatcher();
-
         private readonly List<int> _activeTouches = new List<int>(4);
         private readonly Dictionary<Key, ITriggerAction> _keyboardMapping = new Dictionary<Key, ITriggerAction>();
 
         private readonly Dictionary<MouseButton, ITriggerAction> _mouseButtonMapping =
             new Dictionary<MouseButton, ITriggerAction>();
 
+        private readonly List<PointerArgs> _touchArgs = new List<PointerArgs>(4);
+        private readonly InputDispatcher _unhandledInput = new InputDispatcher();
+
         private IPointerAction _pointerAction;
         private ITouchAction _touchAction;
         private bool _touchAdded;
-        private readonly List<PointerArgs> _touchArgs = new List<PointerArgs>(4);
 
         public IInputSubscriber UnhandledInputSubscriber
         {

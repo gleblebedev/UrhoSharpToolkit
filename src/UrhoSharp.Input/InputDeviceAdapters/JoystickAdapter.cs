@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UrhoSharp.Input;
 using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Input.InputDeviceAdapters

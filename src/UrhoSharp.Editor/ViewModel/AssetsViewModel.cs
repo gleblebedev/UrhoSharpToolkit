@@ -5,24 +5,31 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using GalaSoft.MvvmLight;
 using UrhoSharp.Editor.Model;
+using UrhoSharp.Editor.View;
 
 namespace UrhoSharp.Editor.ViewModel
 {
     public class AssetsViewModel : ViewModelBase, IDisposable
     {
+        private readonly Lazy<AssetsView> _assets;
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
-        private readonly ProjectReference _projectReference;
         private readonly CompositeDisposable _disposables;
+        private readonly Lazy<EditorViewModel> _editor;
+        private readonly ProjectReference _projectReference;
 
         private FolderViewModel _selectedFolder;
 
         public AssetsViewModel(
             IObservable<AssetFileEventArgs> watcher,
             ProjectReference projectReference,
-            IConfigurationContainer<ProjectConfiguration> configuration)
+            IConfigurationContainer<ProjectConfiguration> configuration,
+            Lazy<AssetsView> assets,
+            Lazy<EditorViewModel> editor)
         {
             _projectReference = projectReference;
             _configuration = configuration;
+            _assets = assets;
+            _editor = editor;
             _disposables = new CompositeDisposable();
             _disposables.Add(watcher.ObserveOnDispatcher().Subscribe(OnAssetChanged));
             foreach (var configurationDataFolder in _configuration.Value.DataFolders)
@@ -61,6 +68,12 @@ namespace UrhoSharp.Editor.ViewModel
 
         public void OpenFolder(FolderViewModel folderViewModel)
         {
+            _assets.Value.OpenFolder(folderViewModel);
+        }
+
+        public void Edit(FileViewModel fileViewModel)
+        {
+            _editor.Value.Edit(fileViewModel);
         }
     }
 }

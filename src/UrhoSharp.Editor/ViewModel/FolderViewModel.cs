@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 
 namespace UrhoSharp.Editor.ViewModel
 {
@@ -15,6 +16,11 @@ namespace UrhoSharp.Editor.ViewModel
         private void Select()
         {
             _assets.OpenFolder(this);
+        }
+
+        protected override void ViewInExplorer()
+        {
+            Process.Start("explorer.exe", FullPath);
         }
     }
 }

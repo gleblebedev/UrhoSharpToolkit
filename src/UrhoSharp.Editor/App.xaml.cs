@@ -27,6 +27,8 @@ namespace UrhoSharp.Editor
 
             // Views.
             builder.RegisterType<EditorWindow>().InstancePerLifetimeScope();
+            builder.RegisterType<AssetStoreWindow>().InstancePerLifetimeScope();
+            builder.Register(GetAssetsView).As<AssetsView>().InstancePerLifetimeScope();
 
             // Misc.
             builder.RegisterType<AssetsWatcher>().As<IObservable<AssetFileEventArgs>>().InstancePerLifetimeScope();
@@ -35,6 +37,11 @@ namespace UrhoSharp.Editor
             MainWindow = _container.Resolve<HubWindow>();
             MainWindow.Show();
             ShutdownMode = ShutdownMode.OnLastWindowClose;
+        }
+
+        private AssetsView GetAssetsView(IComponentContext arg)
+        {
+            return arg.Resolve<EditorWindow>().AssetsView;
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)

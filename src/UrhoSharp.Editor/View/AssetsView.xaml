@@ -5,19 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
              xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
+             xmlns:converters="clr-namespace:UrhoSharp.Editor.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:PreviewSource x:Key="iconSource" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="5px" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="6*" />
         </Grid.ColumnDefinitions>
-        <TreeView ItemsSource="{Binding Folders}" SelectedItemChanged="UpdateSelectedItem">
+        <TreeView x:Name="_treeView" ItemsSource="{Binding Folders}" SelectedItemChanged="UpdateSelectedItem">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModel:FolderViewModel}"
                                           ItemsSource="{Binding Path=Folders}">
-                    <TreeViewItem Header="{Binding Path=Name}" />
+                    <TextBlock Text="{Binding Name}">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
         </TreeView>
@@ -39,18 +49,61 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView Grid.Row="1" ItemsSource="{Binding SelectedFolder.AllItems}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Button Margin="2" Content="{Binding .}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                          Drop="ImportAssets" AllowDrop="True">
+                <ItemsControl ItemsSource="{Binding SelectedFolder.AllItems}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl.Resources>
+                        <DataTemplate DataType="{x:Type viewModel:FileViewModel}">
+                            <Grid Width="128">
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+                                <Grid.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DefaultCommand}" />
+                                </Grid.InputBindings>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                       VerticalAlignment="Top"
+                                       HorizontalAlignment="Center" />
+                                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
+                                           Text="{Binding Name}" />
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type viewModel:FolderViewModel}">
+                            <Grid Width="128">
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="View In Explorer" Command="{Binding ViewInExplorerCommand}" />
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+                                <Grid.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenCommand}" />
+                                </Grid.InputBindings>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                       VerticalAlignment="Top"
+                                       HorizontalAlignment="Center" />
+                                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
+                                           Text="{Binding Name}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>

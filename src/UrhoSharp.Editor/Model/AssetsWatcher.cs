@@ -9,8 +9,8 @@ namespace UrhoSharp.Editor.Model
     {
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
         private readonly ProjectReference _project;
-        public Subject<AssetFileEventArgs> _subject = new Subject<AssetFileEventArgs>();
         private readonly List<Proxy> _watchers = new List<Proxy>();
+        public Subject<AssetFileEventArgs> _subject = new Subject<AssetFileEventArgs>();
 
         public AssetsWatcher(ProjectReference project, IConfigurationContainer<ProjectConfiguration> configuration)
         {

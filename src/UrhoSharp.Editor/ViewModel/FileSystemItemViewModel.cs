@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
 using UrhoSharp.Editor.Model;
 
 namespace UrhoSharp.Editor.ViewModel
 {
-    public class FileSystemItemViewModel
+    public abstract class FileSystemItemViewModel
     {
         protected readonly AssetsViewModel _assets;
         private readonly FileSystemItemViewModel _parent;
+        private readonly string _rootPath;
         private ObservableCollection<FileSystemItemViewModel> _allItems;
         private ObservableCollection<FolderViewModel> _folders;
-        private readonly string _rootPath;
+        private ICommand _viewInExplorerCommand;
 
         public FileSystemItemViewModel(string fullPath, string rootPath, FileSystemItemViewModel parent,
             AssetsViewModel assets)
@@ -25,6 +27,8 @@ namespace UrhoSharp.Editor.ViewModel
             Name = Path.GetFileName(FullPath);
         }
 
+        public ICommand ViewInExplorerCommand =>
+            _viewInExplorerCommand ?? (_viewInExplorerCommand = new ActionCommand(ViewInExplorer));
 
         public IReadOnlyCollection<FileSystemItemViewModel> Breadcrumbs
         {
@@ -52,6 +56,8 @@ namespace UrhoSharp.Editor.ViewModel
 
         public string FullPath { get; }
 
+        protected abstract void ViewInExplorer();
+
         public override string ToString()
         {
             return Name ?? base.ToString();
@@ -60,22 +66,35 @@ namespace UrhoSharp.Editor.ViewModel
         private ObservableCollection<FolderViewModel> GetFolders()
         {
             return new ObservableCollection<FolderViewModel>(
-                Directory.GetDirectories(FullPath)
-                    .Select(_ => new FolderViewModel(_, _rootPath, this, _assets))
+                EvalFolders()
                     .OrderBy(_ => _, Comparer.Instance));
+        }
+
+        private IEnumerable<FolderViewModel> EvalFolders()
+        {
+            if (_allItems != null)
+                return _allItems.Select(_ => _ as FolderViewModel).Where(_ => _ != null);
+            return Directory.GetDirectories(FullPath)
+                .Select(_ => new FolderViewModel(_, _rootPath, this, _assets));
         }
 
         private ObservableCollection<FileSystemItemViewModel> GetAllItems()
         {
             return new ObservableCollection<FileSystemItemViewModel>(
-                Directory.GetDirectories(FullPath)
-                    .Select(_ => (FileSystemItemViewModel) new FolderViewModel(_, _rootPath, this, _assets))
-                    .Concat(
-                        Directory.GetFiles(FullPath)
-                            .Select(_ => (FileSystemItemViewModel) new FileViewModel(_, _rootPath, this, _assets))
-                    )
+                EvalAllItems()
                     .OrderBy(_ => _, Comparer.Instance)
             );
+        }
+
+        private IEnumerable<FileSystemItemViewModel> EvalAllItems()
+        {
+            var folders = _folders ?? Directory.GetDirectories(FullPath)
+                              .Select(_ => (FileSystemItemViewModel) new FolderViewModel(_, _rootPath, this, _assets));
+            return folders
+                .Concat(
+                    Directory.GetFiles(FullPath)
+                        .Select(_ => (FileSystemItemViewModel) new FileViewModel(_, _rootPath, this, _assets))
+                );
         }
 
         public void OnAssetChanged(IReadOnlyList<string> path, AssetFileEventArgs args)

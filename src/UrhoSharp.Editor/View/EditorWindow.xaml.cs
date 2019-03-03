@@ -29,6 +29,8 @@ namespace UrhoSharp.Editor.View
 
         private EditorViewModel ViewModel => DataContext as EditorViewModel;
 
+        public AssetsView AssetsView => _assetsView;
+
         private async void ShowApp(object sender, RoutedEventArgs e)
         {
             await _urhoContainer.Show<EditorApp>(new ApplicationOptions(Path.Combine(ViewModel.Path, "Data")));

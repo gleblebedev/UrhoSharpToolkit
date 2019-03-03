@@ -1,6 +1,4 @@
-﻿using UrhoSharp.Input;
-
-namespace UrhoSharp.Input.InputDeviceAdapters
+﻿namespace UrhoSharp.Input.InputDeviceAdapters
 {
     public interface IInputDeviceAdapter
     {
