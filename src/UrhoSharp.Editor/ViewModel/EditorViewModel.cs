@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Linq;
 using GalaSoft.MvvmLight;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.View;
@@ -73,12 +74,28 @@ namespace UrhoSharp.Editor.ViewModel
                 case ".mdl":
                     OpenModelFile(fileViewModel);
                     break;
+                case ".xml":
+                    OpenXmlFile(fileViewModel);
+                    break;
             }
         }
 
         private void OpenModelFile(FileViewModel fileViewModel)
         {
             _app()?.OpenModel(fileViewModel.ResourceName);
+        }
+        private void OpenXmlFile(FileViewModel fileViewModel)
+        {
+            var doc = XDocument.Load(fileViewModel.FullPath);
+            switch (doc.Root.Name.LocalName)
+            {
+                case "scene":
+                    _app()?.OpenScene(fileViewModel.FullPath);
+                    break;
+                case "node":
+                    _app()?.OpenPrefab(fileViewModel.ResourceName);
+                    break;
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace UrhoSharp.Interfaces
 
         ~UrhoRef()
         {
-            ReleaseUnmanagedResources();
+            Application.InvokeOnMain(()=> ReleaseUnmanagedResources());
         }
 
         public bool Set(T value)

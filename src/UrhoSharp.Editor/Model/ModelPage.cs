@@ -17,7 +17,7 @@ namespace UrhoSharp.Editor.Model
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
             await scheduler.RunAsync(
-                () => { });
+                () => { ResourceCache.BackgroundLoadResource(Urho.Model.TypeStatic, _modelName, true);});
         }
 
         public override void OnResumed()

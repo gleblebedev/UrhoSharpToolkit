@@ -28,12 +28,22 @@ namespace UrhoSharp.Editor.Model
             var MonoDebugHud = new MonoDebugHud(this);
             MonoDebugHud.Show();
 #endif
-            await Navigation.PushAsync(new ScenePage("No scene.xml"));
+            //await Navigation.PushAsync(new ScenePage("No scene.xml",false));
         }
 
         public void OpenModel(string resourceName)
         {
             Task.Run(() => Navigation.ResetTo(new ModelPage(resourceName)));
+        }
+
+        public void OpenScene(string resourceName)
+        {
+            Task.Run(() => Navigation.ResetTo(new ScenePage(resourceName,false)));
+        }
+
+        public void OpenPrefab(string resourceName)
+        {
+            Task.Run(() => Navigation.ResetTo(new ScenePage(resourceName, true)));
         }
     }
 }

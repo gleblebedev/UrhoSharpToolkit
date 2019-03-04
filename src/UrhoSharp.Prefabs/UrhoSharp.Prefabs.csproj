@@ -8,8 +8,4 @@
     <PackageReference Include="UrhoSharp" Version="1.9.67" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UrhoSharp.Interfaces\UrhoSharp.Interfaces.csproj" />
-  </ItemGroup>
-
 </Project>
