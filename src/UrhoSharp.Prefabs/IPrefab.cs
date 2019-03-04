@@ -2,6 +2,8 @@
 {
     public interface IPrefab
     {
+        void BackgroundLoadResource();
+
         object Create();
     }
 }

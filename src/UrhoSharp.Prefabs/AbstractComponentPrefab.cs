@@ -14,7 +14,9 @@ namespace UrhoSharp.Prefabs
         {
             return Create();
         }
-
+        public virtual void BackgroundLoadResource()
+        {
+        }
         public virtual void ParseXml(XElement element)
         {
             foreach (var childElement in element.Elements())
