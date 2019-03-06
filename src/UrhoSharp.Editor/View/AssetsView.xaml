@@ -26,6 +26,8 @@
                             <ContextMenu>
                                 <MenuItem Header="Open Folder in File Explorer"
                                           Command="{Binding ViewInExplorerCommand}" />
+                                <MenuItem Header="Export as Nuget Package"
+                                          Command="{Binding ExportPackageCommand}" />
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                     </TextBlock>

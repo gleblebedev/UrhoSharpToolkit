@@ -11,10 +11,65 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="64">Under construction</TextBlock>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Name:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding PackageName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Version:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding Version}" />
+                    <Button Command="{Binding IncVersionCommand}" Content="+"></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Authors:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding Authors}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Owners:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding Owners}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">License Url:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding LicenseUrl}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Require License Acceptance:</TextBlock>
+                    <CheckBox IsChecked="{Binding RequireLicenseAcceptance}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Project Url:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding ProjectUrl}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Icon Url:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding IconUrl}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock MinWidth="200">Copyright:</TextBlock>
+                    <TextBox MinWidth="200" Text="{Binding Copyright}" />
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Files}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding Include}"></CheckBox>
+                                <TextBlock Text="{Binding RelName}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <Button Content="Ok" MinWidth="100" Padding="2" Margin="2" />
-            <Button Content="Canel" MinWidth="100" Padding="2" Margin="2" />
+            <Button Content="Ok" MinWidth="100" Padding="2" Margin="2" Click="Ok" />
+            <Button Content="Canel" MinWidth="100" Padding="2" Margin="2" Click="Cancel"  />
         </StackPanel>
     </Grid>
 </Window>

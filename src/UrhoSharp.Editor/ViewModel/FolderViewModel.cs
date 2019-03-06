@@ -1,5 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Input;
+using Microsoft.Win32;
+using UrhoSharp.Editor.Model;
+using UrhoSharp.Editor.View;
 
 namespace UrhoSharp.Editor.ViewModel
 {
@@ -15,8 +20,26 @@ namespace UrhoSharp.Editor.ViewModel
         public ICommand OpenCommand { get; set; }
         public ICommand ExportPackageCommand { get; set; }
 
+        public string ResourcePath => new Uri(_rootPath).MakeRelativeUri(new Uri(FullPath)).ToString();
+
+
         private void ExportPackage()
         {
+            var container = new JsonFileContainer<NugetPackageConfiguration>(Path.Combine(FullPath,
+                NugetPackageConfiguration.ConfigurationFileName));
+
+            var vm = new ExportPackageViewModel(container,this);
+            var w = new ExportPackageWindow(vm);
+            if (w.ShowDialog() == true)
+            {
+                var fileDialog = new SaveFileDialog();
+                fileDialog.Filter = "nuget package (*.nupkg)|*.nupkg";
+                fileDialog.FileName = vm.FileName;
+                if (fileDialog.ShowDialog() == true)
+                {
+                    vm.Export(fileDialog.FileName);
+                }
+            }
         }
 
         private void Select()

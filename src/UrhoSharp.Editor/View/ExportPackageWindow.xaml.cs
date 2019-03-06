@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using UrhoSharp.Editor.ViewModel;
 
 namespace UrhoSharp.Editor.View
 {
@@ -10,6 +11,29 @@ namespace UrhoSharp.Editor.View
         public ExportPackageWindow()
         {
             InitializeComponent();
+        }
+        public ExportPackageWindow(ExportPackageViewModel vm):this()
+        {
+            DataContext = vm;
+        }
+
+        private ExportPackageViewModel ViewModel
+        {
+            get { return DataContext as ExportPackageViewModel; }
+        }
+
+        private void Ok(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.Validate())
+            {
+                DialogResult = true;
+            }
+
+        }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

@@ -99,12 +99,14 @@
     <Compile Include="Model\IConfigurationContainer.cs" />
     <Compile Include="Model\JsonFileContainer.cs" />
     <Compile Include="Model\ModelPage.cs" />
+    <Compile Include="Model\NugetPackageConfiguration.cs" />
     <Compile Include="Model\ProjectConfiguration.cs" />
     <Compile Include="Model\ProjectReference.cs" />
     <Compile Include="Model\ScenePage.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\AssetsViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
+    <Compile Include="ViewModel\ExportPackageViewModel.cs" />
     <Compile Include="ViewModel\FileSystemItemViewModel.cs" />
     <Compile Include="ViewModel\FileViewModel.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
@@ -194,9 +196,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Separator.png">
+    <Content Include="Images\Separator.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UrhoSharp.Input\UrhoSharp.Input.csproj">
