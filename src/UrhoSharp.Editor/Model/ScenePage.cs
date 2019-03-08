@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Urho;
-using Urho.IO;
 using UrhoSharp.Pages;
 using UrhoSharp.Rx;
 
@@ -9,8 +8,8 @@ namespace UrhoSharp.Editor.Model
 {
     public class ScenePage : AbstractSingleScenePage
     {
-        private readonly string _sceneName;
         private readonly bool _isPrefab;
+        private readonly string _sceneName;
 
         public ScenePage(string sceneName, bool isPrefab)
         {
@@ -39,6 +38,7 @@ namespace UrhoSharp.Editor.Model
                 cameraNode = Scene.CreateChild();
             Camera = cameraNode.GetComponent<Camera>();
         }
+
         private void LoadPrefab()
         {
             var node = new Node();
@@ -46,6 +46,7 @@ namespace UrhoSharp.Editor.Model
             CreateSimpleScene();
             Scene.AddChild(node);
         }
+
         public override void OnResumed()
         {
             base.OnResumed();

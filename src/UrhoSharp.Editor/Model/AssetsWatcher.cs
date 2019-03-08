@@ -78,7 +78,7 @@ namespace UrhoSharp.Editor.Model
             private void OnFileChanged(object sender, FileSystemEventArgs e)
             {
                 var fullPath = e.FullPath;
-                var resourceName = GetResourceName(e.FullPath);
+                var resourceName = Utils.GetResourceName(_folder, e.FullPath);
 
                 switch (e.ChangeType)
                 {
@@ -97,19 +97,14 @@ namespace UrhoSharp.Editor.Model
                 }
             }
 
-            private string GetResourceName(string fullPath)
-            {
-                return new Uri(_folder).MakeRelativeUri(new Uri(fullPath)).ToString();
-            }
-
             private void OnFileRenamed(object sender, RenamedEventArgs e)
             {
                 var fullPath = e.OldFullPath;
-                var resourceName = GetResourceName(e.OldFullPath);
+                var resourceName = Utils.GetResourceName(_folder, e.OldFullPath);
                 _assets._subject.OnNext(new AssetFileEventArgs(AssetFileEventArgs.ChangeTypes.Deleted, fullPath,
                     resourceName));
                 fullPath = e.FullPath;
-                resourceName = GetResourceName(e.FullPath);
+                resourceName = Utils.GetResourceName(_folder, e.FullPath);
                 _assets._subject.OnNext(new AssetFileEventArgs(AssetFileEventArgs.ChangeTypes.Created, fullPath,
                     resourceName));
             }

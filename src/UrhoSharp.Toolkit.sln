@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Input", "UrhoShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Editor", "UrhoSharp.Editor\UrhoSharp.Editor.csproj", "{E1C15E10-77B4-45CB-B59E-A9FA895E030A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Prefabs", "UrhoSharp.Prefabs\UrhoSharp.Prefabs.csproj", "{FB38C70A-39C0-42F1-9447-145E49CA165C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrhoSharp.Prefabs", "UrhoSharp.Prefabs\UrhoSharp.Prefabs.csproj", "{FB38C70A-39C0-42F1-9447-145E49CA165C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrhoSharp.Prefabs.Gen", "UrhoSharp.Prefabs.Gen\UrhoSharp.Prefabs.Gen.csproj", "{3B1BBA00-0CCA-4B2F-84C3-FD6CB9FB7FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Urho3D.VisualStudioPlugin", "Urho3D.VisualStudioPlugin\Urho3D.VisualStudioPlugin.csproj", "{7CF57D64-3AA5-4407-8677-04C6740FD3E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{3B1BBA00-0CCA-4B2F-84C3-FD6CB9FB7FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1BBA00-0CCA-4B2F-84C3-FD6CB9FB7FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B1BBA00-0CCA-4B2F-84C3-FD6CB9FB7FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF57D64-3AA5-4407-8677-04C6740FD3E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF57D64-3AA5-4407-8677-04C6740FD3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF57D64-3AA5-4407-8677-04C6740FD3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF57D64-3AA5-4407-8677-04C6740FD3E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

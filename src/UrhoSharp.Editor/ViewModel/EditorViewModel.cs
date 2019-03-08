@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
@@ -9,29 +11,51 @@ using UrhoSharp.Editor.View;
 
 namespace UrhoSharp.Editor.ViewModel
 {
-    public class EditorViewModel : ViewModelBase
+    public class EditorViewModel : ViewModelBase, IDisposable
     {
-        private readonly Func<EditorApp> _app;
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
         private readonly ProjectReference _projectReference;
         private readonly Lazy<EditorWindow> _window;
         private bool _hasUnsavedChanged;
+        private HierarchyViewModel _hierarchyViewModel = new HierarchyViewModel();
+        private CompositeDisposable _disposable = new CompositeDisposable();
+        private EditorApp _app;
+        private IDisposable _appSubscription;
 
+        public void SetApp(EditorApp value)
+        {
+            if (_appSubscription != null)
+            { 
+                _appSubscription.Dispose();
+                _appSubscription = null;
+            }
+            _app =  value;
+            if (_app != null)
+            {
+                _appSubscription = _app.ObserveOnDispatcher().Subscribe(_hierarchyViewModel);
+            }
+        }
         public EditorViewModel(ProjectReference projectReference,
             IConfigurationContainer<ProjectConfiguration> configuration,
             AssetsViewModel assets,
             Lazy<EditorWindow> window,
             Lazy<AssetStoreWindow> assetStore,
-            Func<EditorApp> app
+            IObservable<EditorApp> app
         )
         {
             _projectReference = projectReference;
             _configuration = configuration;
             _window = window;
-            _app = app;
+            _disposable.Add(app.ObserveOnDispatcher().Subscribe(SetApp,_=> SetApp(null), ()=> SetApp(null)));
             Assets = assets;
             ExitCommand = new ActionCommand(Exit);
             AssetStoreCommand = new ActionCommand(AssetStore);
+        }
+
+        public HierarchyViewModel HierarchyViewModel
+        {
+            get => _hierarchyViewModel;
+            set => Set(ref _hierarchyViewModel, value);
         }
 
         public ICommand AssetStoreCommand { get; }
@@ -82,20 +106,26 @@ namespace UrhoSharp.Editor.ViewModel
 
         private void OpenModelFile(FileViewModel fileViewModel)
         {
-            _app()?.OpenModel(fileViewModel.ResourceName);
+            _app?.OpenModel(fileViewModel.ResourceName);
         }
+
         private void OpenXmlFile(FileViewModel fileViewModel)
         {
             var doc = XDocument.Load(fileViewModel.FullPath);
             switch (doc.Root.Name.LocalName)
             {
                 case "scene":
-                    _app()?.OpenScene(fileViewModel.FullPath);
+                    _app?.OpenScene(fileViewModel.FullPath);
                     break;
                 case "node":
-                    _app()?.OpenPrefab(fileViewModel.ResourceName);
+                    _app?.OpenPrefab(fileViewModel.ResourceName);
                     break;
             }
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -20,7 +19,7 @@ namespace UrhoSharp.Editor.ViewModel
         public ICommand OpenCommand { get; set; }
         public ICommand ExportPackageCommand { get; set; }
 
-        public string ResourcePath => new Uri(_rootPath).MakeRelativeUri(new Uri(FullPath)).ToString();
+        public string ResourcePath => Utils.GetResourceName(_rootPath, FullPath);
 
 
         private void ExportPackage()
@@ -28,17 +27,14 @@ namespace UrhoSharp.Editor.ViewModel
             var container = new JsonFileContainer<NugetPackageConfiguration>(Path.Combine(FullPath,
                 NugetPackageConfiguration.ConfigurationFileName));
 
-            var vm = new ExportPackageViewModel(container,this);
+            var vm = new ExportPackageViewModel(container, this);
             var w = new ExportPackageWindow(vm);
             if (w.ShowDialog() == true)
             {
                 var fileDialog = new SaveFileDialog();
                 fileDialog.Filter = "nuget package (*.nupkg)|*.nupkg";
                 fileDialog.FileName = vm.FileName;
-                if (fileDialog.ShowDialog() == true)
-                {
-                    vm.Export(fileDialog.FileName);
-                }
+                if (fileDialog.ShowDialog() == true) vm.Export(fileDialog.FileName);
             }
         }
 

@@ -97,6 +97,7 @@ namespace UrhoSharp.Pages
                     page.Resume();
                 _input.Subscriber = page;
                 _isCurrentPageActive = true;
+                PageActivated?.Invoke(this, new PageEventArgs(page));
             }
         }
 
@@ -113,8 +114,12 @@ namespace UrhoSharp.Pages
                 _input.Subscriber = null;
                 page.Deactivate();
                 _isCurrentPageActive = false;
+                PageDeactivated?.Invoke(this, new PageEventArgs(page));
             }
         }
+
+        public event EventHandler<PageEventArgs> PageActivated;
+        public event EventHandler<PageEventArgs> PageDeactivated;
 
         public async Task SetLoadingPageAsync(IScenePage loadingScenePage)
         {

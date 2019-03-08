@@ -12,23 +12,17 @@ namespace UrhoSharp.Editor.View
         {
             InitializeComponent();
         }
-        public ExportPackageWindow(ExportPackageViewModel vm):this()
+
+        public ExportPackageWindow(ExportPackageViewModel vm) : this()
         {
             DataContext = vm;
         }
 
-        private ExportPackageViewModel ViewModel
-        {
-            get { return DataContext as ExportPackageViewModel; }
-        }
+        private ExportPackageViewModel ViewModel => DataContext as ExportPackageViewModel;
 
         private void Ok(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.Validate())
-            {
-                DialogResult = true;
-            }
-
+            if (ViewModel.Validate()) DialogResult = true;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)

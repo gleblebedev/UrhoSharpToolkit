@@ -77,5 +77,31 @@ namespace UrhoSharp.Editor.ViewModel
         {
             _editor.Value.Edit(fileViewModel);
         }
+
+
+        public class Search : IObservable<NugetPackageViewModel>
+        {
+            public string SearchText { get; set; }
+
+            public IDisposable Subscribe(IObserver<NugetPackageViewModel> observer)
+            {
+                var q = new Query(SearchText, observer);
+                return q;
+            }
+
+            private class Query : IDisposable
+            {
+                private readonly IObserver<NugetPackageViewModel> _observer;
+
+                public Query(string text, IObserver<NugetPackageViewModel> observer)
+                {
+                    _observer = observer;
+                }
+
+                public void Dispose()
+                {
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock MinWidth="200">Version:</TextBlock>
                     <TextBox MinWidth="200" Text="{Binding Version}" />
-                    <Button Command="{Binding IncVersionCommand}" Content="+"></Button>
+                    <Button Command="{Binding IncVersionCommand}" Content="+" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock MinWidth="200">Authors:</TextBlock>
@@ -53,14 +53,14 @@
                 <ItemsControl ItemsSource="{Binding Files}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"></StackPanel>
+                            <StackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding Include}"></CheckBox>
-                                <TextBlock Text="{Binding RelName}"></TextBlock>
+                                <CheckBox IsChecked="{Binding Include}" />
+                                <TextBlock Text="{Binding RelName}" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -69,7 +69,7 @@
         </ScrollViewer>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
             <Button Content="Ok" MinWidth="100" Padding="2" Margin="2" Click="Ok" />
-            <Button Content="Canel" MinWidth="100" Padding="2" Margin="2" Click="Cancel"  />
+            <Button Content="Canel" MinWidth="100" Padding="2" Margin="2" Click="Cancel" />
         </StackPanel>
     </Grid>
 </Window>

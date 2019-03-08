@@ -41,7 +41,7 @@
                 <RowDefinition Height="5px" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <local:HierarchyView Grid.Row="0" Grid.Column="0" />
+            <local:HierarchyView Grid.Row="0" Grid.Column="0" DataContext="{Binding HierarchyViewModel}" />
             <wpf:UrhoSurface x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
             <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                               DataContext="{Binding Assets}" />

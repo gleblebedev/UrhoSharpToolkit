@@ -55,9 +55,7 @@
             <Grid Grid.Row="1"
                   Drop="ImportAssets"
                   AllowDrop="True"
-                  PreviewDragEnter="UIElement_OnPreviewDragEnter"
-                  PreviewDragOver="UIElement_OnPreviewDragOver"
-                  PreviewDrop="UIElement_OnPreviewDrop">
+                  PreviewDragOver="PreviewDragFiles">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding SelectedFolder.AllItems}"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">

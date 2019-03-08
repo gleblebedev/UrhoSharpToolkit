@@ -54,6 +54,8 @@ namespace UrhoSharp.Editor.View
 
         private void ImportAssets(object sender, DragEventArgs e)
         {
+            if (ViewModel.SelectedFolder == null)
+                return;
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 // Note that you can have more than one file.
@@ -61,39 +63,29 @@ namespace UrhoSharp.Editor.View
 
                 var vm = new ImportAssetsViewModel(files, ViewModel.SelectedFolder);
                 var dialog = new ImportAssetsWindow {DataContext = vm};
-                if (dialog.ShowDialog() == true) vm.ImportAssets();
+                if (dialog.ShowDialog() == true) vm.ImportAssets(ViewModel.SelectedFolder);
             }
         }
 
         private void PreviewDragFiles(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            if (ViewModel.SelectedFolder == null || !e.Data.GetDataPresent(DataFormats.FileDrop, true))
             {
                 e.Effects = DragDropEffects.None;
+                e.Handled = true;
                 return;
             }
 
             var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files == null || files.Length > 1)
+            if (files == null)
             {
                 e.Effects = DragDropEffects.None;
+                e.Handled = true;
                 return;
             }
 
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
-        }
-
-        private void UIElement_OnPreviewDragEnter(object sender, DragEventArgs e)
-        {
-        }
-
-        private void UIElement_OnPreviewDragOver(object sender, DragEventArgs e)
-        {
-        }
-
-        private void UIElement_OnPreviewDrop(object sender, DragEventArgs e)
-        {
         }
     }
 }

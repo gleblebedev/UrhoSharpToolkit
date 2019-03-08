@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Subjects;
 using System.Windows;
 using Autofac;
 using UrhoSharp.Editor.Model;
@@ -13,6 +14,7 @@ namespace UrhoSharp.Editor
     public partial class App : Application
     {
         private IContainer _container;
+        private Subject<EditorApp> _appSubject;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
@@ -29,20 +31,18 @@ namespace UrhoSharp.Editor
             builder.RegisterType<EditorWindow>().InstancePerLifetimeScope();
             builder.RegisterType<AssetStoreWindow>().InstancePerLifetimeScope();
             builder.Register(GetAssetsView).As<AssetsView>().InstancePerLifetimeScope();
-            builder.Register(GetEditorApp).As<EditorApp>().InstancePerDependency().ExternallyOwned();
+            //builder.Register(GetEditorApp).As<EditorApp>().InstancePerDependency().ExternallyOwned();
+
+            _appSubject = new Subject<EditorApp>();
+            builder.RegisterInstance(_appSubject).As<IObservable<EditorApp>>().SingleInstance();
+            Urho.Application.Started += () => _appSubject.OnNext(Urho.Application.Current as EditorApp);
 
             // Misc.
             builder.RegisterType<AssetsWatcher>().As<IObservable<AssetFileEventArgs>>().InstancePerLifetimeScope();
-
             _container = builder.Build();
             MainWindow = _container.Resolve<HubWindow>();
             MainWindow.Show();
             ShutdownMode = ShutdownMode.OnLastWindowClose;
-        }
-
-        private EditorApp GetEditorApp(IComponentContext arg)
-        {
-            return Urho.Application.Current as EditorApp;
         }
 
         private AssetsView GetAssetsView(IComponentContext arg)
@@ -52,6 +52,7 @@ namespace UrhoSharp.Editor
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
+            _appSubject.OnCompleted();
             _container?.Dispose();
         }
     }

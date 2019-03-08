@@ -11,5 +11,15 @@ namespace UrhoSharp.Editor.View
         {
             InitializeComponent();
         }
+
+        private void Ok(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
     }
 }

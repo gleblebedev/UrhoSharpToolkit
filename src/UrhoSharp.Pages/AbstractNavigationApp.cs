@@ -32,6 +32,16 @@ namespace UrhoSharp.Pages
 
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                if (CurrentPageContainer != null)
+                {
+                    CurrentPageContainer.PageActivated -= OnPageActivated;
+                    CurrentPageContainer.PageDeactivated -= OnPageDeactivated;
+                    CurrentPageContainer.Dispose();
+                }
+            }
+
             base.Dispose(disposing);
         }
 
@@ -93,6 +103,16 @@ namespace UrhoSharp.Pages
                 new CurrentPageContainer(new InputAdapter(Input), new RendererAdapter(Renderer), _scheduler);
             CurrentPageContainer.Resize(Graphics.Size);
             Navigation = new NavigationStack(CurrentPageContainer);
+            CurrentPageContainer.PageActivated += OnPageActivated;
+            CurrentPageContainer.PageDeactivated += OnPageDeactivated;
+        }
+
+        protected virtual void OnPageDeactivated(object sender, PageEventArgs e)
+        {
+        }
+
+        protected virtual void OnPageActivated(object sender, PageEventArgs e)
+        {
         }
 
         protected override void OnUpdate(float timeStep)

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+        xmlns:importers="clr-namespace:UrhoSharp.Editor.ViewModel.Importers"
         mc:Ignorable="d"
         Title="Import Assets" Height="450" Width="800">
     <Grid>
@@ -11,10 +12,39 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="64">Under construction</TextBlock>
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Files}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type importers:MultifileImporterViewModel}">
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="{Binding Name}">
+                                <ItemsControl ItemsSource="{Binding Files}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </GroupBox>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type importers:FileImporterViewModel}">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Enabled}" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </ScrollViewer>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <Button Content="Ok" MinWidth="100" Padding="2" Margin="2" />
-            <Button Content="Canel" MinWidth="100" Padding="2" Margin="2" />
+            <Button Content="Ok" Click="Ok" MinWidth="100" Padding="2" Margin="2" />
+            <Button Content="Canel" Click="Cancel" MinWidth="100" Padding="2" Margin="2" />
         </StackPanel>
     </Grid>
 </Window>
