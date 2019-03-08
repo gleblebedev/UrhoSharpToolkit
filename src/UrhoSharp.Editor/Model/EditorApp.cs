@@ -6,7 +6,6 @@ using UrhoSharp.Pages;
 
 namespace UrhoSharp.Editor.Model
 {
-
     public class EditorApp : AbstractNavigationApp, IObservable<SceneChangeEventArgs>
     {
         private Subject<SceneChangeEventArgs> _sceneChanges;

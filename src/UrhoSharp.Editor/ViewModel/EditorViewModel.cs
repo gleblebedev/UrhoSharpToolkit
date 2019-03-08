@@ -16,25 +16,12 @@ namespace UrhoSharp.Editor.ViewModel
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
         private readonly ProjectReference _projectReference;
         private readonly Lazy<EditorWindow> _window;
-        private bool _hasUnsavedChanged;
-        private HierarchyViewModel _hierarchyViewModel = new HierarchyViewModel();
-        private CompositeDisposable _disposable = new CompositeDisposable();
         private EditorApp _app;
         private IDisposable _appSubscription;
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
+        private bool _hasUnsavedChanged;
+        private HierarchyViewModel _hierarchyViewModel = new HierarchyViewModel();
 
-        public void SetApp(EditorApp value)
-        {
-            if (_appSubscription != null)
-            { 
-                _appSubscription.Dispose();
-                _appSubscription = null;
-            }
-            _app =  value;
-            if (_app != null)
-            {
-                _appSubscription = _app.ObserveOnDispatcher().Subscribe(_hierarchyViewModel);
-            }
-        }
         public EditorViewModel(ProjectReference projectReference,
             IConfigurationContainer<ProjectConfiguration> configuration,
             AssetsViewModel assets,
@@ -46,7 +33,7 @@ namespace UrhoSharp.Editor.ViewModel
             _projectReference = projectReference;
             _configuration = configuration;
             _window = window;
-            _disposable.Add(app.ObserveOnDispatcher().Subscribe(SetApp,_=> SetApp(null), ()=> SetApp(null)));
+            _disposable.Add(app.ObserveOnDispatcher().Subscribe(SetApp, _ => SetApp(null), () => SetApp(null)));
             Assets = assets;
             ExitCommand = new ActionCommand(Exit);
             AssetStoreCommand = new ActionCommand(AssetStore);
@@ -72,6 +59,23 @@ namespace UrhoSharp.Editor.ViewModel
         {
             get => _hasUnsavedChanged;
             set => Set(ref _hasUnsavedChanged, value);
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+        }
+
+        public void SetApp(EditorApp value)
+        {
+            if (_appSubscription != null)
+            {
+                _appSubscription.Dispose();
+                _appSubscription = null;
+            }
+
+            _app = value;
+            if (_app != null) _appSubscription = _app.ObserveOnDispatcher().Subscribe(_hierarchyViewModel);
         }
 
         private void AssetStore()
@@ -121,11 +125,6 @@ namespace UrhoSharp.Editor.ViewModel
                     _app?.OpenPrefab(fileViewModel.ResourceName);
                     break;
             }
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
         }
     }
 }

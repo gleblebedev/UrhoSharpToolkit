@@ -13,8 +13,8 @@ namespace UrhoSharp.Editor
     /// </summary>
     public partial class App : Application
     {
-        private IContainer _container;
         private Subject<EditorApp> _appSubject;
+        private IContainer _container;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
