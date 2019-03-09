@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using UrhoSharp.Editor.ViewModel;
 
 namespace UrhoSharp.Editor.View
 {
@@ -10,6 +12,13 @@ namespace UrhoSharp.Editor.View
         public HierarchyView()
         {
             InitializeComponent();
+        }
+
+        private HierarchyViewModel ViewModel => DataContext as HierarchyViewModel;
+
+        private void UpdateSelectedItem(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ViewModel.SelectedNode = _tree.SelectedItem as NodeViewModel;
         }
     }
 }

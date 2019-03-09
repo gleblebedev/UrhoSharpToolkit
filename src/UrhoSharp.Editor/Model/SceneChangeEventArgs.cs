@@ -1,5 +1,6 @@
 ﻿using System;
 using Urho;
+using UrhoSharp.Prefabs;
 
 namespace UrhoSharp.Editor.Model
 {
@@ -19,9 +20,16 @@ namespace UrhoSharp.Editor.Model
 
         public Change ChangeType { get; }
 
+        public ScenePrefab Scene { get; set; }
+        public NodePrefab Node { get; set; }
+        public IPrefab Component { get; set; }
+
         public static SceneChangeEventArgs NewScene(Scene scene)
         {
-            return new SceneChangeEventArgs(Change.SceneReplaced);
+            return new SceneChangeEventArgs(Change.SceneReplaced)
+            {
+                Scene = scene == null ? null : new ScenePrefab(scene)
+            };
         }
 
         public static SceneChangeEventArgs ComponentAdded(ComponentAddedEventArgs args)

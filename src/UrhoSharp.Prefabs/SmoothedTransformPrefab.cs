@@ -1,70 +1,50 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using SmoothedTransform = Urho.SmoothedTransform;
 
 
 namespace UrhoSharp.Prefabs
 {
-    public class SmoothedTransformPrefab: AbstractComponentPrefab<SmoothedTransform>, IPrefab
+    public partial class SmoothedTransformPrefab: AbstractComponentPrefab<SmoothedTransform>, IPrefab
     {
-        private static  Vector3 TargetPositionDefaultValue = new Vector3(0f, 0f, 0f);
-        private static  Quaternion TargetRotationDefaultValue = new Quaternion(0f, 0f, 0f, 1f);
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private Vector3 _targetPosition;
-        private Quaternion _targetRotation;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return SmoothedTransform.TypeNameStatic; } }
+        public Vector3 TargetPosition { get; set; }
+        public Quaternion TargetRotation { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public SmoothedTransformPrefab()
         {
-            _targetPosition = TargetPositionDefaultValue;
-            _targetRotation = TargetRotationDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            TargetPosition = TargetPositionAccessor.DefaultValue;
+            TargetRotation = TargetRotationAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public SmoothedTransformPrefab(SmoothedTransform val)
         {
-            _targetPosition = val.TargetPosition;
-            _targetRotation = val.TargetRotation;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            TargetPosition = val.TargetPosition;
+            TargetRotation = val.TargetRotation;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public Vector3 TargetPosition {get { return _targetPosition;} set { _targetPosition=value; } }
-        public bool TargetPositionHasValue {get { return !PrefabUtils.AreEqual(ref _targetPosition, ref TargetPositionDefaultValue); } }
-        public Quaternion TargetRotation {get { return _targetRotation;} set { _targetRotation=value; } }
-        public bool TargetRotationHasValue {get { return !PrefabUtils.AreEqual(ref _targetRotation, ref TargetRotationDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override SmoothedTransform Create()
         {
             var result = new SmoothedTransform();
-            if(TargetPositionHasValue)
-                result.TargetPosition = _targetPosition;
-            if(TargetRotationHasValue)
-                result.TargetRotation = _targetRotation;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            TargetPositionAccessor.Instance.ApplyIfChanged(this, result);
+            TargetRotationAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -73,20 +53,111 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "TargetPosition":
+                    TargetPositionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "TargetRotation":
+                    TargetRotationAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return TargetPositionAccessor.Instance;
+                yield return TargetRotationAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class TargetPositionAccessor : Vector3Accessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly TargetPositionAccessor Instance = new TargetPositionAccessor();
+            public static readonly Vector3 DefaultValue = new Vector3(0f, 0f, 0f);
+            public override Vector3 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.TargetPosition);
+            public override Vector3 GetPrefab(SmoothedTransformPrefab instance) { return instance.TargetPosition; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, Vector3 value) { instance.TargetPosition = value; }
+            public override Vector3 GetUrho(SmoothedTransform instance) { return instance.TargetPosition; }
+            public override void SetUrho(SmoothedTransform instance, Vector3 value) { instance.TargetPosition = value; }
+        }
+
+        internal class TargetRotationAccessor : QuaternionAccessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly TargetRotationAccessor Instance = new TargetRotationAccessor();
+            public static readonly Quaternion DefaultValue = new Quaternion(0f, 0f, 0f, 1f);
+            public override Quaternion DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.TargetRotation);
+            public override Quaternion GetPrefab(SmoothedTransformPrefab instance) { return instance.TargetRotation; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, Quaternion value) { instance.TargetRotation = value; }
+            public override Quaternion GetUrho(SmoothedTransform instance) { return instance.TargetRotation; }
+            public override void SetUrho(SmoothedTransform instance, Quaternion value) { instance.TargetRotation = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.Enabled);
+            public override bool GetPrefab(SmoothedTransformPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(SmoothedTransform instance) { return instance.Enabled; }
+            public override void SetUrho(SmoothedTransform instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.AnimationEnabled);
+            public override bool GetPrefab(SmoothedTransformPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(SmoothedTransform instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(SmoothedTransform instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.Temporary);
+            public override bool GetPrefab(SmoothedTransformPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(SmoothedTransform instance) { return instance.Temporary; }
+            public override void SetUrho(SmoothedTransform instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<SmoothedTransformPrefab, SmoothedTransform>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SmoothedTransform.BlockEvents);
+            public override bool GetPrefab(SmoothedTransformPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(SmoothedTransformPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(SmoothedTransform instance) { return instance.BlockEvents; }
+            public override void SetUrho(SmoothedTransform instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

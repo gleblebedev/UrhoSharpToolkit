@@ -2,20 +2,20 @@ using Urho;
 
 namespace UrhoSharp.Prefabs
 {
-    public class ScenePrefab:IPrefab
+    public class ScenePrefab: NodePrefab
     {
-        object IPrefab.Create()
+        public ScenePrefab(Scene scene):base(scene)
         {
-            return Create();
         }
 
-        public Scene Create()
+  
+
+        public override Node Create()
         {
             var result = new Scene();
             return result;
         }
-        public void BackgroundLoadResource()
-        {
-        }
+
+
     }
 }

@@ -1,86 +1,58 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using SplinePath = Urho.SplinePath;
 
 
 namespace UrhoSharp.Prefabs
 {
-    public class SplinePathPrefab: AbstractComponentPrefab<SplinePath>, IPrefab
+    public partial class SplinePathPrefab: AbstractComponentPrefab<SplinePath>, IPrefab
     {
-        private static  InterpolationMode InterpolationModeDefaultValue = InterpolationMode.BezierCurve;
-        private static  float SpeedDefaultValue = 1f;
-        private static  Node ControlledNodeDefaultValue = null;
-        private static  uint ControlledIdAttrDefaultValue = 0;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private InterpolationMode _interpolationMode;
-        private float _speed;
-        private Node _controlledNode;
-        private uint _controlledIdAttr;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return SplinePath.TypeNameStatic; } }
+        public InterpolationMode InterpolationMode { get; set; }
+        public float Speed { get; set; }
+        public Node ControlledNode { get; set; }
+        public uint ControlledIdAttr { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public SplinePathPrefab()
         {
-            _interpolationMode = InterpolationModeDefaultValue;
-            _speed = SpeedDefaultValue;
-            _controlledNode = ControlledNodeDefaultValue;
-            _controlledIdAttr = ControlledIdAttrDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            InterpolationMode = InterpolationModeAccessor.DefaultValue;
+            Speed = SpeedAccessor.DefaultValue;
+            ControlledNode = ControlledNodeAccessor.DefaultValue;
+            ControlledIdAttr = ControlledIdAttrAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public SplinePathPrefab(SplinePath val)
         {
-            _interpolationMode = val.InterpolationMode;
-            _speed = val.Speed;
-            _controlledNode = val.ControlledNode;
-            _controlledIdAttr = val.ControlledIdAttr;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            InterpolationMode = val.InterpolationMode;
+            Speed = val.Speed;
+            ControlledNode = val.ControlledNode;
+            ControlledIdAttr = val.ControlledIdAttr;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public InterpolationMode InterpolationMode {get { return _interpolationMode;} set { _interpolationMode=value; } }
-        public bool InterpolationModeHasValue {get { return !PrefabUtils.AreEqual(ref _interpolationMode, ref InterpolationModeDefaultValue); } }
-        public float Speed {get { return _speed;} set { _speed=value; } }
-        public bool SpeedHasValue {get { return !PrefabUtils.AreEqual(ref _speed, ref SpeedDefaultValue); } }
-        public Node ControlledNode {get { return _controlledNode;} set { _controlledNode=value; } }
-        public bool ControlledNodeHasValue {get { return !PrefabUtils.AreEqual(ref _controlledNode, ref ControlledNodeDefaultValue); } }
-        public uint ControlledIdAttr {get { return _controlledIdAttr;} set { _controlledIdAttr=value; } }
-        public bool ControlledIdAttrHasValue {get { return !PrefabUtils.AreEqual(ref _controlledIdAttr, ref ControlledIdAttrDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override SplinePath Create()
         {
             var result = new SplinePath();
-            if(InterpolationModeHasValue)
-                result.InterpolationMode = _interpolationMode;
-            if(SpeedHasValue)
-                result.Speed = _speed;
-            if(ControlledNodeHasValue)
-                result.ControlledNode = _controlledNode;
-            if(ControlledIdAttrHasValue)
-                result.ControlledIdAttr = _controlledIdAttr;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            InterpolationModeAccessor.Instance.ApplyIfChanged(this, result);
+            SpeedAccessor.Instance.ApplyIfChanged(this, result);
+            ControlledNodeAccessor.Instance.ApplyIfChanged(this, result);
+            ControlledIdAttrAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -89,24 +61,143 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "InterpolationMode":
+                    InterpolationModeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Speed":
+                    SpeedAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ControlledNode":
+                    ControlledNodeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ControlledIdAttr":
+                    ControlledIdAttrAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return InterpolationModeAccessor.Instance;
+                yield return SpeedAccessor.Instance;
+                yield return ControlledNodeAccessor.Instance;
+                yield return ControlledIdAttrAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class InterpolationModeAccessor : EnumAccessor<SplinePathPrefab, SplinePath, InterpolationMode>
+        {
+            public static readonly InterpolationModeAccessor Instance = new InterpolationModeAccessor();
+            public static readonly InterpolationMode DefaultValue = InterpolationMode.BezierCurve;
+            public override InterpolationMode DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.InterpolationMode);
+            public override InterpolationMode GetPrefab(SplinePathPrefab instance) { return instance.InterpolationMode; }
+            public override void SetPrefab(SplinePathPrefab instance, InterpolationMode value) { instance.InterpolationMode = value; }
+            public override InterpolationMode GetUrho(SplinePath instance) { return instance.InterpolationMode; }
+            public override void SetUrho(SplinePath instance, InterpolationMode value) { instance.InterpolationMode = value; }
+        }
+
+        internal class SpeedAccessor : SingleAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly SpeedAccessor Instance = new SpeedAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.Speed);
+            public override float GetPrefab(SplinePathPrefab instance) { return instance.Speed; }
+            public override void SetPrefab(SplinePathPrefab instance, float value) { instance.Speed = value; }
+            public override float GetUrho(SplinePath instance) { return instance.Speed; }
+            public override void SetUrho(SplinePath instance, float value) { instance.Speed = value; }
+        }
+
+        internal class ControlledNodeAccessor : NodeAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly ControlledNodeAccessor Instance = new ControlledNodeAccessor();
+            public static readonly Node DefaultValue = null;
+            public override Node DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.ControlledNode);
+            public override Node GetPrefab(SplinePathPrefab instance) { return instance.ControlledNode; }
+            public override void SetPrefab(SplinePathPrefab instance, Node value) { instance.ControlledNode = value; }
+            public override Node GetUrho(SplinePath instance) { return instance.ControlledNode; }
+            public override void SetUrho(SplinePath instance, Node value) { instance.ControlledNode = value; }
+        }
+
+        internal class ControlledIdAttrAccessor : UInt32Accessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly ControlledIdAttrAccessor Instance = new ControlledIdAttrAccessor();
+            public static readonly uint DefaultValue = 0;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.ControlledIdAttr);
+            public override uint GetPrefab(SplinePathPrefab instance) { return instance.ControlledIdAttr; }
+            public override void SetPrefab(SplinePathPrefab instance, uint value) { instance.ControlledIdAttr = value; }
+            public override uint GetUrho(SplinePath instance) { return instance.ControlledIdAttr; }
+            public override void SetUrho(SplinePath instance, uint value) { instance.ControlledIdAttr = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.Enabled);
+            public override bool GetPrefab(SplinePathPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(SplinePathPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(SplinePath instance) { return instance.Enabled; }
+            public override void SetUrho(SplinePath instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.AnimationEnabled);
+            public override bool GetPrefab(SplinePathPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(SplinePathPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(SplinePath instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(SplinePath instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.Temporary);
+            public override bool GetPrefab(SplinePathPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(SplinePathPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(SplinePath instance) { return instance.Temporary; }
+            public override void SetUrho(SplinePath instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<SplinePathPrefab, SplinePath>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SplinePath.BlockEvents);
+            public override bool GetPrefab(SplinePathPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(SplinePathPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(SplinePath instance) { return instance.BlockEvents; }
+            public override void SetUrho(SplinePath instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

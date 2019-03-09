@@ -1,206 +1,118 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using Camera = Urho.Camera;
 
 
 namespace UrhoSharp.Prefabs
 {
-    public class CameraPrefab: AbstractComponentPrefab<Camera>, IPrefab
+    public partial class CameraPrefab: AbstractComponentPrefab<Camera>, IPrefab
     {
-        private static  float NearClipDefaultValue = 0.1f;
-        private static  float FarClipDefaultValue = 1000f;
-        private static  float FovDefaultValue = 45f;
-        private static  float SkewDefaultValue = 0f;
-        private static  float OrthoSizeDefaultValue = 20f;
-        private static  float AspectRatioDefaultValue = 1f;
-        private static  FillMode FillModeDefaultValue = FillMode.Solid;
-        private static  float ZoomDefaultValue = 1f;
-        private static  float LodBiasDefaultValue = 1f;
-        private static  uint ViewMaskDefaultValue = 4294967295;
-        private static  ViewOverrideFlags ViewOverrideFlagsDefaultValue = ViewOverrideFlags.None;
-        private static  bool OrthographicDefaultValue = false;
-        private static  bool AutoAspectRatioDefaultValue = true;
-        private static  Vector2 ProjectionOffsetDefaultValue = new Vector2(0f, 0f);
-        private static  bool UseReflectionDefaultValue = false;
-        private static  Plane ReflectionPlaneDefaultValue = new Plane(new Vector4(0f, 1f, 0f, 0f));
-        private static  bool UseClippingDefaultValue = false;
-        private static  Plane ClipPlaneDefaultValue = new Plane(new Vector4(0f, 1f, 0f, 0f));
-        private static  bool FlipVerticalDefaultValue = false;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private float _nearClip;
-        private float _farClip;
-        private float _fov;
-        private float _skew;
-        private float _orthoSize;
-        private float _aspectRatio;
-        private FillMode _fillMode;
-        private float _zoom;
-        private float _lodBias;
-        private uint _viewMask;
-        private ViewOverrideFlags _viewOverrideFlags;
-        private bool _orthographic;
-        private bool _autoAspectRatio;
-        private Vector2 _projectionOffset;
-        private bool _useReflection;
-        private Plane _reflectionPlane;
-        private bool _useClipping;
-        private Plane _clipPlane;
-        private bool _flipVertical;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return Camera.TypeNameStatic; } }
+        public float NearClip { get; set; }
+        public float FarClip { get; set; }
+        public float Fov { get; set; }
+        public float Skew { get; set; }
+        public float OrthoSize { get; set; }
+        public float AspectRatio { get; set; }
+        public FillMode FillMode { get; set; }
+        public float Zoom { get; set; }
+        public float LodBias { get; set; }
+        public uint ViewMask { get; set; }
+        public ViewOverrideFlags ViewOverrideFlags { get; set; }
+        public bool Orthographic { get; set; }
+        public bool AutoAspectRatio { get; set; }
+        public Vector2 ProjectionOffset { get; set; }
+        public bool UseReflection { get; set; }
+        public Plane ReflectionPlane { get; set; }
+        public bool UseClipping { get; set; }
+        public Plane ClipPlane { get; set; }
+        public bool FlipVertical { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public CameraPrefab()
         {
-            _nearClip = NearClipDefaultValue;
-            _farClip = FarClipDefaultValue;
-            _fov = FovDefaultValue;
-            _skew = SkewDefaultValue;
-            _orthoSize = OrthoSizeDefaultValue;
-            _aspectRatio = AspectRatioDefaultValue;
-            _fillMode = FillModeDefaultValue;
-            _zoom = ZoomDefaultValue;
-            _lodBias = LodBiasDefaultValue;
-            _viewMask = ViewMaskDefaultValue;
-            _viewOverrideFlags = ViewOverrideFlagsDefaultValue;
-            _orthographic = OrthographicDefaultValue;
-            _autoAspectRatio = AutoAspectRatioDefaultValue;
-            _projectionOffset = ProjectionOffsetDefaultValue;
-            _useReflection = UseReflectionDefaultValue;
-            _reflectionPlane = ReflectionPlaneDefaultValue;
-            _useClipping = UseClippingDefaultValue;
-            _clipPlane = ClipPlaneDefaultValue;
-            _flipVertical = FlipVerticalDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            NearClip = NearClipAccessor.DefaultValue;
+            FarClip = FarClipAccessor.DefaultValue;
+            Fov = FovAccessor.DefaultValue;
+            Skew = SkewAccessor.DefaultValue;
+            OrthoSize = OrthoSizeAccessor.DefaultValue;
+            AspectRatio = AspectRatioAccessor.DefaultValue;
+            FillMode = FillModeAccessor.DefaultValue;
+            Zoom = ZoomAccessor.DefaultValue;
+            LodBias = LodBiasAccessor.DefaultValue;
+            ViewMask = ViewMaskAccessor.DefaultValue;
+            ViewOverrideFlags = ViewOverrideFlagsAccessor.DefaultValue;
+            Orthographic = OrthographicAccessor.DefaultValue;
+            AutoAspectRatio = AutoAspectRatioAccessor.DefaultValue;
+            ProjectionOffset = ProjectionOffsetAccessor.DefaultValue;
+            UseReflection = UseReflectionAccessor.DefaultValue;
+            ReflectionPlane = ReflectionPlaneAccessor.DefaultValue;
+            UseClipping = UseClippingAccessor.DefaultValue;
+            ClipPlane = ClipPlaneAccessor.DefaultValue;
+            FlipVertical = FlipVerticalAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public CameraPrefab(Camera val)
         {
-            _nearClip = val.NearClip;
-            _farClip = val.FarClip;
-            _fov = val.Fov;
-            _skew = val.Skew;
-            _orthoSize = val.OrthoSize;
-            _aspectRatio = val.AspectRatio;
-            _fillMode = val.FillMode;
-            _zoom = val.Zoom;
-            _lodBias = val.LodBias;
-            _viewMask = val.ViewMask;
-            _viewOverrideFlags = val.ViewOverrideFlags;
-            _orthographic = val.Orthographic;
-            _autoAspectRatio = val.AutoAspectRatio;
-            _projectionOffset = val.ProjectionOffset;
-            _useReflection = val.UseReflection;
-            _reflectionPlane = val.ReflectionPlane;
-            _useClipping = val.UseClipping;
-            _clipPlane = val.ClipPlane;
-            _flipVertical = val.FlipVertical;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            NearClip = val.NearClip;
+            FarClip = val.FarClip;
+            Fov = val.Fov;
+            Skew = val.Skew;
+            OrthoSize = val.OrthoSize;
+            AspectRatio = val.AspectRatio;
+            FillMode = val.FillMode;
+            Zoom = val.Zoom;
+            LodBias = val.LodBias;
+            ViewMask = val.ViewMask;
+            ViewOverrideFlags = val.ViewOverrideFlags;
+            Orthographic = val.Orthographic;
+            AutoAspectRatio = val.AutoAspectRatio;
+            ProjectionOffset = val.ProjectionOffset;
+            UseReflection = val.UseReflection;
+            ReflectionPlane = val.ReflectionPlane;
+            UseClipping = val.UseClipping;
+            ClipPlane = val.ClipPlane;
+            FlipVertical = val.FlipVertical;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public float NearClip {get { return _nearClip;} set { _nearClip=value; } }
-        public bool NearClipHasValue {get { return !PrefabUtils.AreEqual(ref _nearClip, ref NearClipDefaultValue); } }
-        public float FarClip {get { return _farClip;} set { _farClip=value; } }
-        public bool FarClipHasValue {get { return !PrefabUtils.AreEqual(ref _farClip, ref FarClipDefaultValue); } }
-        public float Fov {get { return _fov;} set { _fov=value; } }
-        public bool FovHasValue {get { return !PrefabUtils.AreEqual(ref _fov, ref FovDefaultValue); } }
-        public float Skew {get { return _skew;} set { _skew=value; } }
-        public bool SkewHasValue {get { return !PrefabUtils.AreEqual(ref _skew, ref SkewDefaultValue); } }
-        public float OrthoSize {get { return _orthoSize;} set { _orthoSize=value; } }
-        public bool OrthoSizeHasValue {get { return !PrefabUtils.AreEqual(ref _orthoSize, ref OrthoSizeDefaultValue); } }
-        public float AspectRatio {get { return _aspectRatio;} set { _aspectRatio=value; } }
-        public bool AspectRatioHasValue {get { return !PrefabUtils.AreEqual(ref _aspectRatio, ref AspectRatioDefaultValue); } }
-        public FillMode FillMode {get { return _fillMode;} set { _fillMode=value; } }
-        public bool FillModeHasValue {get { return !PrefabUtils.AreEqual(ref _fillMode, ref FillModeDefaultValue); } }
-        public float Zoom {get { return _zoom;} set { _zoom=value; } }
-        public bool ZoomHasValue {get { return !PrefabUtils.AreEqual(ref _zoom, ref ZoomDefaultValue); } }
-        public float LodBias {get { return _lodBias;} set { _lodBias=value; } }
-        public bool LodBiasHasValue {get { return !PrefabUtils.AreEqual(ref _lodBias, ref LodBiasDefaultValue); } }
-        public uint ViewMask {get { return _viewMask;} set { _viewMask=value; } }
-        public bool ViewMaskHasValue {get { return !PrefabUtils.AreEqual(ref _viewMask, ref ViewMaskDefaultValue); } }
-        public ViewOverrideFlags ViewOverrideFlags {get { return _viewOverrideFlags;} set { _viewOverrideFlags=value; } }
-        public bool ViewOverrideFlagsHasValue {get { return !PrefabUtils.AreEqual(ref _viewOverrideFlags, ref ViewOverrideFlagsDefaultValue); } }
-        public bool Orthographic {get { return _orthographic;} set { _orthographic=value; } }
-        public bool OrthographicHasValue {get { return !PrefabUtils.AreEqual(ref _orthographic, ref OrthographicDefaultValue); } }
-        public bool AutoAspectRatio {get { return _autoAspectRatio;} set { _autoAspectRatio=value; } }
-        public bool AutoAspectRatioHasValue {get { return !PrefabUtils.AreEqual(ref _autoAspectRatio, ref AutoAspectRatioDefaultValue); } }
-        public Vector2 ProjectionOffset {get { return _projectionOffset;} set { _projectionOffset=value; } }
-        public bool ProjectionOffsetHasValue {get { return !PrefabUtils.AreEqual(ref _projectionOffset, ref ProjectionOffsetDefaultValue); } }
-        public bool UseReflection {get { return _useReflection;} set { _useReflection=value; } }
-        public bool UseReflectionHasValue {get { return !PrefabUtils.AreEqual(ref _useReflection, ref UseReflectionDefaultValue); } }
-        public Plane ReflectionPlane {get { return _reflectionPlane;} set { _reflectionPlane=value; } }
-        public bool ReflectionPlaneHasValue {get { return !PrefabUtils.AreEqual(ref _reflectionPlane, ref ReflectionPlaneDefaultValue); } }
-        public bool UseClipping {get { return _useClipping;} set { _useClipping=value; } }
-        public bool UseClippingHasValue {get { return !PrefabUtils.AreEqual(ref _useClipping, ref UseClippingDefaultValue); } }
-        public Plane ClipPlane {get { return _clipPlane;} set { _clipPlane=value; } }
-        public bool ClipPlaneHasValue {get { return !PrefabUtils.AreEqual(ref _clipPlane, ref ClipPlaneDefaultValue); } }
-        public bool FlipVertical {get { return _flipVertical;} set { _flipVertical=value; } }
-        public bool FlipVerticalHasValue {get { return !PrefabUtils.AreEqual(ref _flipVertical, ref FlipVerticalDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override Camera Create()
         {
             var result = new Camera();
-            if(NearClipHasValue)
-                result.NearClip = _nearClip;
-            if(FarClipHasValue)
-                result.FarClip = _farClip;
-            if(FovHasValue)
-                result.Fov = _fov;
-            if(SkewHasValue)
-                result.Skew = _skew;
-            if(OrthoSizeHasValue)
-                result.OrthoSize = _orthoSize;
-            if(AspectRatioHasValue)
-                result.AspectRatio = _aspectRatio;
-            if(FillModeHasValue)
-                result.FillMode = _fillMode;
-            if(ZoomHasValue)
-                result.Zoom = _zoom;
-            if(LodBiasHasValue)
-                result.LodBias = _lodBias;
-            if(ViewMaskHasValue)
-                result.ViewMask = _viewMask;
-            if(ViewOverrideFlagsHasValue)
-                result.ViewOverrideFlags = _viewOverrideFlags;
-            if(OrthographicHasValue)
-                result.Orthographic = _orthographic;
-            if(AutoAspectRatioHasValue)
-                result.AutoAspectRatio = _autoAspectRatio;
-            if(ProjectionOffsetHasValue)
-                result.ProjectionOffset = _projectionOffset;
-            if(UseReflectionHasValue)
-                result.UseReflection = _useReflection;
-            if(ReflectionPlaneHasValue)
-                result.ReflectionPlane = _reflectionPlane;
-            if(UseClippingHasValue)
-                result.UseClipping = _useClipping;
-            if(ClipPlaneHasValue)
-                result.ClipPlane = _clipPlane;
-            if(FlipVerticalHasValue)
-                result.FlipVertical = _flipVertical;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            NearClipAccessor.Instance.ApplyIfChanged(this, result);
+            FarClipAccessor.Instance.ApplyIfChanged(this, result);
+            FovAccessor.Instance.ApplyIfChanged(this, result);
+            SkewAccessor.Instance.ApplyIfChanged(this, result);
+            OrthoSizeAccessor.Instance.ApplyIfChanged(this, result);
+            AspectRatioAccessor.Instance.ApplyIfChanged(this, result);
+            FillModeAccessor.Instance.ApplyIfChanged(this, result);
+            ZoomAccessor.Instance.ApplyIfChanged(this, result);
+            LodBiasAccessor.Instance.ApplyIfChanged(this, result);
+            ViewMaskAccessor.Instance.ApplyIfChanged(this, result);
+            ViewOverrideFlagsAccessor.Instance.ApplyIfChanged(this, result);
+            OrthographicAccessor.Instance.ApplyIfChanged(this, result);
+            AutoAspectRatioAccessor.Instance.ApplyIfChanged(this, result);
+            ProjectionOffsetAccessor.Instance.ApplyIfChanged(this, result);
+            UseReflectionAccessor.Instance.ApplyIfChanged(this, result);
+            ReflectionPlaneAccessor.Instance.ApplyIfChanged(this, result);
+            UseClippingAccessor.Instance.ApplyIfChanged(this, result);
+            ClipPlaneAccessor.Instance.ApplyIfChanged(this, result);
+            FlipVerticalAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -209,54 +121,383 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "NearClip":
+                    NearClipAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FarClip":
+                    FarClipAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Fov":
+                    FovAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Skew":
+                    SkewAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "OrthoSize":
+                    OrthoSizeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AspectRatio":
+                    AspectRatioAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FillMode":
+                    FillModeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Zoom":
+                    ZoomAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LodBias":
+                    LodBiasAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ViewMask":
+                    ViewMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ViewOverrideFlags":
+                    ViewOverrideFlagsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Orthographic":
+                    OrthographicAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AutoAspectRatio":
+                    AutoAspectRatioAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ProjectionOffset":
+                    ProjectionOffsetAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "UseReflection":
+                    UseReflectionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ReflectionPlane":
+                    ReflectionPlaneAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "UseClipping":
+                    UseClippingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ClipPlane":
+                    ClipPlaneAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FlipVertical":
+                    FlipVerticalAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return NearClipAccessor.Instance;
+                yield return FarClipAccessor.Instance;
+                yield return FovAccessor.Instance;
+                yield return SkewAccessor.Instance;
+                yield return OrthoSizeAccessor.Instance;
+                yield return AspectRatioAccessor.Instance;
+                yield return FillModeAccessor.Instance;
+                yield return ZoomAccessor.Instance;
+                yield return LodBiasAccessor.Instance;
+                yield return ViewMaskAccessor.Instance;
+                yield return ViewOverrideFlagsAccessor.Instance;
+                yield return OrthographicAccessor.Instance;
+                yield return AutoAspectRatioAccessor.Instance;
+                yield return ProjectionOffsetAccessor.Instance;
+                yield return UseReflectionAccessor.Instance;
+                yield return ReflectionPlaneAccessor.Instance;
+                yield return UseClippingAccessor.Instance;
+                yield return ClipPlaneAccessor.Instance;
+                yield return FlipVerticalAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class NearClipAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly NearClipAccessor Instance = new NearClipAccessor();
+            public static readonly float DefaultValue = 0.1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.NearClip);
+            public override float GetPrefab(CameraPrefab instance) { return instance.NearClip; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.NearClip = value; }
+            public override float GetUrho(Camera instance) { return instance.NearClip; }
+            public override void SetUrho(Camera instance, float value) { instance.NearClip = value; }
+        }
+
+        internal class FarClipAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly FarClipAccessor Instance = new FarClipAccessor();
+            public static readonly float DefaultValue = 1000f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.FarClip);
+            public override float GetPrefab(CameraPrefab instance) { return instance.FarClip; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.FarClip = value; }
+            public override float GetUrho(Camera instance) { return instance.FarClip; }
+            public override void SetUrho(Camera instance, float value) { instance.FarClip = value; }
+        }
+
+        internal class FovAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly FovAccessor Instance = new FovAccessor();
+            public static readonly float DefaultValue = 45f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Fov);
+            public override float GetPrefab(CameraPrefab instance) { return instance.Fov; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.Fov = value; }
+            public override float GetUrho(Camera instance) { return instance.Fov; }
+            public override void SetUrho(Camera instance, float value) { instance.Fov = value; }
+        }
+
+        internal class SkewAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly SkewAccessor Instance = new SkewAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Skew);
+            public override float GetPrefab(CameraPrefab instance) { return instance.Skew; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.Skew = value; }
+            public override float GetUrho(Camera instance) { return instance.Skew; }
+            public override void SetUrho(Camera instance, float value) { instance.Skew = value; }
+        }
+
+        internal class OrthoSizeAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly OrthoSizeAccessor Instance = new OrthoSizeAccessor();
+            public static readonly float DefaultValue = 20f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.OrthoSize);
+            public override float GetPrefab(CameraPrefab instance) { return instance.OrthoSize; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.OrthoSize = value; }
+            public override float GetUrho(Camera instance) { return instance.OrthoSize; }
+            public override void SetUrho(Camera instance, float value) { instance.OrthoSize = value; }
+        }
+
+        internal class AspectRatioAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly AspectRatioAccessor Instance = new AspectRatioAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.AspectRatio);
+            public override float GetPrefab(CameraPrefab instance) { return instance.AspectRatio; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.AspectRatio = value; }
+            public override float GetUrho(Camera instance) { return instance.AspectRatio; }
+            public override void SetUrho(Camera instance, float value) { instance.AspectRatio = value; }
+        }
+
+        internal class FillModeAccessor : EnumAccessor<CameraPrefab, Camera, FillMode>
+        {
+            public static readonly FillModeAccessor Instance = new FillModeAccessor();
+            public static readonly FillMode DefaultValue = FillMode.Solid;
+            public override FillMode DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.FillMode);
+            public override FillMode GetPrefab(CameraPrefab instance) { return instance.FillMode; }
+            public override void SetPrefab(CameraPrefab instance, FillMode value) { instance.FillMode = value; }
+            public override FillMode GetUrho(Camera instance) { return instance.FillMode; }
+            public override void SetUrho(Camera instance, FillMode value) { instance.FillMode = value; }
+        }
+
+        internal class ZoomAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly ZoomAccessor Instance = new ZoomAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Zoom);
+            public override float GetPrefab(CameraPrefab instance) { return instance.Zoom; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.Zoom = value; }
+            public override float GetUrho(Camera instance) { return instance.Zoom; }
+            public override void SetUrho(Camera instance, float value) { instance.Zoom = value; }
+        }
+
+        internal class LodBiasAccessor : SingleAccessor<CameraPrefab, Camera>
+        {
+            public static readonly LodBiasAccessor Instance = new LodBiasAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.LodBias);
+            public override float GetPrefab(CameraPrefab instance) { return instance.LodBias; }
+            public override void SetPrefab(CameraPrefab instance, float value) { instance.LodBias = value; }
+            public override float GetUrho(Camera instance) { return instance.LodBias; }
+            public override void SetUrho(Camera instance, float value) { instance.LodBias = value; }
+        }
+
+        internal class ViewMaskAccessor : UInt32Accessor<CameraPrefab, Camera>
+        {
+            public static readonly ViewMaskAccessor Instance = new ViewMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.ViewMask);
+            public override uint GetPrefab(CameraPrefab instance) { return instance.ViewMask; }
+            public override void SetPrefab(CameraPrefab instance, uint value) { instance.ViewMask = value; }
+            public override uint GetUrho(Camera instance) { return instance.ViewMask; }
+            public override void SetUrho(Camera instance, uint value) { instance.ViewMask = value; }
+        }
+
+        internal class ViewOverrideFlagsAccessor : EnumAccessor<CameraPrefab, Camera, ViewOverrideFlags>
+        {
+            public static readonly ViewOverrideFlagsAccessor Instance = new ViewOverrideFlagsAccessor();
+            public static readonly ViewOverrideFlags DefaultValue = ViewOverrideFlags.None;
+            public override ViewOverrideFlags DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.ViewOverrideFlags);
+            public override ViewOverrideFlags GetPrefab(CameraPrefab instance) { return instance.ViewOverrideFlags; }
+            public override void SetPrefab(CameraPrefab instance, ViewOverrideFlags value) { instance.ViewOverrideFlags = value; }
+            public override ViewOverrideFlags GetUrho(Camera instance) { return instance.ViewOverrideFlags; }
+            public override void SetUrho(Camera instance, ViewOverrideFlags value) { instance.ViewOverrideFlags = value; }
+        }
+
+        internal class OrthographicAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly OrthographicAccessor Instance = new OrthographicAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Orthographic);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.Orthographic; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.Orthographic = value; }
+            public override bool GetUrho(Camera instance) { return instance.Orthographic; }
+            public override void SetUrho(Camera instance, bool value) { instance.Orthographic = value; }
+        }
+
+        internal class AutoAspectRatioAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly AutoAspectRatioAccessor Instance = new AutoAspectRatioAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.AutoAspectRatio);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.AutoAspectRatio; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.AutoAspectRatio = value; }
+            public override bool GetUrho(Camera instance) { return instance.AutoAspectRatio; }
+            public override void SetUrho(Camera instance, bool value) { instance.AutoAspectRatio = value; }
+        }
+
+        internal class ProjectionOffsetAccessor : Vector2Accessor<CameraPrefab, Camera>
+        {
+            public static readonly ProjectionOffsetAccessor Instance = new ProjectionOffsetAccessor();
+            public static readonly Vector2 DefaultValue = new Vector2(0f, 0f);
+            public override Vector2 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.ProjectionOffset);
+            public override Vector2 GetPrefab(CameraPrefab instance) { return instance.ProjectionOffset; }
+            public override void SetPrefab(CameraPrefab instance, Vector2 value) { instance.ProjectionOffset = value; }
+            public override Vector2 GetUrho(Camera instance) { return instance.ProjectionOffset; }
+            public override void SetUrho(Camera instance, Vector2 value) { instance.ProjectionOffset = value; }
+        }
+
+        internal class UseReflectionAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly UseReflectionAccessor Instance = new UseReflectionAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.UseReflection);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.UseReflection; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.UseReflection = value; }
+            public override bool GetUrho(Camera instance) { return instance.UseReflection; }
+            public override void SetUrho(Camera instance, bool value) { instance.UseReflection = value; }
+        }
+
+        internal class ReflectionPlaneAccessor : PlaneAccessor<CameraPrefab, Camera>
+        {
+            public static readonly ReflectionPlaneAccessor Instance = new ReflectionPlaneAccessor();
+            public static readonly Plane DefaultValue = new Plane(new Vector4(0f, 1f, 0f, 0f));
+            public override Plane DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.ReflectionPlane);
+            public override Plane GetPrefab(CameraPrefab instance) { return instance.ReflectionPlane; }
+            public override void SetPrefab(CameraPrefab instance, Plane value) { instance.ReflectionPlane = value; }
+            public override Plane GetUrho(Camera instance) { return instance.ReflectionPlane; }
+            public override void SetUrho(Camera instance, Plane value) { instance.ReflectionPlane = value; }
+        }
+
+        internal class UseClippingAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly UseClippingAccessor Instance = new UseClippingAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.UseClipping);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.UseClipping; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.UseClipping = value; }
+            public override bool GetUrho(Camera instance) { return instance.UseClipping; }
+            public override void SetUrho(Camera instance, bool value) { instance.UseClipping = value; }
+        }
+
+        internal class ClipPlaneAccessor : PlaneAccessor<CameraPrefab, Camera>
+        {
+            public static readonly ClipPlaneAccessor Instance = new ClipPlaneAccessor();
+            public static readonly Plane DefaultValue = new Plane(new Vector4(0f, 1f, 0f, 0f));
+            public override Plane DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.ClipPlane);
+            public override Plane GetPrefab(CameraPrefab instance) { return instance.ClipPlane; }
+            public override void SetPrefab(CameraPrefab instance, Plane value) { instance.ClipPlane = value; }
+            public override Plane GetUrho(Camera instance) { return instance.ClipPlane; }
+            public override void SetUrho(Camera instance, Plane value) { instance.ClipPlane = value; }
+        }
+
+        internal class FlipVerticalAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly FlipVerticalAccessor Instance = new FlipVerticalAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.FlipVertical);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.FlipVertical; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.FlipVertical = value; }
+            public override bool GetUrho(Camera instance) { return instance.FlipVertical; }
+            public override void SetUrho(Camera instance, bool value) { instance.FlipVertical = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Enabled);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(Camera instance) { return instance.Enabled; }
+            public override void SetUrho(Camera instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.AnimationEnabled);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(Camera instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(Camera instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.Temporary);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(Camera instance) { return instance.Temporary; }
+            public override void SetUrho(Camera instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<CameraPrefab, Camera>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Camera.BlockEvents);
+            public override bool GetPrefab(CameraPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(CameraPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(Camera instance) { return instance.BlockEvents; }
+            public override void SetUrho(Camera instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

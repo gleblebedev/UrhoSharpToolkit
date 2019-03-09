@@ -14,13 +14,14 @@ namespace UrhoSharp.Editor.ViewModel
     public class EditorViewModel : ViewModelBase, IDisposable
     {
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
         private readonly ProjectReference _projectReference;
         private readonly Lazy<EditorWindow> _window;
         private EditorApp _app;
         private IDisposable _appSubscription;
-        private readonly CompositeDisposable _disposable = new CompositeDisposable();
         private bool _hasUnsavedChanged;
-        private HierarchyViewModel _hierarchyViewModel = new HierarchyViewModel();
+        private HierarchyViewModel _hierarchyViewModel;
+        private InspectorViewModel _inspector;
 
         public EditorViewModel(ProjectReference projectReference,
             IConfigurationContainer<ProjectConfiguration> configuration,
@@ -37,12 +38,20 @@ namespace UrhoSharp.Editor.ViewModel
             Assets = assets;
             ExitCommand = new ActionCommand(Exit);
             AssetStoreCommand = new ActionCommand(AssetStore);
+            _inspector = new InspectorViewModel();
+            _hierarchyViewModel = new HierarchyViewModel(_inspector);
         }
 
         public HierarchyViewModel HierarchyViewModel
         {
             get => _hierarchyViewModel;
             set => Set(ref _hierarchyViewModel, value);
+        }
+
+        public InspectorViewModel Inspector
+        {
+            get => _inspector;
+            set => Set(ref _inspector, value);
         }
 
         public ICommand AssetStoreCommand { get; }

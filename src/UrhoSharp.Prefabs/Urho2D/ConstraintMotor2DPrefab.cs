@@ -1,119 +1,75 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using ConstraintMotor2D = Urho.Urho2D.ConstraintMotor2D;
 
 using Urho.Urho2D;
 
 namespace UrhoSharp.Prefabs
 {
-    public class ConstraintMotor2DPrefab: AbstractComponentPrefab<ConstraintMotor2D>, IPrefab
+    public partial class ConstraintMotor2DPrefab: AbstractComponentPrefab<ConstraintMotor2D>, IPrefab
     {
-        private static  Vector2 LinearOffsetDefaultValue = new Vector2(0f, 0f);
-        private static  float AngularOffsetDefaultValue = 0f;
-        private static  float MaxForceDefaultValue = 1f;
-        private static  float MaxTorqueDefaultValue = 1f;
-        private static  float CorrectionFactorDefaultValue = 0.3f;
-        private static  RigidBody2D OtherBodyDefaultValue = null;
-        private static  bool CollideConnectedDefaultValue = false;
-        private static  Constraint2D AttachedConstraintDefaultValue = null;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private Vector2 _linearOffset;
-        private float _angularOffset;
-        private float _maxForce;
-        private float _maxTorque;
-        private float _correctionFactor;
-        private RigidBody2D _otherBody;
-        private bool _collideConnected;
-        private Constraint2D _attachedConstraint;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return ConstraintMotor2D.TypeNameStatic; } }
+        public Vector2 LinearOffset { get; set; }
+        public float AngularOffset { get; set; }
+        public float MaxForce { get; set; }
+        public float MaxTorque { get; set; }
+        public float CorrectionFactor { get; set; }
+        public RigidBody2D OtherBody { get; set; }
+        public bool CollideConnected { get; set; }
+        public Constraint2D AttachedConstraint { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public ConstraintMotor2DPrefab()
         {
-            _linearOffset = LinearOffsetDefaultValue;
-            _angularOffset = AngularOffsetDefaultValue;
-            _maxForce = MaxForceDefaultValue;
-            _maxTorque = MaxTorqueDefaultValue;
-            _correctionFactor = CorrectionFactorDefaultValue;
-            _otherBody = OtherBodyDefaultValue;
-            _collideConnected = CollideConnectedDefaultValue;
-            _attachedConstraint = AttachedConstraintDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            LinearOffset = LinearOffsetAccessor.DefaultValue;
+            AngularOffset = AngularOffsetAccessor.DefaultValue;
+            MaxForce = MaxForceAccessor.DefaultValue;
+            MaxTorque = MaxTorqueAccessor.DefaultValue;
+            CorrectionFactor = CorrectionFactorAccessor.DefaultValue;
+            OtherBody = OtherBodyAccessor.DefaultValue;
+            CollideConnected = CollideConnectedAccessor.DefaultValue;
+            AttachedConstraint = AttachedConstraintAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public ConstraintMotor2DPrefab(ConstraintMotor2D val)
         {
-            _linearOffset = val.LinearOffset;
-            _angularOffset = val.AngularOffset;
-            _maxForce = val.MaxForce;
-            _maxTorque = val.MaxTorque;
-            _correctionFactor = val.CorrectionFactor;
-            _otherBody = val.OtherBody;
-            _collideConnected = val.CollideConnected;
-            _attachedConstraint = val.AttachedConstraint;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            LinearOffset = val.LinearOffset;
+            AngularOffset = val.AngularOffset;
+            MaxForce = val.MaxForce;
+            MaxTorque = val.MaxTorque;
+            CorrectionFactor = val.CorrectionFactor;
+            OtherBody = val.OtherBody;
+            CollideConnected = val.CollideConnected;
+            AttachedConstraint = val.AttachedConstraint;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public Vector2 LinearOffset {get { return _linearOffset;} set { _linearOffset=value; } }
-        public bool LinearOffsetHasValue {get { return !PrefabUtils.AreEqual(ref _linearOffset, ref LinearOffsetDefaultValue); } }
-        public float AngularOffset {get { return _angularOffset;} set { _angularOffset=value; } }
-        public bool AngularOffsetHasValue {get { return !PrefabUtils.AreEqual(ref _angularOffset, ref AngularOffsetDefaultValue); } }
-        public float MaxForce {get { return _maxForce;} set { _maxForce=value; } }
-        public bool MaxForceHasValue {get { return !PrefabUtils.AreEqual(ref _maxForce, ref MaxForceDefaultValue); } }
-        public float MaxTorque {get { return _maxTorque;} set { _maxTorque=value; } }
-        public bool MaxTorqueHasValue {get { return !PrefabUtils.AreEqual(ref _maxTorque, ref MaxTorqueDefaultValue); } }
-        public float CorrectionFactor {get { return _correctionFactor;} set { _correctionFactor=value; } }
-        public bool CorrectionFactorHasValue {get { return !PrefabUtils.AreEqual(ref _correctionFactor, ref CorrectionFactorDefaultValue); } }
-        public RigidBody2D OtherBody {get { return _otherBody;} set { _otherBody=value; } }
-        public bool OtherBodyHasValue {get { return !PrefabUtils.AreEqual(ref _otherBody, ref OtherBodyDefaultValue); } }
-        public bool CollideConnected {get { return _collideConnected;} set { _collideConnected=value; } }
-        public bool CollideConnectedHasValue {get { return !PrefabUtils.AreEqual(ref _collideConnected, ref CollideConnectedDefaultValue); } }
-        public Constraint2D AttachedConstraint {get { return _attachedConstraint;} set { _attachedConstraint=value; } }
-        public bool AttachedConstraintHasValue {get { return !PrefabUtils.AreEqual(ref _attachedConstraint, ref AttachedConstraintDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override ConstraintMotor2D Create()
         {
             var result = new ConstraintMotor2D();
-            if(LinearOffsetHasValue)
-                result.LinearOffset = _linearOffset;
-            if(AngularOffsetHasValue)
-                result.AngularOffset = _angularOffset;
-            if(MaxForceHasValue)
-                result.MaxForce = _maxForce;
-            if(MaxTorqueHasValue)
-                result.MaxTorque = _maxTorque;
-            if(CorrectionFactorHasValue)
-                result.CorrectionFactor = _correctionFactor;
-            if(OtherBodyHasValue)
-                result.OtherBody = _otherBody;
-            if(CollideConnectedHasValue)
-                result.CollideConnected = _collideConnected;
-            if(AttachedConstraintHasValue)
-                result.AttachedConstraint = _attachedConstraint;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            LinearOffsetAccessor.Instance.ApplyIfChanged(this, result);
+            AngularOffsetAccessor.Instance.ApplyIfChanged(this, result);
+            MaxForceAccessor.Instance.ApplyIfChanged(this, result);
+            MaxTorqueAccessor.Instance.ApplyIfChanged(this, result);
+            CorrectionFactorAccessor.Instance.ApplyIfChanged(this, result);
+            OtherBodyAccessor.Instance.ApplyIfChanged(this, result);
+            CollideConnectedAccessor.Instance.ApplyIfChanged(this, result);
+            AttachedConstraintAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -122,32 +78,207 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "LinearOffset":
+                    LinearOffsetAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AngularOffset":
+                    AngularOffsetAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxForce":
+                    MaxForceAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxTorque":
+                    MaxTorqueAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CorrectionFactor":
+                    CorrectionFactorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "OtherBody":
+                    OtherBodyAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollideConnected":
+                    CollideConnectedAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AttachedConstraint":
+                    AttachedConstraintAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return LinearOffsetAccessor.Instance;
+                yield return AngularOffsetAccessor.Instance;
+                yield return MaxForceAccessor.Instance;
+                yield return MaxTorqueAccessor.Instance;
+                yield return CorrectionFactorAccessor.Instance;
+                yield return OtherBodyAccessor.Instance;
+                yield return CollideConnectedAccessor.Instance;
+                yield return AttachedConstraintAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class LinearOffsetAccessor : Vector2Accessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly LinearOffsetAccessor Instance = new LinearOffsetAccessor();
+            public static readonly Vector2 DefaultValue = new Vector2(0f, 0f);
+            public override Vector2 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.LinearOffset);
+            public override Vector2 GetPrefab(ConstraintMotor2DPrefab instance) { return instance.LinearOffset; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, Vector2 value) { instance.LinearOffset = value; }
+            public override Vector2 GetUrho(ConstraintMotor2D instance) { return instance.LinearOffset; }
+            public override void SetUrho(ConstraintMotor2D instance, Vector2 value) { instance.LinearOffset = value; }
+        }
+
+        internal class AngularOffsetAccessor : SingleAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly AngularOffsetAccessor Instance = new AngularOffsetAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.AngularOffset);
+            public override float GetPrefab(ConstraintMotor2DPrefab instance) { return instance.AngularOffset; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, float value) { instance.AngularOffset = value; }
+            public override float GetUrho(ConstraintMotor2D instance) { return instance.AngularOffset; }
+            public override void SetUrho(ConstraintMotor2D instance, float value) { instance.AngularOffset = value; }
+        }
+
+        internal class MaxForceAccessor : SingleAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly MaxForceAccessor Instance = new MaxForceAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.MaxForce);
+            public override float GetPrefab(ConstraintMotor2DPrefab instance) { return instance.MaxForce; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, float value) { instance.MaxForce = value; }
+            public override float GetUrho(ConstraintMotor2D instance) { return instance.MaxForce; }
+            public override void SetUrho(ConstraintMotor2D instance, float value) { instance.MaxForce = value; }
+        }
+
+        internal class MaxTorqueAccessor : SingleAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly MaxTorqueAccessor Instance = new MaxTorqueAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.MaxTorque);
+            public override float GetPrefab(ConstraintMotor2DPrefab instance) { return instance.MaxTorque; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, float value) { instance.MaxTorque = value; }
+            public override float GetUrho(ConstraintMotor2D instance) { return instance.MaxTorque; }
+            public override void SetUrho(ConstraintMotor2D instance, float value) { instance.MaxTorque = value; }
+        }
+
+        internal class CorrectionFactorAccessor : SingleAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly CorrectionFactorAccessor Instance = new CorrectionFactorAccessor();
+            public static readonly float DefaultValue = 0.3f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.CorrectionFactor);
+            public override float GetPrefab(ConstraintMotor2DPrefab instance) { return instance.CorrectionFactor; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, float value) { instance.CorrectionFactor = value; }
+            public override float GetUrho(ConstraintMotor2D instance) { return instance.CorrectionFactor; }
+            public override void SetUrho(ConstraintMotor2D instance, float value) { instance.CorrectionFactor = value; }
+        }
+
+        internal class OtherBodyAccessor : RigidBody2DAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly OtherBodyAccessor Instance = new OtherBodyAccessor();
+            public static readonly RigidBody2D DefaultValue = null;
+            public override RigidBody2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.OtherBody);
+            public override RigidBody2D GetPrefab(ConstraintMotor2DPrefab instance) { return instance.OtherBody; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, RigidBody2D value) { instance.OtherBody = value; }
+            public override RigidBody2D GetUrho(ConstraintMotor2D instance) { return instance.OtherBody; }
+            public override void SetUrho(ConstraintMotor2D instance, RigidBody2D value) { instance.OtherBody = value; }
+        }
+
+        internal class CollideConnectedAccessor : BooleanAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly CollideConnectedAccessor Instance = new CollideConnectedAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.CollideConnected);
+            public override bool GetPrefab(ConstraintMotor2DPrefab instance) { return instance.CollideConnected; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, bool value) { instance.CollideConnected = value; }
+            public override bool GetUrho(ConstraintMotor2D instance) { return instance.CollideConnected; }
+            public override void SetUrho(ConstraintMotor2D instance, bool value) { instance.CollideConnected = value; }
+        }
+
+        internal class AttachedConstraintAccessor : Constraint2DAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly AttachedConstraintAccessor Instance = new AttachedConstraintAccessor();
+            public static readonly Constraint2D DefaultValue = null;
+            public override Constraint2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.AttachedConstraint);
+            public override Constraint2D GetPrefab(ConstraintMotor2DPrefab instance) { return instance.AttachedConstraint; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, Constraint2D value) { instance.AttachedConstraint = value; }
+            public override Constraint2D GetUrho(ConstraintMotor2D instance) { return instance.AttachedConstraint; }
+            public override void SetUrho(ConstraintMotor2D instance, Constraint2D value) { instance.AttachedConstraint = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.Enabled);
+            public override bool GetPrefab(ConstraintMotor2DPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(ConstraintMotor2D instance) { return instance.Enabled; }
+            public override void SetUrho(ConstraintMotor2D instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.AnimationEnabled);
+            public override bool GetPrefab(ConstraintMotor2DPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(ConstraintMotor2D instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(ConstraintMotor2D instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.Temporary);
+            public override bool GetPrefab(ConstraintMotor2DPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(ConstraintMotor2D instance) { return instance.Temporary; }
+            public override void SetUrho(ConstraintMotor2D instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<ConstraintMotor2DPrefab, ConstraintMotor2D>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintMotor2D.BlockEvents);
+            public override bool GetPrefab(ConstraintMotor2DPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(ConstraintMotor2DPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(ConstraintMotor2D instance) { return instance.BlockEvents; }
+            public override void SetUrho(ConstraintMotor2D instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

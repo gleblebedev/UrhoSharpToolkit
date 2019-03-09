@@ -1,111 +1,71 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using CollisionShape = Urho.Physics.CollisionShape;
 
 using Urho.Physics;
 
 namespace UrhoSharp.Prefabs
 {
-    public class CollisionShapePrefab: AbstractComponentPrefab<CollisionShape>, IPrefab
+    public partial class CollisionShapePrefab: AbstractComponentPrefab<CollisionShape>, IPrefab
     {
-        private static  ShapeType ShapeTypeDefaultValue = ShapeType.Box;
-        private static  Vector3 SizeDefaultValue = new Vector3(1f, 1f, 1f);
-        private static  Vector3 PositionDefaultValue = new Vector3(0f, 0f, 0f);
-        private static  Quaternion RotationDefaultValue = new Quaternion(0f, 0f, 0f, 1f);
-        private static  float MarginDefaultValue = 0.04f;
-        private static  Model ModelDefaultValue = null;
-        private static  uint LodLevelDefaultValue = 0;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private ShapeType _shapeType;
-        private Vector3 _size;
-        private Vector3 _position;
-        private Quaternion _rotation;
-        private float _margin;
-        private Model _model;
-        private uint _lodLevel;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return CollisionShape.TypeNameStatic; } }
+        public ShapeType ShapeType { get; set; }
+        public Vector3 Size { get; set; }
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
+        public float Margin { get; set; }
+        public Model Model { get; set; }
+        public uint LodLevel { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public CollisionShapePrefab()
         {
-            _shapeType = ShapeTypeDefaultValue;
-            _size = SizeDefaultValue;
-            _position = PositionDefaultValue;
-            _rotation = RotationDefaultValue;
-            _margin = MarginDefaultValue;
-            _model = ModelDefaultValue;
-            _lodLevel = LodLevelDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            ShapeType = ShapeTypeAccessor.DefaultValue;
+            Size = SizeAccessor.DefaultValue;
+            Position = PositionAccessor.DefaultValue;
+            Rotation = RotationAccessor.DefaultValue;
+            Margin = MarginAccessor.DefaultValue;
+            Model = ModelAccessor.DefaultValue;
+            LodLevel = LodLevelAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public CollisionShapePrefab(CollisionShape val)
         {
-            _shapeType = val.ShapeType;
-            _size = val.Size;
-            _position = val.Position;
-            _rotation = val.Rotation;
-            _margin = val.Margin;
-            _model = val.Model;
-            _lodLevel = val.LodLevel;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            ShapeType = val.ShapeType;
+            Size = val.Size;
+            Position = val.Position;
+            Rotation = val.Rotation;
+            Margin = val.Margin;
+            Model = val.Model;
+            LodLevel = val.LodLevel;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public ShapeType ShapeType {get { return _shapeType;} set { _shapeType=value; } }
-        public bool ShapeTypeHasValue {get { return !PrefabUtils.AreEqual(ref _shapeType, ref ShapeTypeDefaultValue); } }
-        public Vector3 Size {get { return _size;} set { _size=value; } }
-        public bool SizeHasValue {get { return !PrefabUtils.AreEqual(ref _size, ref SizeDefaultValue); } }
-        public Vector3 Position {get { return _position;} set { _position=value; } }
-        public bool PositionHasValue {get { return !PrefabUtils.AreEqual(ref _position, ref PositionDefaultValue); } }
-        public Quaternion Rotation {get { return _rotation;} set { _rotation=value; } }
-        public bool RotationHasValue {get { return !PrefabUtils.AreEqual(ref _rotation, ref RotationDefaultValue); } }
-        public float Margin {get { return _margin;} set { _margin=value; } }
-        public bool MarginHasValue {get { return !PrefabUtils.AreEqual(ref _margin, ref MarginDefaultValue); } }
-        public Model Model {get { return _model;} set { _model=value; } }
-        public bool ModelHasValue {get { return !PrefabUtils.AreEqual(ref _model, ref ModelDefaultValue); } }
-        public uint LodLevel {get { return _lodLevel;} set { _lodLevel=value; } }
-        public bool LodLevelHasValue {get { return !PrefabUtils.AreEqual(ref _lodLevel, ref LodLevelDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override CollisionShape Create()
         {
             var result = new CollisionShape();
-            if(ShapeTypeHasValue)
-                result.ShapeType = _shapeType;
-            if(SizeHasValue)
-                result.Size = _size;
-            if(PositionHasValue)
-                result.Position = _position;
-            if(RotationHasValue)
-                result.Rotation = _rotation;
-            if(MarginHasValue)
-                result.Margin = _margin;
-            if(ModelHasValue)
-                result.Model = _model;
-            if(LodLevelHasValue)
-                result.LodLevel = _lodLevel;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            ShapeTypeAccessor.Instance.ApplyIfChanged(this, result);
+            SizeAccessor.Instance.ApplyIfChanged(this, result);
+            PositionAccessor.Instance.ApplyIfChanged(this, result);
+            RotationAccessor.Instance.ApplyIfChanged(this, result);
+            MarginAccessor.Instance.ApplyIfChanged(this, result);
+            ModelAccessor.Instance.ApplyIfChanged(this, result);
+            LodLevelAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -114,30 +74,191 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "ShapeType":
+                    ShapeTypeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Size":
+                    SizeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Position":
+                    PositionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Rotation":
+                    RotationAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Margin":
+                    MarginAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Model":
+                    ModelAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LodLevel":
+                    LodLevelAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return ShapeTypeAccessor.Instance;
+                yield return SizeAccessor.Instance;
+                yield return PositionAccessor.Instance;
+                yield return RotationAccessor.Instance;
+                yield return MarginAccessor.Instance;
+                yield return ModelAccessor.Instance;
+                yield return LodLevelAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class ShapeTypeAccessor : EnumAccessor<CollisionShapePrefab, CollisionShape, ShapeType>
+        {
+            public static readonly ShapeTypeAccessor Instance = new ShapeTypeAccessor();
+            public static readonly ShapeType DefaultValue = ShapeType.Box;
+            public override ShapeType DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.ShapeType);
+            public override ShapeType GetPrefab(CollisionShapePrefab instance) { return instance.ShapeType; }
+            public override void SetPrefab(CollisionShapePrefab instance, ShapeType value) { instance.ShapeType = value; }
+            public override ShapeType GetUrho(CollisionShape instance) { return instance.ShapeType; }
+            public override void SetUrho(CollisionShape instance, ShapeType value) { instance.ShapeType = value; }
+        }
+
+        internal class SizeAccessor : Vector3Accessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly SizeAccessor Instance = new SizeAccessor();
+            public static readonly Vector3 DefaultValue = new Vector3(1f, 1f, 1f);
+            public override Vector3 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Size);
+            public override Vector3 GetPrefab(CollisionShapePrefab instance) { return instance.Size; }
+            public override void SetPrefab(CollisionShapePrefab instance, Vector3 value) { instance.Size = value; }
+            public override Vector3 GetUrho(CollisionShape instance) { return instance.Size; }
+            public override void SetUrho(CollisionShape instance, Vector3 value) { instance.Size = value; }
+        }
+
+        internal class PositionAccessor : Vector3Accessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly PositionAccessor Instance = new PositionAccessor();
+            public static readonly Vector3 DefaultValue = new Vector3(0f, 0f, 0f);
+            public override Vector3 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Position);
+            public override Vector3 GetPrefab(CollisionShapePrefab instance) { return instance.Position; }
+            public override void SetPrefab(CollisionShapePrefab instance, Vector3 value) { instance.Position = value; }
+            public override Vector3 GetUrho(CollisionShape instance) { return instance.Position; }
+            public override void SetUrho(CollisionShape instance, Vector3 value) { instance.Position = value; }
+        }
+
+        internal class RotationAccessor : QuaternionAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly RotationAccessor Instance = new RotationAccessor();
+            public static readonly Quaternion DefaultValue = new Quaternion(0f, 0f, 0f, 1f);
+            public override Quaternion DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Rotation);
+            public override Quaternion GetPrefab(CollisionShapePrefab instance) { return instance.Rotation; }
+            public override void SetPrefab(CollisionShapePrefab instance, Quaternion value) { instance.Rotation = value; }
+            public override Quaternion GetUrho(CollisionShape instance) { return instance.Rotation; }
+            public override void SetUrho(CollisionShape instance, Quaternion value) { instance.Rotation = value; }
+        }
+
+        internal class MarginAccessor : SingleAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly MarginAccessor Instance = new MarginAccessor();
+            public static readonly float DefaultValue = 0.04f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Margin);
+            public override float GetPrefab(CollisionShapePrefab instance) { return instance.Margin; }
+            public override void SetPrefab(CollisionShapePrefab instance, float value) { instance.Margin = value; }
+            public override float GetUrho(CollisionShape instance) { return instance.Margin; }
+            public override void SetUrho(CollisionShape instance, float value) { instance.Margin = value; }
+        }
+
+        internal class ModelAccessor : ModelAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly ModelAccessor Instance = new ModelAccessor();
+            public static readonly Model DefaultValue = null;
+            public override Model DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Model);
+            public override Model GetPrefab(CollisionShapePrefab instance) { return instance.Model; }
+            public override void SetPrefab(CollisionShapePrefab instance, Model value) { instance.Model = value; }
+            public override Model GetUrho(CollisionShape instance) { return instance.Model; }
+            public override void SetUrho(CollisionShape instance, Model value) { instance.Model = value; }
+        }
+
+        internal class LodLevelAccessor : UInt32Accessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly LodLevelAccessor Instance = new LodLevelAccessor();
+            public static readonly uint DefaultValue = 0;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.LodLevel);
+            public override uint GetPrefab(CollisionShapePrefab instance) { return instance.LodLevel; }
+            public override void SetPrefab(CollisionShapePrefab instance, uint value) { instance.LodLevel = value; }
+            public override uint GetUrho(CollisionShape instance) { return instance.LodLevel; }
+            public override void SetUrho(CollisionShape instance, uint value) { instance.LodLevel = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Enabled);
+            public override bool GetPrefab(CollisionShapePrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(CollisionShapePrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(CollisionShape instance) { return instance.Enabled; }
+            public override void SetUrho(CollisionShape instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.AnimationEnabled);
+            public override bool GetPrefab(CollisionShapePrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(CollisionShapePrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(CollisionShape instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(CollisionShape instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.Temporary);
+            public override bool GetPrefab(CollisionShapePrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(CollisionShapePrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(CollisionShape instance) { return instance.Temporary; }
+            public override void SetUrho(CollisionShape instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<CollisionShapePrefab, CollisionShape>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(CollisionShape.BlockEvents);
+            public override bool GetPrefab(CollisionShapePrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(CollisionShapePrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(CollisionShape instance) { return instance.BlockEvents; }
+            public override void SetUrho(CollisionShape instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

@@ -45,7 +45,7 @@
             <wpf:UrhoSurface x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
             <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                               DataContext="{Binding Assets}" />
-            <local:InspectorView Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" />
+            <local:InspectorView Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" DataContext="{Binding Inspector}" />
             <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch" />

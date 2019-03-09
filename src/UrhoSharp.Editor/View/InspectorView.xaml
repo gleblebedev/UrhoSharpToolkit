@@ -4,9 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+             xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock>Inspector</TextBlock>
+        <ContentPresenter Content="{Binding ValueViewModel}">
+            <ContentPresenter.Resources>
+                <DataTemplate DataType="{x:Type viewModel:NodeViewModel}">
+                    <StackPanel>
+                        <local:PropertiesView />
+                        <ItemsControl ItemsSource="{Binding Components}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <GroupBox Header="{Binding Name}">
+                                        <local:PropertiesView />
+                                    </GroupBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentPresenter.Resources>
+        </ContentPresenter>
     </Grid>
 </UserControl>

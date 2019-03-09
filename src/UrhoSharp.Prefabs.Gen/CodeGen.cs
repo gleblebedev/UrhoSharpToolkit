@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -50,19 +51,22 @@ namespace UrhoSharp.Prefabs.Gen
         }
 
 
-        public void GenComponentPrefab(Type type, string className, TextWriter writer)
+        public Component GenComponentPrefab(Type type, string className, TextWriter writer)
         {
-            object instance;
+            Component instance;
             if (type.GetConstructor(new Type[] { typeof(Context) }) != null)
-                instance = Activator.CreateInstance(type, new[] { Urho.Application.Current.Context });
+                instance = (Component)Activator.CreateInstance(type, new[] { Urho.Application.Current.Context });
             else if (type.GetConstructor(new Type[] { }) != null)
-                instance = Activator.CreateInstance(type);
+                instance = (Component)Activator.CreateInstance(type);
             else
-                return;
+                return null;
             //var instance = Activator.CreateInstance(type);
             writer.WriteLine("using System;");
             writer.WriteLine("using System.Xml.Linq;");
+            writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine("using Urho;");
+            writer.WriteLine("using UrhoSharp.Prefabs.Accessors;");
+
             writer.WriteLine("using " + type.Name + " = " + type.Namespace + "." + type.Name + ";");
             writer.WriteLine("");
             if (type.Namespace != "Urho")
@@ -70,8 +74,9 @@ namespace UrhoSharp.Prefabs.Gen
             writer.WriteLine("");
             writer.WriteLine("namespace UrhoSharp.Prefabs");
             writer.WriteLine("{");
-            writer.WriteLine("    public class " + className + ": AbstractComponentPrefab<" + type.Name + ">, IPrefab");
+            writer.WriteLine("    public partial class " + className + ": AbstractComponentPrefab<" + type.Name + ">, IPrefab");
             writer.WriteLine("    {");
+            writer.WriteLine("        public override string TypeName { get { return " + type.Name + ".TypeNameStatic; } }");
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(_ => _.CanWrite)
                 .Where(_=>_.PropertyType != typeof(ObjectAnimation))
@@ -82,45 +87,38 @@ namespace UrhoSharp.Prefabs.Gen
                 .Select(TranslateProperty)
                 .ToList();
 
+            //writer.WriteLine("        public uint? ID { get; set; }");
             foreach (var propertyInfo in properties)
             {
-                //if (propertyInfo.PropertyType == typeof(IntPtr))
-                //    continue;
-                //if (propertyInfo.PropertyType == typeof(ResourceRef))
-                //    continue;
-                writer.WriteLine("        private static  " + propertyInfo.ActualTypeName + " " + propertyInfo.Name + "DefaultValue = "+GetValue(propertyInfo.PropertyInfo,instance)+";");
-            }
-            foreach (var propertyInfo in properties)
-            {
-                writer.WriteLine("        private " + propertyInfo.ActualTypeName + " " + propertyInfo.FieldName + ";");
+                writer.WriteLine("        public " + propertyInfo.ActualTypeName + " " + propertyInfo.Name + " { get; set; }");
             }
 
             writer.WriteLine("        public " + className + "()");
             writer.WriteLine("        {");
             foreach (var propertyInfo in properties)
             {
-                writer.WriteLine("            " + propertyInfo.FieldName + " = " + propertyInfo.Name + "DefaultValue;");
+                writer.WriteLine("            " + propertyInfo.Name + " = " + propertyInfo.Name + "Accessor.DefaultValue;");
             }
             writer.WriteLine("        }");
             writer.WriteLine("        public " + className + "(" + type.Name + " val)");
             writer.WriteLine("        {");
+            writer.WriteLine("            ID = val.ID;");
             foreach (var propertyInfo in properties)
             {
-                writer.WriteLine("            " + propertyInfo.FieldName + " = val." + propertyInfo.Name + ";");
+                writer.WriteLine("            " + propertyInfo.Name + " = val." + propertyInfo.Name + ";");
             }
             writer.WriteLine("        }");
-            foreach (var propertyInfo in properties)
-            {
-                writer.WriteLine("        public " + propertyInfo.ActualTypeName + " " + propertyInfo.Name + " {get { return " + propertyInfo.FieldName + ";} set { " + propertyInfo.FieldName + "=value; } }");
-                writer.WriteLine("        public bool " + propertyInfo.Name + "HasValue {get { return !PrefabUtils.AreEqual(ref " + propertyInfo.FieldName + ", ref " + propertyInfo.Name + "DefaultValue); } }");
-            }
+            //foreach (var propertyInfo in properties)
+            //{
+            //    writer.WriteLine("        public " + propertyInfo.ActualTypeName + " " + propertyInfo.Name + " {get { return " + propertyInfo.FieldName + ";} set { " + propertyInfo.FieldName + "=value; } }");
+            //    writer.WriteLine("        public bool " + propertyInfo.Name + "HasValue {get { return !PrefabUtils.AreEqual(ref " + propertyInfo.FieldName + ", ref " + propertyInfo.Name + "DefaultValue); } }");
+            //}
             writer.WriteLine("        public override " + type.Name + " Create()");
             writer.WriteLine("        {");
             writer.WriteLine("            var result = new " + type.Name + "();");
             foreach (var propertyInfo in properties)
             {
-                writer.WriteLine("            if(" + propertyInfo.Name + "HasValue)");
-                writer.WriteLine("                result." + propertyInfo.Name + " = " + propertyInfo.FieldName + ";");
+                writer.WriteLine("            " + propertyInfo.Name + "Accessor.Instance.ApplyIfChanged(this, result);");
             }
             writer.WriteLine("            return result;");
             writer.WriteLine("        }");
@@ -131,22 +129,74 @@ namespace UrhoSharp.Prefabs.Gen
             writer.WriteLine("            {");
             foreach (var propertyInfo in properties)
             {
-                writer.WriteLine("                case \"" +propertyInfo.Name+"\":");
+                writer.WriteLine("                case \"" +propertyInfo.XmlName+"\":");
+                writer.WriteLine("                    " + propertyInfo.Name + "Accessor.Instance.ParseAndSet(value, this);");
                 writer.WriteLine("                    break;");
             }
             writer.WriteLine("                default:");
             writer.WriteLine("                    throw new NotImplementedException(\"Property \"+name+\" not implemented yet.\");");
             writer.WriteLine("            }");
             writer.WriteLine("        }");
+
+            writer.WriteLine("        #region Accessors");
+            writer.WriteLine("        public override IEnumerable<IAccessor> Properties {");
+            writer.WriteLine("            get {");
+            foreach (var propertyInfo in properties)
+            {
+                writer.WriteLine("                yield return " + propertyInfo.Name + "Accessor.Instance;");
+            }
+            writer.WriteLine("            }");
+            writer.WriteLine("        }");
+
+            foreach (var propertyInfo in properties)
+            {
+                string baseType = propertyInfo.ActualType.Name + "Accessor<" + className + ", " + type.Name + ">";
+                if (propertyInfo.ActualType.IsEnum)
+                {
+                    baseType = "EnumAccessor<" + className + ", " + type.Name + ", "+propertyInfo.ActualType.Name+">";
+                }
+                writer.WriteLine("");
+                writer.WriteLine("        internal class " + propertyInfo.Name + "Accessor : "+ baseType);
+                writer.WriteLine("        {");
+
+                writer.WriteLine("            public static readonly " + propertyInfo.Name + "Accessor Instance = new " + propertyInfo.Name + "Accessor();");
+                writer.WriteLine("            public static readonly " + propertyInfo.ActualTypeName + " DefaultValue = " + GetValue(propertyInfo.PropertyInfo, instance) + ";");
+                writer.WriteLine("            public override " + propertyInfo.ActualTypeName + " DefaultPrefabValue => DefaultValue; ");
+
+                writer.WriteLine("            public override string Name => nameof(" + type.Name + "." + propertyInfo.Name + ");");
+                writer.WriteLine(
+                    "            public override " + propertyInfo.ActualTypeName + " GetPrefab(" + className + " instance) { return instance." + propertyInfo.Name + "; }");
+                writer.WriteLine(
+                    "            public override void SetPrefab(" + className + " instance, " + propertyInfo.ActualTypeName + " value) { instance." + propertyInfo.Name + " = value; }");
+                writer.WriteLine(
+                    "            public override " + propertyInfo.ActualTypeName + " GetUrho(" + type.Name + " instance) { return instance." + propertyInfo.Name + "; }");
+                writer.WriteLine(
+                    "            public override void SetUrho(" + type.Name + " instance, " + propertyInfo.ActualTypeName + " value) { instance." + propertyInfo.Name + " = value; }");
+                writer.WriteLine("        }");
+            }
+
+            writer.WriteLine("");
+            writer.WriteLine("        #endregion");
+
+
             writer.WriteLine("    }");
             writer.WriteLine("}");
-
+            return instance;
         }
 
         private ObjectProperty TranslateProperty(PropertyInfo property)
         {
             var p = new ObjectProperty() {PropertyInfo = property};
             p.Name = p.PropertyInfo.Name;
+            switch (p.Name)
+            {
+                case "Enabled":
+                    p.XmlName = "Is Enabled";
+                    break;
+                default:
+                    p.XmlName = p.Name;
+                    break;
+            }
             p.PropertyType = p.PropertyInfo.PropertyType;
             p.ActualType = p.PropertyInfo.PropertyType;
             p.FieldName = "_"+p.Name.Substring(0, 1).ToLower() + p.Name.Substring(1);
@@ -265,7 +315,11 @@ namespace UrhoSharp.Prefabs.Gen
                 {
                     using (var stream = new StreamWriter(file, new UTF8Encoding(false)))
                     {
-                        GenComponentPrefab(component, className,stream);
+                        var c = GenComponentPrefab(component, className,stream);
+                        if (c != null)
+                        {
+                            Trace.WriteLine("case " + c.Type.Code + ": return new "+className+"(("+component.Name+")component);");
+                        }
                     }
                 }
             }
@@ -280,5 +334,6 @@ namespace UrhoSharp.Prefabs.Gen
         public Type ActualType;
         public Type PropertyType;
         public string ActualTypeName;
+        public string XmlName;
     }
 }

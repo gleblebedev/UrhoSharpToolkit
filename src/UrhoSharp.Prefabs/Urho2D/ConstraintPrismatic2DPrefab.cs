@@ -1,143 +1,87 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using ConstraintPrismatic2D = Urho.Urho2D.ConstraintPrismatic2D;
 
 using Urho.Urho2D;
 
 namespace UrhoSharp.Prefabs
 {
-    public class ConstraintPrismatic2DPrefab: AbstractComponentPrefab<ConstraintPrismatic2D>, IPrefab
+    public partial class ConstraintPrismatic2DPrefab: AbstractComponentPrefab<ConstraintPrismatic2D>, IPrefab
     {
-        private static  Vector2 AnchorDefaultValue = new Vector2(0f, 0f);
-        private static  Vector2 AxisDefaultValue = new Vector2(1f, 0f);
-        private static  bool EnableLimitDefaultValue = false;
-        private static  float LowerTranslationDefaultValue = 0f;
-        private static  float UpperTranslationDefaultValue = 0f;
-        private static  bool EnableMotorDefaultValue = false;
-        private static  float MaxMotorForceDefaultValue = 0f;
-        private static  float MotorSpeedDefaultValue = 0f;
-        private static  RigidBody2D OtherBodyDefaultValue = null;
-        private static  bool CollideConnectedDefaultValue = false;
-        private static  Constraint2D AttachedConstraintDefaultValue = null;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private Vector2 _anchor;
-        private Vector2 _axis;
-        private bool _enableLimit;
-        private float _lowerTranslation;
-        private float _upperTranslation;
-        private bool _enableMotor;
-        private float _maxMotorForce;
-        private float _motorSpeed;
-        private RigidBody2D _otherBody;
-        private bool _collideConnected;
-        private Constraint2D _attachedConstraint;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return ConstraintPrismatic2D.TypeNameStatic; } }
+        public Vector2 Anchor { get; set; }
+        public Vector2 Axis { get; set; }
+        public bool EnableLimit { get; set; }
+        public float LowerTranslation { get; set; }
+        public float UpperTranslation { get; set; }
+        public bool EnableMotor { get; set; }
+        public float MaxMotorForce { get; set; }
+        public float MotorSpeed { get; set; }
+        public RigidBody2D OtherBody { get; set; }
+        public bool CollideConnected { get; set; }
+        public Constraint2D AttachedConstraint { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public ConstraintPrismatic2DPrefab()
         {
-            _anchor = AnchorDefaultValue;
-            _axis = AxisDefaultValue;
-            _enableLimit = EnableLimitDefaultValue;
-            _lowerTranslation = LowerTranslationDefaultValue;
-            _upperTranslation = UpperTranslationDefaultValue;
-            _enableMotor = EnableMotorDefaultValue;
-            _maxMotorForce = MaxMotorForceDefaultValue;
-            _motorSpeed = MotorSpeedDefaultValue;
-            _otherBody = OtherBodyDefaultValue;
-            _collideConnected = CollideConnectedDefaultValue;
-            _attachedConstraint = AttachedConstraintDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            Anchor = AnchorAccessor.DefaultValue;
+            Axis = AxisAccessor.DefaultValue;
+            EnableLimit = EnableLimitAccessor.DefaultValue;
+            LowerTranslation = LowerTranslationAccessor.DefaultValue;
+            UpperTranslation = UpperTranslationAccessor.DefaultValue;
+            EnableMotor = EnableMotorAccessor.DefaultValue;
+            MaxMotorForce = MaxMotorForceAccessor.DefaultValue;
+            MotorSpeed = MotorSpeedAccessor.DefaultValue;
+            OtherBody = OtherBodyAccessor.DefaultValue;
+            CollideConnected = CollideConnectedAccessor.DefaultValue;
+            AttachedConstraint = AttachedConstraintAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public ConstraintPrismatic2DPrefab(ConstraintPrismatic2D val)
         {
-            _anchor = val.Anchor;
-            _axis = val.Axis;
-            _enableLimit = val.EnableLimit;
-            _lowerTranslation = val.LowerTranslation;
-            _upperTranslation = val.UpperTranslation;
-            _enableMotor = val.EnableMotor;
-            _maxMotorForce = val.MaxMotorForce;
-            _motorSpeed = val.MotorSpeed;
-            _otherBody = val.OtherBody;
-            _collideConnected = val.CollideConnected;
-            _attachedConstraint = val.AttachedConstraint;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            Anchor = val.Anchor;
+            Axis = val.Axis;
+            EnableLimit = val.EnableLimit;
+            LowerTranslation = val.LowerTranslation;
+            UpperTranslation = val.UpperTranslation;
+            EnableMotor = val.EnableMotor;
+            MaxMotorForce = val.MaxMotorForce;
+            MotorSpeed = val.MotorSpeed;
+            OtherBody = val.OtherBody;
+            CollideConnected = val.CollideConnected;
+            AttachedConstraint = val.AttachedConstraint;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public Vector2 Anchor {get { return _anchor;} set { _anchor=value; } }
-        public bool AnchorHasValue {get { return !PrefabUtils.AreEqual(ref _anchor, ref AnchorDefaultValue); } }
-        public Vector2 Axis {get { return _axis;} set { _axis=value; } }
-        public bool AxisHasValue {get { return !PrefabUtils.AreEqual(ref _axis, ref AxisDefaultValue); } }
-        public bool EnableLimit {get { return _enableLimit;} set { _enableLimit=value; } }
-        public bool EnableLimitHasValue {get { return !PrefabUtils.AreEqual(ref _enableLimit, ref EnableLimitDefaultValue); } }
-        public float LowerTranslation {get { return _lowerTranslation;} set { _lowerTranslation=value; } }
-        public bool LowerTranslationHasValue {get { return !PrefabUtils.AreEqual(ref _lowerTranslation, ref LowerTranslationDefaultValue); } }
-        public float UpperTranslation {get { return _upperTranslation;} set { _upperTranslation=value; } }
-        public bool UpperTranslationHasValue {get { return !PrefabUtils.AreEqual(ref _upperTranslation, ref UpperTranslationDefaultValue); } }
-        public bool EnableMotor {get { return _enableMotor;} set { _enableMotor=value; } }
-        public bool EnableMotorHasValue {get { return !PrefabUtils.AreEqual(ref _enableMotor, ref EnableMotorDefaultValue); } }
-        public float MaxMotorForce {get { return _maxMotorForce;} set { _maxMotorForce=value; } }
-        public bool MaxMotorForceHasValue {get { return !PrefabUtils.AreEqual(ref _maxMotorForce, ref MaxMotorForceDefaultValue); } }
-        public float MotorSpeed {get { return _motorSpeed;} set { _motorSpeed=value; } }
-        public bool MotorSpeedHasValue {get { return !PrefabUtils.AreEqual(ref _motorSpeed, ref MotorSpeedDefaultValue); } }
-        public RigidBody2D OtherBody {get { return _otherBody;} set { _otherBody=value; } }
-        public bool OtherBodyHasValue {get { return !PrefabUtils.AreEqual(ref _otherBody, ref OtherBodyDefaultValue); } }
-        public bool CollideConnected {get { return _collideConnected;} set { _collideConnected=value; } }
-        public bool CollideConnectedHasValue {get { return !PrefabUtils.AreEqual(ref _collideConnected, ref CollideConnectedDefaultValue); } }
-        public Constraint2D AttachedConstraint {get { return _attachedConstraint;} set { _attachedConstraint=value; } }
-        public bool AttachedConstraintHasValue {get { return !PrefabUtils.AreEqual(ref _attachedConstraint, ref AttachedConstraintDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override ConstraintPrismatic2D Create()
         {
             var result = new ConstraintPrismatic2D();
-            if(AnchorHasValue)
-                result.Anchor = _anchor;
-            if(AxisHasValue)
-                result.Axis = _axis;
-            if(EnableLimitHasValue)
-                result.EnableLimit = _enableLimit;
-            if(LowerTranslationHasValue)
-                result.LowerTranslation = _lowerTranslation;
-            if(UpperTranslationHasValue)
-                result.UpperTranslation = _upperTranslation;
-            if(EnableMotorHasValue)
-                result.EnableMotor = _enableMotor;
-            if(MaxMotorForceHasValue)
-                result.MaxMotorForce = _maxMotorForce;
-            if(MotorSpeedHasValue)
-                result.MotorSpeed = _motorSpeed;
-            if(OtherBodyHasValue)
-                result.OtherBody = _otherBody;
-            if(CollideConnectedHasValue)
-                result.CollideConnected = _collideConnected;
-            if(AttachedConstraintHasValue)
-                result.AttachedConstraint = _attachedConstraint;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            AnchorAccessor.Instance.ApplyIfChanged(this, result);
+            AxisAccessor.Instance.ApplyIfChanged(this, result);
+            EnableLimitAccessor.Instance.ApplyIfChanged(this, result);
+            LowerTranslationAccessor.Instance.ApplyIfChanged(this, result);
+            UpperTranslationAccessor.Instance.ApplyIfChanged(this, result);
+            EnableMotorAccessor.Instance.ApplyIfChanged(this, result);
+            MaxMotorForceAccessor.Instance.ApplyIfChanged(this, result);
+            MotorSpeedAccessor.Instance.ApplyIfChanged(this, result);
+            OtherBodyAccessor.Instance.ApplyIfChanged(this, result);
+            CollideConnectedAccessor.Instance.ApplyIfChanged(this, result);
+            AttachedConstraintAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -146,38 +90,255 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "Anchor":
+                    AnchorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Axis":
+                    AxisAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "EnableLimit":
+                    EnableLimitAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LowerTranslation":
+                    LowerTranslationAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "UpperTranslation":
+                    UpperTranslationAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "EnableMotor":
+                    EnableMotorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxMotorForce":
+                    MaxMotorForceAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MotorSpeed":
+                    MotorSpeedAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "OtherBody":
+                    OtherBodyAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollideConnected":
+                    CollideConnectedAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AttachedConstraint":
+                    AttachedConstraintAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return AnchorAccessor.Instance;
+                yield return AxisAccessor.Instance;
+                yield return EnableLimitAccessor.Instance;
+                yield return LowerTranslationAccessor.Instance;
+                yield return UpperTranslationAccessor.Instance;
+                yield return EnableMotorAccessor.Instance;
+                yield return MaxMotorForceAccessor.Instance;
+                yield return MotorSpeedAccessor.Instance;
+                yield return OtherBodyAccessor.Instance;
+                yield return CollideConnectedAccessor.Instance;
+                yield return AttachedConstraintAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class AnchorAccessor : Vector2Accessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly AnchorAccessor Instance = new AnchorAccessor();
+            public static readonly Vector2 DefaultValue = new Vector2(0f, 0f);
+            public override Vector2 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.Anchor);
+            public override Vector2 GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.Anchor; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, Vector2 value) { instance.Anchor = value; }
+            public override Vector2 GetUrho(ConstraintPrismatic2D instance) { return instance.Anchor; }
+            public override void SetUrho(ConstraintPrismatic2D instance, Vector2 value) { instance.Anchor = value; }
+        }
+
+        internal class AxisAccessor : Vector2Accessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly AxisAccessor Instance = new AxisAccessor();
+            public static readonly Vector2 DefaultValue = new Vector2(1f, 0f);
+            public override Vector2 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.Axis);
+            public override Vector2 GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.Axis; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, Vector2 value) { instance.Axis = value; }
+            public override Vector2 GetUrho(ConstraintPrismatic2D instance) { return instance.Axis; }
+            public override void SetUrho(ConstraintPrismatic2D instance, Vector2 value) { instance.Axis = value; }
+        }
+
+        internal class EnableLimitAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly EnableLimitAccessor Instance = new EnableLimitAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.EnableLimit);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.EnableLimit; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.EnableLimit = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.EnableLimit; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.EnableLimit = value; }
+        }
+
+        internal class LowerTranslationAccessor : SingleAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly LowerTranslationAccessor Instance = new LowerTranslationAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.LowerTranslation);
+            public override float GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.LowerTranslation; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, float value) { instance.LowerTranslation = value; }
+            public override float GetUrho(ConstraintPrismatic2D instance) { return instance.LowerTranslation; }
+            public override void SetUrho(ConstraintPrismatic2D instance, float value) { instance.LowerTranslation = value; }
+        }
+
+        internal class UpperTranslationAccessor : SingleAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly UpperTranslationAccessor Instance = new UpperTranslationAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.UpperTranslation);
+            public override float GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.UpperTranslation; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, float value) { instance.UpperTranslation = value; }
+            public override float GetUrho(ConstraintPrismatic2D instance) { return instance.UpperTranslation; }
+            public override void SetUrho(ConstraintPrismatic2D instance, float value) { instance.UpperTranslation = value; }
+        }
+
+        internal class EnableMotorAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly EnableMotorAccessor Instance = new EnableMotorAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.EnableMotor);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.EnableMotor; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.EnableMotor = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.EnableMotor; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.EnableMotor = value; }
+        }
+
+        internal class MaxMotorForceAccessor : SingleAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly MaxMotorForceAccessor Instance = new MaxMotorForceAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.MaxMotorForce);
+            public override float GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.MaxMotorForce; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, float value) { instance.MaxMotorForce = value; }
+            public override float GetUrho(ConstraintPrismatic2D instance) { return instance.MaxMotorForce; }
+            public override void SetUrho(ConstraintPrismatic2D instance, float value) { instance.MaxMotorForce = value; }
+        }
+
+        internal class MotorSpeedAccessor : SingleAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly MotorSpeedAccessor Instance = new MotorSpeedAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.MotorSpeed);
+            public override float GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.MotorSpeed; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, float value) { instance.MotorSpeed = value; }
+            public override float GetUrho(ConstraintPrismatic2D instance) { return instance.MotorSpeed; }
+            public override void SetUrho(ConstraintPrismatic2D instance, float value) { instance.MotorSpeed = value; }
+        }
+
+        internal class OtherBodyAccessor : RigidBody2DAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly OtherBodyAccessor Instance = new OtherBodyAccessor();
+            public static readonly RigidBody2D DefaultValue = null;
+            public override RigidBody2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.OtherBody);
+            public override RigidBody2D GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.OtherBody; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, RigidBody2D value) { instance.OtherBody = value; }
+            public override RigidBody2D GetUrho(ConstraintPrismatic2D instance) { return instance.OtherBody; }
+            public override void SetUrho(ConstraintPrismatic2D instance, RigidBody2D value) { instance.OtherBody = value; }
+        }
+
+        internal class CollideConnectedAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly CollideConnectedAccessor Instance = new CollideConnectedAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.CollideConnected);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.CollideConnected; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.CollideConnected = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.CollideConnected; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.CollideConnected = value; }
+        }
+
+        internal class AttachedConstraintAccessor : Constraint2DAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly AttachedConstraintAccessor Instance = new AttachedConstraintAccessor();
+            public static readonly Constraint2D DefaultValue = null;
+            public override Constraint2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.AttachedConstraint);
+            public override Constraint2D GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.AttachedConstraint; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, Constraint2D value) { instance.AttachedConstraint = value; }
+            public override Constraint2D GetUrho(ConstraintPrismatic2D instance) { return instance.AttachedConstraint; }
+            public override void SetUrho(ConstraintPrismatic2D instance, Constraint2D value) { instance.AttachedConstraint = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.Enabled);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.Enabled; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.AnimationEnabled);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.Temporary);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.Temporary; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<ConstraintPrismatic2DPrefab, ConstraintPrismatic2D>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintPrismatic2D.BlockEvents);
+            public override bool GetPrefab(ConstraintPrismatic2DPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(ConstraintPrismatic2DPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(ConstraintPrismatic2D instance) { return instance.BlockEvents; }
+            public override void SetUrho(ConstraintPrismatic2D instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

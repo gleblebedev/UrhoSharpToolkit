@@ -53,6 +53,9 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Android">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -162,6 +165,7 @@
     <Compile Include="Utils.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\AssetsViewModel.cs" />
+    <Compile Include="ViewModel\ComponentViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
     <Compile Include="ViewModel\ExportPackageViewModel.cs" />
     <Compile Include="ViewModel\FileSystemItemViewModel.cs" />
@@ -174,9 +178,12 @@
     <Compile Include="ViewModel\Importers\BspFileImporterViewModel.cs" />
     <Compile Include="ViewModel\Importers\FileImporterViewModel.cs" />
     <Compile Include="ViewModel\Importers\MultifileImporterViewModel.cs" />
+    <Compile Include="ViewModel\InspectorViewModel.cs" />
     <Compile Include="ViewModel\ListTail.cs" />
+    <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\NugetPackageViewModel.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
+    <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="View\AssetStoreWindow.xaml.cs">
       <DependentUpon>AssetStoreWindow.xaml</DependentUpon>
     </Compile>
@@ -197,6 +204,9 @@
     </Compile>
     <Compile Include="View\InspectorView.xaml.cs">
       <DependentUpon>InspectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PropertiesView.xaml.cs">
+      <DependentUpon>PropertiesView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AssetStoreWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -228,6 +238,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InspectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PropertiesView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -275,6 +288,10 @@
     <ProjectReference Include="..\UrhoSharp.Pages\UrhoSharp.Pages.csproj">
       <Project>{a70b5c8f-3b11-44e3-913e-e28fc2459af2}</Project>
       <Name>UrhoSharp.Pages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UrhoSharp.Prefabs\UrhoSharp.Prefabs.csproj">
+      <Project>{FB38C70A-39C0-42F1-9447-145E49CA165C}</Project>
+      <Name>UrhoSharp.Prefabs</Name>
     </ProjectReference>
     <ProjectReference Include="..\UrhoSharp.Rx\UrhoSharp.Rx.csproj">
       <Project>{d9a855c9-e291-4b83-ad83-8b5b31411aaf}</Project>

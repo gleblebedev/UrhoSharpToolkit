@@ -1,78 +1,54 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using WirePlane = Urho.WirePlane;
 
 
 namespace UrhoSharp.Prefabs
 {
-    public class WirePlanePrefab: AbstractComponentPrefab<WirePlane>, IPrefab
+    public partial class WirePlanePrefab: AbstractComponentPrefab<WirePlane>, IPrefab
     {
-        private static  int SizeDefaultValue = 50;
-        private static  float ScaleDefaultValue = 1f;
-        private static  Color ColorDefaultValue = new Color(0.7f, 0.7f, 0.7f, 1f);
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private int _size;
-        private float _scale;
-        private Color _color;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return WirePlane.TypeNameStatic; } }
+        public int Size { get; set; }
+        public float Scale { get; set; }
+        public Color Color { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public WirePlanePrefab()
         {
-            _size = SizeDefaultValue;
-            _scale = ScaleDefaultValue;
-            _color = ColorDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            Size = SizeAccessor.DefaultValue;
+            Scale = ScaleAccessor.DefaultValue;
+            Color = ColorAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public WirePlanePrefab(WirePlane val)
         {
-            _size = val.Size;
-            _scale = val.Scale;
-            _color = val.Color;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            Size = val.Size;
+            Scale = val.Scale;
+            Color = val.Color;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public int Size {get { return _size;} set { _size=value; } }
-        public bool SizeHasValue {get { return !PrefabUtils.AreEqual(ref _size, ref SizeDefaultValue); } }
-        public float Scale {get { return _scale;} set { _scale=value; } }
-        public bool ScaleHasValue {get { return !PrefabUtils.AreEqual(ref _scale, ref ScaleDefaultValue); } }
-        public Color Color {get { return _color;} set { _color=value; } }
-        public bool ColorHasValue {get { return !PrefabUtils.AreEqual(ref _color, ref ColorDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override WirePlane Create()
         {
             var result = new WirePlane();
-            if(SizeHasValue)
-                result.Size = _size;
-            if(ScaleHasValue)
-                result.Scale = _scale;
-            if(ColorHasValue)
-                result.Color = _color;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            SizeAccessor.Instance.ApplyIfChanged(this, result);
+            ScaleAccessor.Instance.ApplyIfChanged(this, result);
+            ColorAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -81,22 +57,127 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "Size":
+                    SizeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Scale":
+                    ScaleAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Color":
+                    ColorAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return SizeAccessor.Instance;
+                yield return ScaleAccessor.Instance;
+                yield return ColorAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class SizeAccessor : Int32Accessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly SizeAccessor Instance = new SizeAccessor();
+            public static readonly int DefaultValue = 50;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.Size);
+            public override int GetPrefab(WirePlanePrefab instance) { return instance.Size; }
+            public override void SetPrefab(WirePlanePrefab instance, int value) { instance.Size = value; }
+            public override int GetUrho(WirePlane instance) { return instance.Size; }
+            public override void SetUrho(WirePlane instance, int value) { instance.Size = value; }
+        }
+
+        internal class ScaleAccessor : SingleAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly ScaleAccessor Instance = new ScaleAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.Scale);
+            public override float GetPrefab(WirePlanePrefab instance) { return instance.Scale; }
+            public override void SetPrefab(WirePlanePrefab instance, float value) { instance.Scale = value; }
+            public override float GetUrho(WirePlane instance) { return instance.Scale; }
+            public override void SetUrho(WirePlane instance, float value) { instance.Scale = value; }
+        }
+
+        internal class ColorAccessor : ColorAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly ColorAccessor Instance = new ColorAccessor();
+            public static readonly Color DefaultValue = new Color(0.7f, 0.7f, 0.7f, 1f);
+            public override Color DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.Color);
+            public override Color GetPrefab(WirePlanePrefab instance) { return instance.Color; }
+            public override void SetPrefab(WirePlanePrefab instance, Color value) { instance.Color = value; }
+            public override Color GetUrho(WirePlane instance) { return instance.Color; }
+            public override void SetUrho(WirePlane instance, Color value) { instance.Color = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.Enabled);
+            public override bool GetPrefab(WirePlanePrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(WirePlanePrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(WirePlane instance) { return instance.Enabled; }
+            public override void SetUrho(WirePlane instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.AnimationEnabled);
+            public override bool GetPrefab(WirePlanePrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(WirePlanePrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(WirePlane instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(WirePlane instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.Temporary);
+            public override bool GetPrefab(WirePlanePrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(WirePlanePrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(WirePlane instance) { return instance.Temporary; }
+            public override void SetUrho(WirePlane instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<WirePlanePrefab, WirePlane>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(WirePlane.BlockEvents);
+            public override bool GetPrefab(WirePlanePrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(WirePlanePrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(WirePlane instance) { return instance.BlockEvents; }
+            public override void SetUrho(WirePlane instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

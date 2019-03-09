@@ -1,238 +1,134 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using Zone = Urho.Zone;
 
 
 namespace UrhoSharp.Prefabs
 {
-    public class ZonePrefab: AbstractComponentPrefab<Zone>, IPrefab
+    public partial class ZonePrefab: AbstractComponentPrefab<Zone>, IPrefab
     {
-        private static  Color AmbientColorDefaultValue = new Color(0.1f, 0.1f, 0.1f, 1f);
-        private static  Color FogColorDefaultValue = new Color(0f, 0f, 0f, 1f);
-        private static  float FogStartDefaultValue = 250f;
-        private static  float FogEndDefaultValue = 1000f;
-        private static  float FogHeightDefaultValue = 0f;
-        private static  float FogHeightScaleDefaultValue = 0.5f;
-        private static  int PriorityDefaultValue = 0;
-        private static  bool HeightFogDefaultValue = false;
-        private static  bool OverrideDefaultValue = false;
-        private static  bool AmbientGradientDefaultValue = false;
-        private static  Texture ZoneTextureDefaultValue = null;
-        private static  float DrawDistanceDefaultValue = 0f;
-        private static  float ShadowDistanceDefaultValue = 0f;
-        private static  float LodBiasDefaultValue = 1f;
-        private static  uint ViewMaskDefaultValue = 4294967295;
-        private static  uint LightMaskDefaultValue = 4294967295;
-        private static  uint ShadowMaskDefaultValue = 4294967295;
-        private static  uint ZoneMaskDefaultValue = 4294967295;
-        private static  uint MaxLightsDefaultValue = 0;
-        private static  bool CastShadowsDefaultValue = false;
-        private static  bool OccluderDefaultValue = false;
-        private static  bool OccludeeDefaultValue = true;
-        private static  float SortValueDefaultValue = 0f;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private Color _ambientColor;
-        private Color _fogColor;
-        private float _fogStart;
-        private float _fogEnd;
-        private float _fogHeight;
-        private float _fogHeightScale;
-        private int _priority;
-        private bool _heightFog;
-        private bool _override;
-        private bool _ambientGradient;
-        private Texture _zoneTexture;
-        private float _drawDistance;
-        private float _shadowDistance;
-        private float _lodBias;
-        private uint _viewMask;
-        private uint _lightMask;
-        private uint _shadowMask;
-        private uint _zoneMask;
-        private uint _maxLights;
-        private bool _castShadows;
-        private bool _occluder;
-        private bool _occludee;
-        private float _sortValue;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return Zone.TypeNameStatic; } }
+        public Color AmbientColor { get; set; }
+        public Color FogColor { get; set; }
+        public float FogStart { get; set; }
+        public float FogEnd { get; set; }
+        public float FogHeight { get; set; }
+        public float FogHeightScale { get; set; }
+        public int Priority { get; set; }
+        public bool HeightFog { get; set; }
+        public bool Override { get; set; }
+        public bool AmbientGradient { get; set; }
+        public Texture ZoneTexture { get; set; }
+        public float DrawDistance { get; set; }
+        public float ShadowDistance { get; set; }
+        public float LodBias { get; set; }
+        public uint ViewMask { get; set; }
+        public uint LightMask { get; set; }
+        public uint ShadowMask { get; set; }
+        public uint ZoneMask { get; set; }
+        public uint MaxLights { get; set; }
+        public bool CastShadows { get; set; }
+        public bool Occluder { get; set; }
+        public bool Occludee { get; set; }
+        public float SortValue { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public ZonePrefab()
         {
-            _ambientColor = AmbientColorDefaultValue;
-            _fogColor = FogColorDefaultValue;
-            _fogStart = FogStartDefaultValue;
-            _fogEnd = FogEndDefaultValue;
-            _fogHeight = FogHeightDefaultValue;
-            _fogHeightScale = FogHeightScaleDefaultValue;
-            _priority = PriorityDefaultValue;
-            _heightFog = HeightFogDefaultValue;
-            _override = OverrideDefaultValue;
-            _ambientGradient = AmbientGradientDefaultValue;
-            _zoneTexture = ZoneTextureDefaultValue;
-            _drawDistance = DrawDistanceDefaultValue;
-            _shadowDistance = ShadowDistanceDefaultValue;
-            _lodBias = LodBiasDefaultValue;
-            _viewMask = ViewMaskDefaultValue;
-            _lightMask = LightMaskDefaultValue;
-            _shadowMask = ShadowMaskDefaultValue;
-            _zoneMask = ZoneMaskDefaultValue;
-            _maxLights = MaxLightsDefaultValue;
-            _castShadows = CastShadowsDefaultValue;
-            _occluder = OccluderDefaultValue;
-            _occludee = OccludeeDefaultValue;
-            _sortValue = SortValueDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            AmbientColor = AmbientColorAccessor.DefaultValue;
+            FogColor = FogColorAccessor.DefaultValue;
+            FogStart = FogStartAccessor.DefaultValue;
+            FogEnd = FogEndAccessor.DefaultValue;
+            FogHeight = FogHeightAccessor.DefaultValue;
+            FogHeightScale = FogHeightScaleAccessor.DefaultValue;
+            Priority = PriorityAccessor.DefaultValue;
+            HeightFog = HeightFogAccessor.DefaultValue;
+            Override = OverrideAccessor.DefaultValue;
+            AmbientGradient = AmbientGradientAccessor.DefaultValue;
+            ZoneTexture = ZoneTextureAccessor.DefaultValue;
+            DrawDistance = DrawDistanceAccessor.DefaultValue;
+            ShadowDistance = ShadowDistanceAccessor.DefaultValue;
+            LodBias = LodBiasAccessor.DefaultValue;
+            ViewMask = ViewMaskAccessor.DefaultValue;
+            LightMask = LightMaskAccessor.DefaultValue;
+            ShadowMask = ShadowMaskAccessor.DefaultValue;
+            ZoneMask = ZoneMaskAccessor.DefaultValue;
+            MaxLights = MaxLightsAccessor.DefaultValue;
+            CastShadows = CastShadowsAccessor.DefaultValue;
+            Occluder = OccluderAccessor.DefaultValue;
+            Occludee = OccludeeAccessor.DefaultValue;
+            SortValue = SortValueAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public ZonePrefab(Zone val)
         {
-            _ambientColor = val.AmbientColor;
-            _fogColor = val.FogColor;
-            _fogStart = val.FogStart;
-            _fogEnd = val.FogEnd;
-            _fogHeight = val.FogHeight;
-            _fogHeightScale = val.FogHeightScale;
-            _priority = val.Priority;
-            _heightFog = val.HeightFog;
-            _override = val.Override;
-            _ambientGradient = val.AmbientGradient;
-            _zoneTexture = val.ZoneTexture;
-            _drawDistance = val.DrawDistance;
-            _shadowDistance = val.ShadowDistance;
-            _lodBias = val.LodBias;
-            _viewMask = val.ViewMask;
-            _lightMask = val.LightMask;
-            _shadowMask = val.ShadowMask;
-            _zoneMask = val.ZoneMask;
-            _maxLights = val.MaxLights;
-            _castShadows = val.CastShadows;
-            _occluder = val.Occluder;
-            _occludee = val.Occludee;
-            _sortValue = val.SortValue;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            AmbientColor = val.AmbientColor;
+            FogColor = val.FogColor;
+            FogStart = val.FogStart;
+            FogEnd = val.FogEnd;
+            FogHeight = val.FogHeight;
+            FogHeightScale = val.FogHeightScale;
+            Priority = val.Priority;
+            HeightFog = val.HeightFog;
+            Override = val.Override;
+            AmbientGradient = val.AmbientGradient;
+            ZoneTexture = val.ZoneTexture;
+            DrawDistance = val.DrawDistance;
+            ShadowDistance = val.ShadowDistance;
+            LodBias = val.LodBias;
+            ViewMask = val.ViewMask;
+            LightMask = val.LightMask;
+            ShadowMask = val.ShadowMask;
+            ZoneMask = val.ZoneMask;
+            MaxLights = val.MaxLights;
+            CastShadows = val.CastShadows;
+            Occluder = val.Occluder;
+            Occludee = val.Occludee;
+            SortValue = val.SortValue;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public Color AmbientColor {get { return _ambientColor;} set { _ambientColor=value; } }
-        public bool AmbientColorHasValue {get { return !PrefabUtils.AreEqual(ref _ambientColor, ref AmbientColorDefaultValue); } }
-        public Color FogColor {get { return _fogColor;} set { _fogColor=value; } }
-        public bool FogColorHasValue {get { return !PrefabUtils.AreEqual(ref _fogColor, ref FogColorDefaultValue); } }
-        public float FogStart {get { return _fogStart;} set { _fogStart=value; } }
-        public bool FogStartHasValue {get { return !PrefabUtils.AreEqual(ref _fogStart, ref FogStartDefaultValue); } }
-        public float FogEnd {get { return _fogEnd;} set { _fogEnd=value; } }
-        public bool FogEndHasValue {get { return !PrefabUtils.AreEqual(ref _fogEnd, ref FogEndDefaultValue); } }
-        public float FogHeight {get { return _fogHeight;} set { _fogHeight=value; } }
-        public bool FogHeightHasValue {get { return !PrefabUtils.AreEqual(ref _fogHeight, ref FogHeightDefaultValue); } }
-        public float FogHeightScale {get { return _fogHeightScale;} set { _fogHeightScale=value; } }
-        public bool FogHeightScaleHasValue {get { return !PrefabUtils.AreEqual(ref _fogHeightScale, ref FogHeightScaleDefaultValue); } }
-        public int Priority {get { return _priority;} set { _priority=value; } }
-        public bool PriorityHasValue {get { return !PrefabUtils.AreEqual(ref _priority, ref PriorityDefaultValue); } }
-        public bool HeightFog {get { return _heightFog;} set { _heightFog=value; } }
-        public bool HeightFogHasValue {get { return !PrefabUtils.AreEqual(ref _heightFog, ref HeightFogDefaultValue); } }
-        public bool Override {get { return _override;} set { _override=value; } }
-        public bool OverrideHasValue {get { return !PrefabUtils.AreEqual(ref _override, ref OverrideDefaultValue); } }
-        public bool AmbientGradient {get { return _ambientGradient;} set { _ambientGradient=value; } }
-        public bool AmbientGradientHasValue {get { return !PrefabUtils.AreEqual(ref _ambientGradient, ref AmbientGradientDefaultValue); } }
-        public Texture ZoneTexture {get { return _zoneTexture;} set { _zoneTexture=value; } }
-        public bool ZoneTextureHasValue {get { return !PrefabUtils.AreEqual(ref _zoneTexture, ref ZoneTextureDefaultValue); } }
-        public float DrawDistance {get { return _drawDistance;} set { _drawDistance=value; } }
-        public bool DrawDistanceHasValue {get { return !PrefabUtils.AreEqual(ref _drawDistance, ref DrawDistanceDefaultValue); } }
-        public float ShadowDistance {get { return _shadowDistance;} set { _shadowDistance=value; } }
-        public bool ShadowDistanceHasValue {get { return !PrefabUtils.AreEqual(ref _shadowDistance, ref ShadowDistanceDefaultValue); } }
-        public float LodBias {get { return _lodBias;} set { _lodBias=value; } }
-        public bool LodBiasHasValue {get { return !PrefabUtils.AreEqual(ref _lodBias, ref LodBiasDefaultValue); } }
-        public uint ViewMask {get { return _viewMask;} set { _viewMask=value; } }
-        public bool ViewMaskHasValue {get { return !PrefabUtils.AreEqual(ref _viewMask, ref ViewMaskDefaultValue); } }
-        public uint LightMask {get { return _lightMask;} set { _lightMask=value; } }
-        public bool LightMaskHasValue {get { return !PrefabUtils.AreEqual(ref _lightMask, ref LightMaskDefaultValue); } }
-        public uint ShadowMask {get { return _shadowMask;} set { _shadowMask=value; } }
-        public bool ShadowMaskHasValue {get { return !PrefabUtils.AreEqual(ref _shadowMask, ref ShadowMaskDefaultValue); } }
-        public uint ZoneMask {get { return _zoneMask;} set { _zoneMask=value; } }
-        public bool ZoneMaskHasValue {get { return !PrefabUtils.AreEqual(ref _zoneMask, ref ZoneMaskDefaultValue); } }
-        public uint MaxLights {get { return _maxLights;} set { _maxLights=value; } }
-        public bool MaxLightsHasValue {get { return !PrefabUtils.AreEqual(ref _maxLights, ref MaxLightsDefaultValue); } }
-        public bool CastShadows {get { return _castShadows;} set { _castShadows=value; } }
-        public bool CastShadowsHasValue {get { return !PrefabUtils.AreEqual(ref _castShadows, ref CastShadowsDefaultValue); } }
-        public bool Occluder {get { return _occluder;} set { _occluder=value; } }
-        public bool OccluderHasValue {get { return !PrefabUtils.AreEqual(ref _occluder, ref OccluderDefaultValue); } }
-        public bool Occludee {get { return _occludee;} set { _occludee=value; } }
-        public bool OccludeeHasValue {get { return !PrefabUtils.AreEqual(ref _occludee, ref OccludeeDefaultValue); } }
-        public float SortValue {get { return _sortValue;} set { _sortValue=value; } }
-        public bool SortValueHasValue {get { return !PrefabUtils.AreEqual(ref _sortValue, ref SortValueDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override Zone Create()
         {
             var result = new Zone();
-            if(AmbientColorHasValue)
-                result.AmbientColor = _ambientColor;
-            if(FogColorHasValue)
-                result.FogColor = _fogColor;
-            if(FogStartHasValue)
-                result.FogStart = _fogStart;
-            if(FogEndHasValue)
-                result.FogEnd = _fogEnd;
-            if(FogHeightHasValue)
-                result.FogHeight = _fogHeight;
-            if(FogHeightScaleHasValue)
-                result.FogHeightScale = _fogHeightScale;
-            if(PriorityHasValue)
-                result.Priority = _priority;
-            if(HeightFogHasValue)
-                result.HeightFog = _heightFog;
-            if(OverrideHasValue)
-                result.Override = _override;
-            if(AmbientGradientHasValue)
-                result.AmbientGradient = _ambientGradient;
-            if(ZoneTextureHasValue)
-                result.ZoneTexture = _zoneTexture;
-            if(DrawDistanceHasValue)
-                result.DrawDistance = _drawDistance;
-            if(ShadowDistanceHasValue)
-                result.ShadowDistance = _shadowDistance;
-            if(LodBiasHasValue)
-                result.LodBias = _lodBias;
-            if(ViewMaskHasValue)
-                result.ViewMask = _viewMask;
-            if(LightMaskHasValue)
-                result.LightMask = _lightMask;
-            if(ShadowMaskHasValue)
-                result.ShadowMask = _shadowMask;
-            if(ZoneMaskHasValue)
-                result.ZoneMask = _zoneMask;
-            if(MaxLightsHasValue)
-                result.MaxLights = _maxLights;
-            if(CastShadowsHasValue)
-                result.CastShadows = _castShadows;
-            if(OccluderHasValue)
-                result.Occluder = _occluder;
-            if(OccludeeHasValue)
-                result.Occludee = _occludee;
-            if(SortValueHasValue)
-                result.SortValue = _sortValue;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            AmbientColorAccessor.Instance.ApplyIfChanged(this, result);
+            FogColorAccessor.Instance.ApplyIfChanged(this, result);
+            FogStartAccessor.Instance.ApplyIfChanged(this, result);
+            FogEndAccessor.Instance.ApplyIfChanged(this, result);
+            FogHeightAccessor.Instance.ApplyIfChanged(this, result);
+            FogHeightScaleAccessor.Instance.ApplyIfChanged(this, result);
+            PriorityAccessor.Instance.ApplyIfChanged(this, result);
+            HeightFogAccessor.Instance.ApplyIfChanged(this, result);
+            OverrideAccessor.Instance.ApplyIfChanged(this, result);
+            AmbientGradientAccessor.Instance.ApplyIfChanged(this, result);
+            ZoneTextureAccessor.Instance.ApplyIfChanged(this, result);
+            DrawDistanceAccessor.Instance.ApplyIfChanged(this, result);
+            ShadowDistanceAccessor.Instance.ApplyIfChanged(this, result);
+            LodBiasAccessor.Instance.ApplyIfChanged(this, result);
+            ViewMaskAccessor.Instance.ApplyIfChanged(this, result);
+            LightMaskAccessor.Instance.ApplyIfChanged(this, result);
+            ShadowMaskAccessor.Instance.ApplyIfChanged(this, result);
+            ZoneMaskAccessor.Instance.ApplyIfChanged(this, result);
+            MaxLightsAccessor.Instance.ApplyIfChanged(this, result);
+            CastShadowsAccessor.Instance.ApplyIfChanged(this, result);
+            OccluderAccessor.Instance.ApplyIfChanged(this, result);
+            OccludeeAccessor.Instance.ApplyIfChanged(this, result);
+            SortValueAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -241,62 +137,447 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "AmbientColor":
+                    AmbientColorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FogColor":
+                    FogColorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FogStart":
+                    FogStartAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FogEnd":
+                    FogEndAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FogHeight":
+                    FogHeightAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "FogHeightScale":
+                    FogHeightScaleAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Priority":
+                    PriorityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "HeightFog":
+                    HeightFogAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Override":
+                    OverrideAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AmbientGradient":
+                    AmbientGradientAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ZoneTexture":
+                    ZoneTextureAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawDistance":
+                    DrawDistanceAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ShadowDistance":
+                    ShadowDistanceAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LodBias":
+                    LodBiasAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ViewMask":
+                    ViewMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LightMask":
+                    LightMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ShadowMask":
+                    ShadowMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ZoneMask":
+                    ZoneMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxLights":
+                    MaxLightsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CastShadows":
+                    CastShadowsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Occluder":
+                    OccluderAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Occludee":
+                    OccludeeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "SortValue":
+                    SortValueAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return AmbientColorAccessor.Instance;
+                yield return FogColorAccessor.Instance;
+                yield return FogStartAccessor.Instance;
+                yield return FogEndAccessor.Instance;
+                yield return FogHeightAccessor.Instance;
+                yield return FogHeightScaleAccessor.Instance;
+                yield return PriorityAccessor.Instance;
+                yield return HeightFogAccessor.Instance;
+                yield return OverrideAccessor.Instance;
+                yield return AmbientGradientAccessor.Instance;
+                yield return ZoneTextureAccessor.Instance;
+                yield return DrawDistanceAccessor.Instance;
+                yield return ShadowDistanceAccessor.Instance;
+                yield return LodBiasAccessor.Instance;
+                yield return ViewMaskAccessor.Instance;
+                yield return LightMaskAccessor.Instance;
+                yield return ShadowMaskAccessor.Instance;
+                yield return ZoneMaskAccessor.Instance;
+                yield return MaxLightsAccessor.Instance;
+                yield return CastShadowsAccessor.Instance;
+                yield return OccluderAccessor.Instance;
+                yield return OccludeeAccessor.Instance;
+                yield return SortValueAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class AmbientColorAccessor : ColorAccessor<ZonePrefab, Zone>
+        {
+            public static readonly AmbientColorAccessor Instance = new AmbientColorAccessor();
+            public static readonly Color DefaultValue = new Color(0.1f, 0.1f, 0.1f, 1f);
+            public override Color DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.AmbientColor);
+            public override Color GetPrefab(ZonePrefab instance) { return instance.AmbientColor; }
+            public override void SetPrefab(ZonePrefab instance, Color value) { instance.AmbientColor = value; }
+            public override Color GetUrho(Zone instance) { return instance.AmbientColor; }
+            public override void SetUrho(Zone instance, Color value) { instance.AmbientColor = value; }
+        }
+
+        internal class FogColorAccessor : ColorAccessor<ZonePrefab, Zone>
+        {
+            public static readonly FogColorAccessor Instance = new FogColorAccessor();
+            public static readonly Color DefaultValue = new Color(0f, 0f, 0f, 1f);
+            public override Color DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.FogColor);
+            public override Color GetPrefab(ZonePrefab instance) { return instance.FogColor; }
+            public override void SetPrefab(ZonePrefab instance, Color value) { instance.FogColor = value; }
+            public override Color GetUrho(Zone instance) { return instance.FogColor; }
+            public override void SetUrho(Zone instance, Color value) { instance.FogColor = value; }
+        }
+
+        internal class FogStartAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly FogStartAccessor Instance = new FogStartAccessor();
+            public static readonly float DefaultValue = 250f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.FogStart);
+            public override float GetPrefab(ZonePrefab instance) { return instance.FogStart; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.FogStart = value; }
+            public override float GetUrho(Zone instance) { return instance.FogStart; }
+            public override void SetUrho(Zone instance, float value) { instance.FogStart = value; }
+        }
+
+        internal class FogEndAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly FogEndAccessor Instance = new FogEndAccessor();
+            public static readonly float DefaultValue = 1000f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.FogEnd);
+            public override float GetPrefab(ZonePrefab instance) { return instance.FogEnd; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.FogEnd = value; }
+            public override float GetUrho(Zone instance) { return instance.FogEnd; }
+            public override void SetUrho(Zone instance, float value) { instance.FogEnd = value; }
+        }
+
+        internal class FogHeightAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly FogHeightAccessor Instance = new FogHeightAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.FogHeight);
+            public override float GetPrefab(ZonePrefab instance) { return instance.FogHeight; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.FogHeight = value; }
+            public override float GetUrho(Zone instance) { return instance.FogHeight; }
+            public override void SetUrho(Zone instance, float value) { instance.FogHeight = value; }
+        }
+
+        internal class FogHeightScaleAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly FogHeightScaleAccessor Instance = new FogHeightScaleAccessor();
+            public static readonly float DefaultValue = 0.5f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.FogHeightScale);
+            public override float GetPrefab(ZonePrefab instance) { return instance.FogHeightScale; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.FogHeightScale = value; }
+            public override float GetUrho(Zone instance) { return instance.FogHeightScale; }
+            public override void SetUrho(Zone instance, float value) { instance.FogHeightScale = value; }
+        }
+
+        internal class PriorityAccessor : Int32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly PriorityAccessor Instance = new PriorityAccessor();
+            public static readonly int DefaultValue = 0;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Priority);
+            public override int GetPrefab(ZonePrefab instance) { return instance.Priority; }
+            public override void SetPrefab(ZonePrefab instance, int value) { instance.Priority = value; }
+            public override int GetUrho(Zone instance) { return instance.Priority; }
+            public override void SetUrho(Zone instance, int value) { instance.Priority = value; }
+        }
+
+        internal class HeightFogAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly HeightFogAccessor Instance = new HeightFogAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.HeightFog);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.HeightFog; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.HeightFog = value; }
+            public override bool GetUrho(Zone instance) { return instance.HeightFog; }
+            public override void SetUrho(Zone instance, bool value) { instance.HeightFog = value; }
+        }
+
+        internal class OverrideAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly OverrideAccessor Instance = new OverrideAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Override);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.Override; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.Override = value; }
+            public override bool GetUrho(Zone instance) { return instance.Override; }
+            public override void SetUrho(Zone instance, bool value) { instance.Override = value; }
+        }
+
+        internal class AmbientGradientAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly AmbientGradientAccessor Instance = new AmbientGradientAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.AmbientGradient);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.AmbientGradient; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.AmbientGradient = value; }
+            public override bool GetUrho(Zone instance) { return instance.AmbientGradient; }
+            public override void SetUrho(Zone instance, bool value) { instance.AmbientGradient = value; }
+        }
+
+        internal class ZoneTextureAccessor : TextureAccessor<ZonePrefab, Zone>
+        {
+            public static readonly ZoneTextureAccessor Instance = new ZoneTextureAccessor();
+            public static readonly Texture DefaultValue = null;
+            public override Texture DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.ZoneTexture);
+            public override Texture GetPrefab(ZonePrefab instance) { return instance.ZoneTexture; }
+            public override void SetPrefab(ZonePrefab instance, Texture value) { instance.ZoneTexture = value; }
+            public override Texture GetUrho(Zone instance) { return instance.ZoneTexture; }
+            public override void SetUrho(Zone instance, Texture value) { instance.ZoneTexture = value; }
+        }
+
+        internal class DrawDistanceAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly DrawDistanceAccessor Instance = new DrawDistanceAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.DrawDistance);
+            public override float GetPrefab(ZonePrefab instance) { return instance.DrawDistance; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.DrawDistance = value; }
+            public override float GetUrho(Zone instance) { return instance.DrawDistance; }
+            public override void SetUrho(Zone instance, float value) { instance.DrawDistance = value; }
+        }
+
+        internal class ShadowDistanceAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly ShadowDistanceAccessor Instance = new ShadowDistanceAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.ShadowDistance);
+            public override float GetPrefab(ZonePrefab instance) { return instance.ShadowDistance; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.ShadowDistance = value; }
+            public override float GetUrho(Zone instance) { return instance.ShadowDistance; }
+            public override void SetUrho(Zone instance, float value) { instance.ShadowDistance = value; }
+        }
+
+        internal class LodBiasAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly LodBiasAccessor Instance = new LodBiasAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.LodBias);
+            public override float GetPrefab(ZonePrefab instance) { return instance.LodBias; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.LodBias = value; }
+            public override float GetUrho(Zone instance) { return instance.LodBias; }
+            public override void SetUrho(Zone instance, float value) { instance.LodBias = value; }
+        }
+
+        internal class ViewMaskAccessor : UInt32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly ViewMaskAccessor Instance = new ViewMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.ViewMask);
+            public override uint GetPrefab(ZonePrefab instance) { return instance.ViewMask; }
+            public override void SetPrefab(ZonePrefab instance, uint value) { instance.ViewMask = value; }
+            public override uint GetUrho(Zone instance) { return instance.ViewMask; }
+            public override void SetUrho(Zone instance, uint value) { instance.ViewMask = value; }
+        }
+
+        internal class LightMaskAccessor : UInt32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly LightMaskAccessor Instance = new LightMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.LightMask);
+            public override uint GetPrefab(ZonePrefab instance) { return instance.LightMask; }
+            public override void SetPrefab(ZonePrefab instance, uint value) { instance.LightMask = value; }
+            public override uint GetUrho(Zone instance) { return instance.LightMask; }
+            public override void SetUrho(Zone instance, uint value) { instance.LightMask = value; }
+        }
+
+        internal class ShadowMaskAccessor : UInt32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly ShadowMaskAccessor Instance = new ShadowMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.ShadowMask);
+            public override uint GetPrefab(ZonePrefab instance) { return instance.ShadowMask; }
+            public override void SetPrefab(ZonePrefab instance, uint value) { instance.ShadowMask = value; }
+            public override uint GetUrho(Zone instance) { return instance.ShadowMask; }
+            public override void SetUrho(Zone instance, uint value) { instance.ShadowMask = value; }
+        }
+
+        internal class ZoneMaskAccessor : UInt32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly ZoneMaskAccessor Instance = new ZoneMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.ZoneMask);
+            public override uint GetPrefab(ZonePrefab instance) { return instance.ZoneMask; }
+            public override void SetPrefab(ZonePrefab instance, uint value) { instance.ZoneMask = value; }
+            public override uint GetUrho(Zone instance) { return instance.ZoneMask; }
+            public override void SetUrho(Zone instance, uint value) { instance.ZoneMask = value; }
+        }
+
+        internal class MaxLightsAccessor : UInt32Accessor<ZonePrefab, Zone>
+        {
+            public static readonly MaxLightsAccessor Instance = new MaxLightsAccessor();
+            public static readonly uint DefaultValue = 0;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.MaxLights);
+            public override uint GetPrefab(ZonePrefab instance) { return instance.MaxLights; }
+            public override void SetPrefab(ZonePrefab instance, uint value) { instance.MaxLights = value; }
+            public override uint GetUrho(Zone instance) { return instance.MaxLights; }
+            public override void SetUrho(Zone instance, uint value) { instance.MaxLights = value; }
+        }
+
+        internal class CastShadowsAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly CastShadowsAccessor Instance = new CastShadowsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.CastShadows);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.CastShadows; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.CastShadows = value; }
+            public override bool GetUrho(Zone instance) { return instance.CastShadows; }
+            public override void SetUrho(Zone instance, bool value) { instance.CastShadows = value; }
+        }
+
+        internal class OccluderAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly OccluderAccessor Instance = new OccluderAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Occluder);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.Occluder; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.Occluder = value; }
+            public override bool GetUrho(Zone instance) { return instance.Occluder; }
+            public override void SetUrho(Zone instance, bool value) { instance.Occluder = value; }
+        }
+
+        internal class OccludeeAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly OccludeeAccessor Instance = new OccludeeAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Occludee);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.Occludee; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.Occludee = value; }
+            public override bool GetUrho(Zone instance) { return instance.Occludee; }
+            public override void SetUrho(Zone instance, bool value) { instance.Occludee = value; }
+        }
+
+        internal class SortValueAccessor : SingleAccessor<ZonePrefab, Zone>
+        {
+            public static readonly SortValueAccessor Instance = new SortValueAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.SortValue);
+            public override float GetPrefab(ZonePrefab instance) { return instance.SortValue; }
+            public override void SetPrefab(ZonePrefab instance, float value) { instance.SortValue = value; }
+            public override float GetUrho(Zone instance) { return instance.SortValue; }
+            public override void SetUrho(Zone instance, float value) { instance.SortValue = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Enabled);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(Zone instance) { return instance.Enabled; }
+            public override void SetUrho(Zone instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.AnimationEnabled);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(Zone instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(Zone instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.Temporary);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(Zone instance) { return instance.Temporary; }
+            public override void SetUrho(Zone instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<ZonePrefab, Zone>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(Zone.BlockEvents);
+            public override bool GetPrefab(ZonePrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(ZonePrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(Zone instance) { return instance.BlockEvents; }
+            public override void SetUrho(Zone instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

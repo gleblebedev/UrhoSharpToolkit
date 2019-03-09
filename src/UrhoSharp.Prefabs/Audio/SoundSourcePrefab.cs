@@ -1,103 +1,67 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using SoundSource = Urho.Audio.SoundSource;
 
 using Urho.Audio;
 
 namespace UrhoSharp.Prefabs
 {
-    public class SoundSourcePrefab: AbstractComponentPrefab<SoundSource>, IPrefab
+    public partial class SoundSourcePrefab: AbstractComponentPrefab<SoundSource>, IPrefab
     {
-        private static  float FrequencyDefaultValue = 0f;
-        private static  float GainDefaultValue = 1f;
-        private static  float AttenuationDefaultValue = 1f;
-        private static  float PanningDefaultValue = 0f;
-        private static  AutoRemoveMode AutoRemoveModeDefaultValue = AutoRemoveMode.Disabled;
-        private static  int PositionAttrDefaultValue = 0;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private float _frequency;
-        private float _gain;
-        private float _attenuation;
-        private float _panning;
-        private AutoRemoveMode _autoRemoveMode;
-        private int _positionAttr;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return SoundSource.TypeNameStatic; } }
+        public float Frequency { get; set; }
+        public float Gain { get; set; }
+        public float Attenuation { get; set; }
+        public float Panning { get; set; }
+        public AutoRemoveMode AutoRemoveMode { get; set; }
+        public int PositionAttr { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public SoundSourcePrefab()
         {
-            _frequency = FrequencyDefaultValue;
-            _gain = GainDefaultValue;
-            _attenuation = AttenuationDefaultValue;
-            _panning = PanningDefaultValue;
-            _autoRemoveMode = AutoRemoveModeDefaultValue;
-            _positionAttr = PositionAttrDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            Frequency = FrequencyAccessor.DefaultValue;
+            Gain = GainAccessor.DefaultValue;
+            Attenuation = AttenuationAccessor.DefaultValue;
+            Panning = PanningAccessor.DefaultValue;
+            AutoRemoveMode = AutoRemoveModeAccessor.DefaultValue;
+            PositionAttr = PositionAttrAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public SoundSourcePrefab(SoundSource val)
         {
-            _frequency = val.Frequency;
-            _gain = val.Gain;
-            _attenuation = val.Attenuation;
-            _panning = val.Panning;
-            _autoRemoveMode = val.AutoRemoveMode;
-            _positionAttr = val.PositionAttr;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            Frequency = val.Frequency;
+            Gain = val.Gain;
+            Attenuation = val.Attenuation;
+            Panning = val.Panning;
+            AutoRemoveMode = val.AutoRemoveMode;
+            PositionAttr = val.PositionAttr;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public float Frequency {get { return _frequency;} set { _frequency=value; } }
-        public bool FrequencyHasValue {get { return !PrefabUtils.AreEqual(ref _frequency, ref FrequencyDefaultValue); } }
-        public float Gain {get { return _gain;} set { _gain=value; } }
-        public bool GainHasValue {get { return !PrefabUtils.AreEqual(ref _gain, ref GainDefaultValue); } }
-        public float Attenuation {get { return _attenuation;} set { _attenuation=value; } }
-        public bool AttenuationHasValue {get { return !PrefabUtils.AreEqual(ref _attenuation, ref AttenuationDefaultValue); } }
-        public float Panning {get { return _panning;} set { _panning=value; } }
-        public bool PanningHasValue {get { return !PrefabUtils.AreEqual(ref _panning, ref PanningDefaultValue); } }
-        public AutoRemoveMode AutoRemoveMode {get { return _autoRemoveMode;} set { _autoRemoveMode=value; } }
-        public bool AutoRemoveModeHasValue {get { return !PrefabUtils.AreEqual(ref _autoRemoveMode, ref AutoRemoveModeDefaultValue); } }
-        public int PositionAttr {get { return _positionAttr;} set { _positionAttr=value; } }
-        public bool PositionAttrHasValue {get { return !PrefabUtils.AreEqual(ref _positionAttr, ref PositionAttrDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override SoundSource Create()
         {
             var result = new SoundSource();
-            if(FrequencyHasValue)
-                result.Frequency = _frequency;
-            if(GainHasValue)
-                result.Gain = _gain;
-            if(AttenuationHasValue)
-                result.Attenuation = _attenuation;
-            if(PanningHasValue)
-                result.Panning = _panning;
-            if(AutoRemoveModeHasValue)
-                result.AutoRemoveMode = _autoRemoveMode;
-            if(PositionAttrHasValue)
-                result.PositionAttr = _positionAttr;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            FrequencyAccessor.Instance.ApplyIfChanged(this, result);
+            GainAccessor.Instance.ApplyIfChanged(this, result);
+            AttenuationAccessor.Instance.ApplyIfChanged(this, result);
+            PanningAccessor.Instance.ApplyIfChanged(this, result);
+            AutoRemoveModeAccessor.Instance.ApplyIfChanged(this, result);
+            PositionAttrAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -106,28 +70,175 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "Frequency":
+                    FrequencyAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Gain":
+                    GainAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Attenuation":
+                    AttenuationAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Panning":
+                    PanningAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AutoRemoveMode":
+                    AutoRemoveModeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "PositionAttr":
+                    PositionAttrAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return FrequencyAccessor.Instance;
+                yield return GainAccessor.Instance;
+                yield return AttenuationAccessor.Instance;
+                yield return PanningAccessor.Instance;
+                yield return AutoRemoveModeAccessor.Instance;
+                yield return PositionAttrAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class FrequencyAccessor : SingleAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly FrequencyAccessor Instance = new FrequencyAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Frequency);
+            public override float GetPrefab(SoundSourcePrefab instance) { return instance.Frequency; }
+            public override void SetPrefab(SoundSourcePrefab instance, float value) { instance.Frequency = value; }
+            public override float GetUrho(SoundSource instance) { return instance.Frequency; }
+            public override void SetUrho(SoundSource instance, float value) { instance.Frequency = value; }
+        }
+
+        internal class GainAccessor : SingleAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly GainAccessor Instance = new GainAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Gain);
+            public override float GetPrefab(SoundSourcePrefab instance) { return instance.Gain; }
+            public override void SetPrefab(SoundSourcePrefab instance, float value) { instance.Gain = value; }
+            public override float GetUrho(SoundSource instance) { return instance.Gain; }
+            public override void SetUrho(SoundSource instance, float value) { instance.Gain = value; }
+        }
+
+        internal class AttenuationAccessor : SingleAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly AttenuationAccessor Instance = new AttenuationAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Attenuation);
+            public override float GetPrefab(SoundSourcePrefab instance) { return instance.Attenuation; }
+            public override void SetPrefab(SoundSourcePrefab instance, float value) { instance.Attenuation = value; }
+            public override float GetUrho(SoundSource instance) { return instance.Attenuation; }
+            public override void SetUrho(SoundSource instance, float value) { instance.Attenuation = value; }
+        }
+
+        internal class PanningAccessor : SingleAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly PanningAccessor Instance = new PanningAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Panning);
+            public override float GetPrefab(SoundSourcePrefab instance) { return instance.Panning; }
+            public override void SetPrefab(SoundSourcePrefab instance, float value) { instance.Panning = value; }
+            public override float GetUrho(SoundSource instance) { return instance.Panning; }
+            public override void SetUrho(SoundSource instance, float value) { instance.Panning = value; }
+        }
+
+        internal class AutoRemoveModeAccessor : EnumAccessor<SoundSourcePrefab, SoundSource, AutoRemoveMode>
+        {
+            public static readonly AutoRemoveModeAccessor Instance = new AutoRemoveModeAccessor();
+            public static readonly AutoRemoveMode DefaultValue = AutoRemoveMode.Disabled;
+            public override AutoRemoveMode DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.AutoRemoveMode);
+            public override AutoRemoveMode GetPrefab(SoundSourcePrefab instance) { return instance.AutoRemoveMode; }
+            public override void SetPrefab(SoundSourcePrefab instance, AutoRemoveMode value) { instance.AutoRemoveMode = value; }
+            public override AutoRemoveMode GetUrho(SoundSource instance) { return instance.AutoRemoveMode; }
+            public override void SetUrho(SoundSource instance, AutoRemoveMode value) { instance.AutoRemoveMode = value; }
+        }
+
+        internal class PositionAttrAccessor : Int32Accessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly PositionAttrAccessor Instance = new PositionAttrAccessor();
+            public static readonly int DefaultValue = 0;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.PositionAttr);
+            public override int GetPrefab(SoundSourcePrefab instance) { return instance.PositionAttr; }
+            public override void SetPrefab(SoundSourcePrefab instance, int value) { instance.PositionAttr = value; }
+            public override int GetUrho(SoundSource instance) { return instance.PositionAttr; }
+            public override void SetUrho(SoundSource instance, int value) { instance.PositionAttr = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Enabled);
+            public override bool GetPrefab(SoundSourcePrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(SoundSourcePrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(SoundSource instance) { return instance.Enabled; }
+            public override void SetUrho(SoundSource instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.AnimationEnabled);
+            public override bool GetPrefab(SoundSourcePrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(SoundSourcePrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(SoundSource instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(SoundSource instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.Temporary);
+            public override bool GetPrefab(SoundSourcePrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(SoundSourcePrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(SoundSource instance) { return instance.Temporary; }
+            public override void SetUrho(SoundSource instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<SoundSourcePrefab, SoundSource>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(SoundSource.BlockEvents);
+            public override bool GetPrefab(SoundSourcePrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(SoundSourcePrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(SoundSource instance) { return instance.BlockEvents; }
+            public override void SetUrho(SoundSource instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

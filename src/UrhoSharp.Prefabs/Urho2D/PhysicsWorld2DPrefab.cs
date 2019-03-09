@@ -1,175 +1,103 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using PhysicsWorld2D = Urho.Urho2D.PhysicsWorld2D;
 
 using Urho.Urho2D;
 
 namespace UrhoSharp.Prefabs
 {
-    public class PhysicsWorld2DPrefab: AbstractComponentPrefab<PhysicsWorld2D>, IPrefab
+    public partial class PhysicsWorld2DPrefab: AbstractComponentPrefab<PhysicsWorld2D>, IPrefab
     {
-        private static  bool UpdateEnabledDefaultValue = true;
-        private static  bool DrawShapeDefaultValue = true;
-        private static  bool DrawJointDefaultValue = false;
-        private static  bool DrawAabbDefaultValue = false;
-        private static  bool DrawPairDefaultValue = false;
-        private static  bool DrawCenterOfMassDefaultValue = false;
-        private static  bool AllowSleepingDefaultValue = true;
-        private static  bool WarmStartingDefaultValue = true;
-        private static  bool ContinuousPhysicsDefaultValue = true;
-        private static  bool SubSteppingDefaultValue = false;
-        private static  Vector2 GravityDefaultValue = new Vector2(0f, -9.81f);
-        private static  bool AutoClearForcesDefaultValue = true;
-        private static  int VelocityIterationsDefaultValue = 8;
-        private static  int PositionIterationsDefaultValue = 3;
-        private static  bool ApplyingTransformsDefaultValue = false;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private bool _updateEnabled;
-        private bool _drawShape;
-        private bool _drawJoint;
-        private bool _drawAabb;
-        private bool _drawPair;
-        private bool _drawCenterOfMass;
-        private bool _allowSleeping;
-        private bool _warmStarting;
-        private bool _continuousPhysics;
-        private bool _subStepping;
-        private Vector2 _gravity;
-        private bool _autoClearForces;
-        private int _velocityIterations;
-        private int _positionIterations;
-        private bool _applyingTransforms;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return PhysicsWorld2D.TypeNameStatic; } }
+        public bool UpdateEnabled { get; set; }
+        public bool DrawShape { get; set; }
+        public bool DrawJoint { get; set; }
+        public bool DrawAabb { get; set; }
+        public bool DrawPair { get; set; }
+        public bool DrawCenterOfMass { get; set; }
+        public bool AllowSleeping { get; set; }
+        public bool WarmStarting { get; set; }
+        public bool ContinuousPhysics { get; set; }
+        public bool SubStepping { get; set; }
+        public Vector2 Gravity { get; set; }
+        public bool AutoClearForces { get; set; }
+        public int VelocityIterations { get; set; }
+        public int PositionIterations { get; set; }
+        public bool ApplyingTransforms { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public PhysicsWorld2DPrefab()
         {
-            _updateEnabled = UpdateEnabledDefaultValue;
-            _drawShape = DrawShapeDefaultValue;
-            _drawJoint = DrawJointDefaultValue;
-            _drawAabb = DrawAabbDefaultValue;
-            _drawPair = DrawPairDefaultValue;
-            _drawCenterOfMass = DrawCenterOfMassDefaultValue;
-            _allowSleeping = AllowSleepingDefaultValue;
-            _warmStarting = WarmStartingDefaultValue;
-            _continuousPhysics = ContinuousPhysicsDefaultValue;
-            _subStepping = SubSteppingDefaultValue;
-            _gravity = GravityDefaultValue;
-            _autoClearForces = AutoClearForcesDefaultValue;
-            _velocityIterations = VelocityIterationsDefaultValue;
-            _positionIterations = PositionIterationsDefaultValue;
-            _applyingTransforms = ApplyingTransformsDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            UpdateEnabled = UpdateEnabledAccessor.DefaultValue;
+            DrawShape = DrawShapeAccessor.DefaultValue;
+            DrawJoint = DrawJointAccessor.DefaultValue;
+            DrawAabb = DrawAabbAccessor.DefaultValue;
+            DrawPair = DrawPairAccessor.DefaultValue;
+            DrawCenterOfMass = DrawCenterOfMassAccessor.DefaultValue;
+            AllowSleeping = AllowSleepingAccessor.DefaultValue;
+            WarmStarting = WarmStartingAccessor.DefaultValue;
+            ContinuousPhysics = ContinuousPhysicsAccessor.DefaultValue;
+            SubStepping = SubSteppingAccessor.DefaultValue;
+            Gravity = GravityAccessor.DefaultValue;
+            AutoClearForces = AutoClearForcesAccessor.DefaultValue;
+            VelocityIterations = VelocityIterationsAccessor.DefaultValue;
+            PositionIterations = PositionIterationsAccessor.DefaultValue;
+            ApplyingTransforms = ApplyingTransformsAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public PhysicsWorld2DPrefab(PhysicsWorld2D val)
         {
-            _updateEnabled = val.UpdateEnabled;
-            _drawShape = val.DrawShape;
-            _drawJoint = val.DrawJoint;
-            _drawAabb = val.DrawAabb;
-            _drawPair = val.DrawPair;
-            _drawCenterOfMass = val.DrawCenterOfMass;
-            _allowSleeping = val.AllowSleeping;
-            _warmStarting = val.WarmStarting;
-            _continuousPhysics = val.ContinuousPhysics;
-            _subStepping = val.SubStepping;
-            _gravity = val.Gravity;
-            _autoClearForces = val.AutoClearForces;
-            _velocityIterations = val.VelocityIterations;
-            _positionIterations = val.PositionIterations;
-            _applyingTransforms = val.ApplyingTransforms;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            UpdateEnabled = val.UpdateEnabled;
+            DrawShape = val.DrawShape;
+            DrawJoint = val.DrawJoint;
+            DrawAabb = val.DrawAabb;
+            DrawPair = val.DrawPair;
+            DrawCenterOfMass = val.DrawCenterOfMass;
+            AllowSleeping = val.AllowSleeping;
+            WarmStarting = val.WarmStarting;
+            ContinuousPhysics = val.ContinuousPhysics;
+            SubStepping = val.SubStepping;
+            Gravity = val.Gravity;
+            AutoClearForces = val.AutoClearForces;
+            VelocityIterations = val.VelocityIterations;
+            PositionIterations = val.PositionIterations;
+            ApplyingTransforms = val.ApplyingTransforms;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public bool UpdateEnabled {get { return _updateEnabled;} set { _updateEnabled=value; } }
-        public bool UpdateEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _updateEnabled, ref UpdateEnabledDefaultValue); } }
-        public bool DrawShape {get { return _drawShape;} set { _drawShape=value; } }
-        public bool DrawShapeHasValue {get { return !PrefabUtils.AreEqual(ref _drawShape, ref DrawShapeDefaultValue); } }
-        public bool DrawJoint {get { return _drawJoint;} set { _drawJoint=value; } }
-        public bool DrawJointHasValue {get { return !PrefabUtils.AreEqual(ref _drawJoint, ref DrawJointDefaultValue); } }
-        public bool DrawAabb {get { return _drawAabb;} set { _drawAabb=value; } }
-        public bool DrawAabbHasValue {get { return !PrefabUtils.AreEqual(ref _drawAabb, ref DrawAabbDefaultValue); } }
-        public bool DrawPair {get { return _drawPair;} set { _drawPair=value; } }
-        public bool DrawPairHasValue {get { return !PrefabUtils.AreEqual(ref _drawPair, ref DrawPairDefaultValue); } }
-        public bool DrawCenterOfMass {get { return _drawCenterOfMass;} set { _drawCenterOfMass=value; } }
-        public bool DrawCenterOfMassHasValue {get { return !PrefabUtils.AreEqual(ref _drawCenterOfMass, ref DrawCenterOfMassDefaultValue); } }
-        public bool AllowSleeping {get { return _allowSleeping;} set { _allowSleeping=value; } }
-        public bool AllowSleepingHasValue {get { return !PrefabUtils.AreEqual(ref _allowSleeping, ref AllowSleepingDefaultValue); } }
-        public bool WarmStarting {get { return _warmStarting;} set { _warmStarting=value; } }
-        public bool WarmStartingHasValue {get { return !PrefabUtils.AreEqual(ref _warmStarting, ref WarmStartingDefaultValue); } }
-        public bool ContinuousPhysics {get { return _continuousPhysics;} set { _continuousPhysics=value; } }
-        public bool ContinuousPhysicsHasValue {get { return !PrefabUtils.AreEqual(ref _continuousPhysics, ref ContinuousPhysicsDefaultValue); } }
-        public bool SubStepping {get { return _subStepping;} set { _subStepping=value; } }
-        public bool SubSteppingHasValue {get { return !PrefabUtils.AreEqual(ref _subStepping, ref SubSteppingDefaultValue); } }
-        public Vector2 Gravity {get { return _gravity;} set { _gravity=value; } }
-        public bool GravityHasValue {get { return !PrefabUtils.AreEqual(ref _gravity, ref GravityDefaultValue); } }
-        public bool AutoClearForces {get { return _autoClearForces;} set { _autoClearForces=value; } }
-        public bool AutoClearForcesHasValue {get { return !PrefabUtils.AreEqual(ref _autoClearForces, ref AutoClearForcesDefaultValue); } }
-        public int VelocityIterations {get { return _velocityIterations;} set { _velocityIterations=value; } }
-        public bool VelocityIterationsHasValue {get { return !PrefabUtils.AreEqual(ref _velocityIterations, ref VelocityIterationsDefaultValue); } }
-        public int PositionIterations {get { return _positionIterations;} set { _positionIterations=value; } }
-        public bool PositionIterationsHasValue {get { return !PrefabUtils.AreEqual(ref _positionIterations, ref PositionIterationsDefaultValue); } }
-        public bool ApplyingTransforms {get { return _applyingTransforms;} set { _applyingTransforms=value; } }
-        public bool ApplyingTransformsHasValue {get { return !PrefabUtils.AreEqual(ref _applyingTransforms, ref ApplyingTransformsDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override PhysicsWorld2D Create()
         {
             var result = new PhysicsWorld2D();
-            if(UpdateEnabledHasValue)
-                result.UpdateEnabled = _updateEnabled;
-            if(DrawShapeHasValue)
-                result.DrawShape = _drawShape;
-            if(DrawJointHasValue)
-                result.DrawJoint = _drawJoint;
-            if(DrawAabbHasValue)
-                result.DrawAabb = _drawAabb;
-            if(DrawPairHasValue)
-                result.DrawPair = _drawPair;
-            if(DrawCenterOfMassHasValue)
-                result.DrawCenterOfMass = _drawCenterOfMass;
-            if(AllowSleepingHasValue)
-                result.AllowSleeping = _allowSleeping;
-            if(WarmStartingHasValue)
-                result.WarmStarting = _warmStarting;
-            if(ContinuousPhysicsHasValue)
-                result.ContinuousPhysics = _continuousPhysics;
-            if(SubSteppingHasValue)
-                result.SubStepping = _subStepping;
-            if(GravityHasValue)
-                result.Gravity = _gravity;
-            if(AutoClearForcesHasValue)
-                result.AutoClearForces = _autoClearForces;
-            if(VelocityIterationsHasValue)
-                result.VelocityIterations = _velocityIterations;
-            if(PositionIterationsHasValue)
-                result.PositionIterations = _positionIterations;
-            if(ApplyingTransformsHasValue)
-                result.ApplyingTransforms = _applyingTransforms;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            UpdateEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            DrawShapeAccessor.Instance.ApplyIfChanged(this, result);
+            DrawJointAccessor.Instance.ApplyIfChanged(this, result);
+            DrawAabbAccessor.Instance.ApplyIfChanged(this, result);
+            DrawPairAccessor.Instance.ApplyIfChanged(this, result);
+            DrawCenterOfMassAccessor.Instance.ApplyIfChanged(this, result);
+            AllowSleepingAccessor.Instance.ApplyIfChanged(this, result);
+            WarmStartingAccessor.Instance.ApplyIfChanged(this, result);
+            ContinuousPhysicsAccessor.Instance.ApplyIfChanged(this, result);
+            SubSteppingAccessor.Instance.ApplyIfChanged(this, result);
+            GravityAccessor.Instance.ApplyIfChanged(this, result);
+            AutoClearForcesAccessor.Instance.ApplyIfChanged(this, result);
+            VelocityIterationsAccessor.Instance.ApplyIfChanged(this, result);
+            PositionIterationsAccessor.Instance.ApplyIfChanged(this, result);
+            ApplyingTransformsAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -178,46 +106,319 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "UpdateEnabled":
+                    UpdateEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawShape":
+                    DrawShapeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawJoint":
+                    DrawJointAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawAabb":
+                    DrawAabbAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawPair":
+                    DrawPairAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DrawCenterOfMass":
+                    DrawCenterOfMassAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AllowSleeping":
+                    AllowSleepingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "WarmStarting":
+                    WarmStartingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ContinuousPhysics":
+                    ContinuousPhysicsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "SubStepping":
+                    SubSteppingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Gravity":
+                    GravityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AutoClearForces":
+                    AutoClearForcesAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "VelocityIterations":
+                    VelocityIterationsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "PositionIterations":
+                    PositionIterationsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ApplyingTransforms":
+                    ApplyingTransformsAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return UpdateEnabledAccessor.Instance;
+                yield return DrawShapeAccessor.Instance;
+                yield return DrawJointAccessor.Instance;
+                yield return DrawAabbAccessor.Instance;
+                yield return DrawPairAccessor.Instance;
+                yield return DrawCenterOfMassAccessor.Instance;
+                yield return AllowSleepingAccessor.Instance;
+                yield return WarmStartingAccessor.Instance;
+                yield return ContinuousPhysicsAccessor.Instance;
+                yield return SubSteppingAccessor.Instance;
+                yield return GravityAccessor.Instance;
+                yield return AutoClearForcesAccessor.Instance;
+                yield return VelocityIterationsAccessor.Instance;
+                yield return PositionIterationsAccessor.Instance;
+                yield return ApplyingTransformsAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class UpdateEnabledAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly UpdateEnabledAccessor Instance = new UpdateEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.UpdateEnabled);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.UpdateEnabled; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.UpdateEnabled = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.UpdateEnabled; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.UpdateEnabled = value; }
+        }
+
+        internal class DrawShapeAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly DrawShapeAccessor Instance = new DrawShapeAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.DrawShape);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.DrawShape; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.DrawShape = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.DrawShape; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.DrawShape = value; }
+        }
+
+        internal class DrawJointAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly DrawJointAccessor Instance = new DrawJointAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.DrawJoint);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.DrawJoint; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.DrawJoint = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.DrawJoint; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.DrawJoint = value; }
+        }
+
+        internal class DrawAabbAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly DrawAabbAccessor Instance = new DrawAabbAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.DrawAabb);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.DrawAabb; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.DrawAabb = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.DrawAabb; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.DrawAabb = value; }
+        }
+
+        internal class DrawPairAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly DrawPairAccessor Instance = new DrawPairAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.DrawPair);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.DrawPair; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.DrawPair = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.DrawPair; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.DrawPair = value; }
+        }
+
+        internal class DrawCenterOfMassAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly DrawCenterOfMassAccessor Instance = new DrawCenterOfMassAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.DrawCenterOfMass);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.DrawCenterOfMass; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.DrawCenterOfMass = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.DrawCenterOfMass; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.DrawCenterOfMass = value; }
+        }
+
+        internal class AllowSleepingAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly AllowSleepingAccessor Instance = new AllowSleepingAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.AllowSleeping);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.AllowSleeping; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.AllowSleeping = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.AllowSleeping; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.AllowSleeping = value; }
+        }
+
+        internal class WarmStartingAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly WarmStartingAccessor Instance = new WarmStartingAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.WarmStarting);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.WarmStarting; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.WarmStarting = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.WarmStarting; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.WarmStarting = value; }
+        }
+
+        internal class ContinuousPhysicsAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly ContinuousPhysicsAccessor Instance = new ContinuousPhysicsAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.ContinuousPhysics);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.ContinuousPhysics; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.ContinuousPhysics = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.ContinuousPhysics; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.ContinuousPhysics = value; }
+        }
+
+        internal class SubSteppingAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly SubSteppingAccessor Instance = new SubSteppingAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.SubStepping);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.SubStepping; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.SubStepping = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.SubStepping; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.SubStepping = value; }
+        }
+
+        internal class GravityAccessor : Vector2Accessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly GravityAccessor Instance = new GravityAccessor();
+            public static readonly Vector2 DefaultValue = new Vector2(0f, -9.81f);
+            public override Vector2 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.Gravity);
+            public override Vector2 GetPrefab(PhysicsWorld2DPrefab instance) { return instance.Gravity; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, Vector2 value) { instance.Gravity = value; }
+            public override Vector2 GetUrho(PhysicsWorld2D instance) { return instance.Gravity; }
+            public override void SetUrho(PhysicsWorld2D instance, Vector2 value) { instance.Gravity = value; }
+        }
+
+        internal class AutoClearForcesAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly AutoClearForcesAccessor Instance = new AutoClearForcesAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.AutoClearForces);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.AutoClearForces; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.AutoClearForces = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.AutoClearForces; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.AutoClearForces = value; }
+        }
+
+        internal class VelocityIterationsAccessor : Int32Accessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly VelocityIterationsAccessor Instance = new VelocityIterationsAccessor();
+            public static readonly int DefaultValue = 8;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.VelocityIterations);
+            public override int GetPrefab(PhysicsWorld2DPrefab instance) { return instance.VelocityIterations; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, int value) { instance.VelocityIterations = value; }
+            public override int GetUrho(PhysicsWorld2D instance) { return instance.VelocityIterations; }
+            public override void SetUrho(PhysicsWorld2D instance, int value) { instance.VelocityIterations = value; }
+        }
+
+        internal class PositionIterationsAccessor : Int32Accessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly PositionIterationsAccessor Instance = new PositionIterationsAccessor();
+            public static readonly int DefaultValue = 3;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.PositionIterations);
+            public override int GetPrefab(PhysicsWorld2DPrefab instance) { return instance.PositionIterations; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, int value) { instance.PositionIterations = value; }
+            public override int GetUrho(PhysicsWorld2D instance) { return instance.PositionIterations; }
+            public override void SetUrho(PhysicsWorld2D instance, int value) { instance.PositionIterations = value; }
+        }
+
+        internal class ApplyingTransformsAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly ApplyingTransformsAccessor Instance = new ApplyingTransformsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.ApplyingTransforms);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.ApplyingTransforms; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.ApplyingTransforms = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.ApplyingTransforms; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.ApplyingTransforms = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.Enabled);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.Enabled; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.AnimationEnabled);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.Temporary);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.Temporary; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<PhysicsWorld2DPrefab, PhysicsWorld2D>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld2D.BlockEvents);
+            public override bool GetPrefab(PhysicsWorld2DPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(PhysicsWorld2DPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(PhysicsWorld2D instance) { return instance.BlockEvents; }
+            public override void SetUrho(PhysicsWorld2D instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

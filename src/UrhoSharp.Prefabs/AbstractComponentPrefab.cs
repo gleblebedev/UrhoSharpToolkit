@@ -1,22 +1,20 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Urho;
 
 namespace UrhoSharp.Prefabs
 {
-    public abstract class AbstractComponentPrefab<T> : IComponentPrefab where T : Component
+    public abstract class AbstractComponentPrefab<T> : AbstractPrefab, IComponentPrefab where T : Component
     {
+        public abstract string TypeName { get; }
         object IPrefab.Create()
         {
             return Create();
         }
 
-        Component IComponentPrefab.Create()
-        {
-            return Create();
-        }
-        public virtual void BackgroundLoadResource()
-        {
-        }
+        public virtual uint? ID { get; set; }
+        public abstract T Create();
+
         public virtual void ParseXml(XElement element)
         {
             foreach (var childElement in element.Elements())
@@ -31,11 +29,18 @@ namespace UrhoSharp.Prefabs
         public virtual XElement SerializeToXml()
         {
             var element = new XElement(XmlElement.Component);
-            element.SetAttributeValue(XmlAttribute.Type, "Camera");
+            element.SetAttributeValue(XmlAttribute.Type, TypeName);
+            foreach (var property in Properties)
+            {
+                if (property.PrefabHasValue(this))
+                {
+                    var value = property.ToStringPrefab(this);
+                    element.Add(new XElement(XmlElement.Attribute, new XAttribute(XmlAttribute.Name, property.Name), new XAttribute(XmlAttribute.Value, value)));
+                }
+            }
             return element;
         }
 
-        public abstract T Create();
 
         public abstract void ParseXmlAttribute(string name, string value);
 
@@ -47,7 +52,7 @@ namespace UrhoSharp.Prefabs
 
         protected static class XmlAttribute
         {
-            public static readonly XName Type = XName.Get("yype");
+            public static readonly XName Type = XName.Get("type");
             public static readonly XName Name = XName.Get("name");
             public static readonly XName Value = XName.Get("value");
         }

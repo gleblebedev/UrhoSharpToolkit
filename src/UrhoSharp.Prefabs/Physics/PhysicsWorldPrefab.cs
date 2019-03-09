@@ -1,127 +1,79 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using PhysicsWorld = Urho.Physics.PhysicsWorld;
 
 using Urho.Physics;
 
 namespace UrhoSharp.Prefabs
 {
-    public class PhysicsWorldPrefab: AbstractComponentPrefab<PhysicsWorld>, IPrefab
+    public partial class PhysicsWorldPrefab: AbstractComponentPrefab<PhysicsWorld>, IPrefab
     {
-        private static  int FpsDefaultValue = 60;
-        private static  int MaxSubStepsDefaultValue = 0;
-        private static  int NumIterationsDefaultValue = 10;
-        private static  bool UpdateEnabledDefaultValue = true;
-        private static  bool InterpolationDefaultValue = true;
-        private static  bool InternalEdgeDefaultValue = true;
-        private static  bool SplitImpulseDefaultValue = false;
-        private static  float MaxNetworkAngularVelocityDefaultValue = 100f;
-        private static  bool ApplyingTransformsDefaultValue = false;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private int _fps;
-        private int _maxSubSteps;
-        private int _numIterations;
-        private bool _updateEnabled;
-        private bool _interpolation;
-        private bool _internalEdge;
-        private bool _splitImpulse;
-        private float _maxNetworkAngularVelocity;
-        private bool _applyingTransforms;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return PhysicsWorld.TypeNameStatic; } }
+        public int Fps { get; set; }
+        public int MaxSubSteps { get; set; }
+        public int NumIterations { get; set; }
+        public bool UpdateEnabled { get; set; }
+        public bool Interpolation { get; set; }
+        public bool InternalEdge { get; set; }
+        public bool SplitImpulse { get; set; }
+        public float MaxNetworkAngularVelocity { get; set; }
+        public bool ApplyingTransforms { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public PhysicsWorldPrefab()
         {
-            _fps = FpsDefaultValue;
-            _maxSubSteps = MaxSubStepsDefaultValue;
-            _numIterations = NumIterationsDefaultValue;
-            _updateEnabled = UpdateEnabledDefaultValue;
-            _interpolation = InterpolationDefaultValue;
-            _internalEdge = InternalEdgeDefaultValue;
-            _splitImpulse = SplitImpulseDefaultValue;
-            _maxNetworkAngularVelocity = MaxNetworkAngularVelocityDefaultValue;
-            _applyingTransforms = ApplyingTransformsDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            Fps = FpsAccessor.DefaultValue;
+            MaxSubSteps = MaxSubStepsAccessor.DefaultValue;
+            NumIterations = NumIterationsAccessor.DefaultValue;
+            UpdateEnabled = UpdateEnabledAccessor.DefaultValue;
+            Interpolation = InterpolationAccessor.DefaultValue;
+            InternalEdge = InternalEdgeAccessor.DefaultValue;
+            SplitImpulse = SplitImpulseAccessor.DefaultValue;
+            MaxNetworkAngularVelocity = MaxNetworkAngularVelocityAccessor.DefaultValue;
+            ApplyingTransforms = ApplyingTransformsAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public PhysicsWorldPrefab(PhysicsWorld val)
         {
-            _fps = val.Fps;
-            _maxSubSteps = val.MaxSubSteps;
-            _numIterations = val.NumIterations;
-            _updateEnabled = val.UpdateEnabled;
-            _interpolation = val.Interpolation;
-            _internalEdge = val.InternalEdge;
-            _splitImpulse = val.SplitImpulse;
-            _maxNetworkAngularVelocity = val.MaxNetworkAngularVelocity;
-            _applyingTransforms = val.ApplyingTransforms;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            Fps = val.Fps;
+            MaxSubSteps = val.MaxSubSteps;
+            NumIterations = val.NumIterations;
+            UpdateEnabled = val.UpdateEnabled;
+            Interpolation = val.Interpolation;
+            InternalEdge = val.InternalEdge;
+            SplitImpulse = val.SplitImpulse;
+            MaxNetworkAngularVelocity = val.MaxNetworkAngularVelocity;
+            ApplyingTransforms = val.ApplyingTransforms;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public int Fps {get { return _fps;} set { _fps=value; } }
-        public bool FpsHasValue {get { return !PrefabUtils.AreEqual(ref _fps, ref FpsDefaultValue); } }
-        public int MaxSubSteps {get { return _maxSubSteps;} set { _maxSubSteps=value; } }
-        public bool MaxSubStepsHasValue {get { return !PrefabUtils.AreEqual(ref _maxSubSteps, ref MaxSubStepsDefaultValue); } }
-        public int NumIterations {get { return _numIterations;} set { _numIterations=value; } }
-        public bool NumIterationsHasValue {get { return !PrefabUtils.AreEqual(ref _numIterations, ref NumIterationsDefaultValue); } }
-        public bool UpdateEnabled {get { return _updateEnabled;} set { _updateEnabled=value; } }
-        public bool UpdateEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _updateEnabled, ref UpdateEnabledDefaultValue); } }
-        public bool Interpolation {get { return _interpolation;} set { _interpolation=value; } }
-        public bool InterpolationHasValue {get { return !PrefabUtils.AreEqual(ref _interpolation, ref InterpolationDefaultValue); } }
-        public bool InternalEdge {get { return _internalEdge;} set { _internalEdge=value; } }
-        public bool InternalEdgeHasValue {get { return !PrefabUtils.AreEqual(ref _internalEdge, ref InternalEdgeDefaultValue); } }
-        public bool SplitImpulse {get { return _splitImpulse;} set { _splitImpulse=value; } }
-        public bool SplitImpulseHasValue {get { return !PrefabUtils.AreEqual(ref _splitImpulse, ref SplitImpulseDefaultValue); } }
-        public float MaxNetworkAngularVelocity {get { return _maxNetworkAngularVelocity;} set { _maxNetworkAngularVelocity=value; } }
-        public bool MaxNetworkAngularVelocityHasValue {get { return !PrefabUtils.AreEqual(ref _maxNetworkAngularVelocity, ref MaxNetworkAngularVelocityDefaultValue); } }
-        public bool ApplyingTransforms {get { return _applyingTransforms;} set { _applyingTransforms=value; } }
-        public bool ApplyingTransformsHasValue {get { return !PrefabUtils.AreEqual(ref _applyingTransforms, ref ApplyingTransformsDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override PhysicsWorld Create()
         {
             var result = new PhysicsWorld();
-            if(FpsHasValue)
-                result.Fps = _fps;
-            if(MaxSubStepsHasValue)
-                result.MaxSubSteps = _maxSubSteps;
-            if(NumIterationsHasValue)
-                result.NumIterations = _numIterations;
-            if(UpdateEnabledHasValue)
-                result.UpdateEnabled = _updateEnabled;
-            if(InterpolationHasValue)
-                result.Interpolation = _interpolation;
-            if(InternalEdgeHasValue)
-                result.InternalEdge = _internalEdge;
-            if(SplitImpulseHasValue)
-                result.SplitImpulse = _splitImpulse;
-            if(MaxNetworkAngularVelocityHasValue)
-                result.MaxNetworkAngularVelocity = _maxNetworkAngularVelocity;
-            if(ApplyingTransformsHasValue)
-                result.ApplyingTransforms = _applyingTransforms;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            FpsAccessor.Instance.ApplyIfChanged(this, result);
+            MaxSubStepsAccessor.Instance.ApplyIfChanged(this, result);
+            NumIterationsAccessor.Instance.ApplyIfChanged(this, result);
+            UpdateEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            InterpolationAccessor.Instance.ApplyIfChanged(this, result);
+            InternalEdgeAccessor.Instance.ApplyIfChanged(this, result);
+            SplitImpulseAccessor.Instance.ApplyIfChanged(this, result);
+            MaxNetworkAngularVelocityAccessor.Instance.ApplyIfChanged(this, result);
+            ApplyingTransformsAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -130,34 +82,223 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "Fps":
+                    FpsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxSubSteps":
+                    MaxSubStepsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "NumIterations":
+                    NumIterationsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "UpdateEnabled":
+                    UpdateEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Interpolation":
+                    InterpolationAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "InternalEdge":
+                    InternalEdgeAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "SplitImpulse":
+                    SplitImpulseAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MaxNetworkAngularVelocity":
+                    MaxNetworkAngularVelocityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ApplyingTransforms":
+                    ApplyingTransformsAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return FpsAccessor.Instance;
+                yield return MaxSubStepsAccessor.Instance;
+                yield return NumIterationsAccessor.Instance;
+                yield return UpdateEnabledAccessor.Instance;
+                yield return InterpolationAccessor.Instance;
+                yield return InternalEdgeAccessor.Instance;
+                yield return SplitImpulseAccessor.Instance;
+                yield return MaxNetworkAngularVelocityAccessor.Instance;
+                yield return ApplyingTransformsAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class FpsAccessor : Int32Accessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly FpsAccessor Instance = new FpsAccessor();
+            public static readonly int DefaultValue = 60;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.Fps);
+            public override int GetPrefab(PhysicsWorldPrefab instance) { return instance.Fps; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, int value) { instance.Fps = value; }
+            public override int GetUrho(PhysicsWorld instance) { return instance.Fps; }
+            public override void SetUrho(PhysicsWorld instance, int value) { instance.Fps = value; }
+        }
+
+        internal class MaxSubStepsAccessor : Int32Accessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly MaxSubStepsAccessor Instance = new MaxSubStepsAccessor();
+            public static readonly int DefaultValue = 0;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.MaxSubSteps);
+            public override int GetPrefab(PhysicsWorldPrefab instance) { return instance.MaxSubSteps; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, int value) { instance.MaxSubSteps = value; }
+            public override int GetUrho(PhysicsWorld instance) { return instance.MaxSubSteps; }
+            public override void SetUrho(PhysicsWorld instance, int value) { instance.MaxSubSteps = value; }
+        }
+
+        internal class NumIterationsAccessor : Int32Accessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly NumIterationsAccessor Instance = new NumIterationsAccessor();
+            public static readonly int DefaultValue = 10;
+            public override int DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.NumIterations);
+            public override int GetPrefab(PhysicsWorldPrefab instance) { return instance.NumIterations; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, int value) { instance.NumIterations = value; }
+            public override int GetUrho(PhysicsWorld instance) { return instance.NumIterations; }
+            public override void SetUrho(PhysicsWorld instance, int value) { instance.NumIterations = value; }
+        }
+
+        internal class UpdateEnabledAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly UpdateEnabledAccessor Instance = new UpdateEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.UpdateEnabled);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.UpdateEnabled; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.UpdateEnabled = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.UpdateEnabled; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.UpdateEnabled = value; }
+        }
+
+        internal class InterpolationAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly InterpolationAccessor Instance = new InterpolationAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.Interpolation);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.Interpolation; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.Interpolation = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.Interpolation; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.Interpolation = value; }
+        }
+
+        internal class InternalEdgeAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly InternalEdgeAccessor Instance = new InternalEdgeAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.InternalEdge);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.InternalEdge; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.InternalEdge = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.InternalEdge; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.InternalEdge = value; }
+        }
+
+        internal class SplitImpulseAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly SplitImpulseAccessor Instance = new SplitImpulseAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.SplitImpulse);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.SplitImpulse; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.SplitImpulse = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.SplitImpulse; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.SplitImpulse = value; }
+        }
+
+        internal class MaxNetworkAngularVelocityAccessor : SingleAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly MaxNetworkAngularVelocityAccessor Instance = new MaxNetworkAngularVelocityAccessor();
+            public static readonly float DefaultValue = 100f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.MaxNetworkAngularVelocity);
+            public override float GetPrefab(PhysicsWorldPrefab instance) { return instance.MaxNetworkAngularVelocity; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, float value) { instance.MaxNetworkAngularVelocity = value; }
+            public override float GetUrho(PhysicsWorld instance) { return instance.MaxNetworkAngularVelocity; }
+            public override void SetUrho(PhysicsWorld instance, float value) { instance.MaxNetworkAngularVelocity = value; }
+        }
+
+        internal class ApplyingTransformsAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly ApplyingTransformsAccessor Instance = new ApplyingTransformsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.ApplyingTransforms);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.ApplyingTransforms; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.ApplyingTransforms = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.ApplyingTransforms; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.ApplyingTransforms = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.Enabled);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.Enabled; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.AnimationEnabled);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.Temporary);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.Temporary; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<PhysicsWorldPrefab, PhysicsWorld>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(PhysicsWorld.BlockEvents);
+            public override bool GetPrefab(PhysicsWorldPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(PhysicsWorldPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(PhysicsWorld instance) { return instance.BlockEvents; }
+            public override void SetUrho(PhysicsWorld instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

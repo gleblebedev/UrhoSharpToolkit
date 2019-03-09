@@ -4,9 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+             xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock>Scene nodes</TextBlock>
+        <TreeView x:Name="_tree" ItemsSource="{Binding Root}" SelectedItemChanged="UpdateSelectedItem">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type viewModel:NodeViewModel}"
+                                          ItemsSource="{Binding Path=Children}">
+                    <TextBlock Text="{Binding Name}">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <!--<MenuItem Header="Open Folder in File Explorer"
+                                          Command="{Binding ViewInExplorerCommand}" />
+                                <MenuItem Header="Export as Nuget Package"
+                                          Command="{Binding ExportPackageCommand}" />-->
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
     </Grid>
 </UserControl>

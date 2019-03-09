@@ -1,103 +1,67 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using ConstraintGear2D = Urho.Urho2D.ConstraintGear2D;
 
 using Urho.Urho2D;
 
 namespace UrhoSharp.Prefabs
 {
-    public class ConstraintGear2DPrefab: AbstractComponentPrefab<ConstraintGear2D>, IPrefab
+    public partial class ConstraintGear2DPrefab: AbstractComponentPrefab<ConstraintGear2D>, IPrefab
     {
-        private static  Constraint2D OwnerConstraintDefaultValue = null;
-        private static  Constraint2D OtherConstraintDefaultValue = null;
-        private static  float RatioDefaultValue = 1f;
-        private static  RigidBody2D OtherBodyDefaultValue = null;
-        private static  bool CollideConnectedDefaultValue = false;
-        private static  Constraint2D AttachedConstraintDefaultValue = null;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private Constraint2D _ownerConstraint;
-        private Constraint2D _otherConstraint;
-        private float _ratio;
-        private RigidBody2D _otherBody;
-        private bool _collideConnected;
-        private Constraint2D _attachedConstraint;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return ConstraintGear2D.TypeNameStatic; } }
+        public Constraint2D OwnerConstraint { get; set; }
+        public Constraint2D OtherConstraint { get; set; }
+        public float Ratio { get; set; }
+        public RigidBody2D OtherBody { get; set; }
+        public bool CollideConnected { get; set; }
+        public Constraint2D AttachedConstraint { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public ConstraintGear2DPrefab()
         {
-            _ownerConstraint = OwnerConstraintDefaultValue;
-            _otherConstraint = OtherConstraintDefaultValue;
-            _ratio = RatioDefaultValue;
-            _otherBody = OtherBodyDefaultValue;
-            _collideConnected = CollideConnectedDefaultValue;
-            _attachedConstraint = AttachedConstraintDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            OwnerConstraint = OwnerConstraintAccessor.DefaultValue;
+            OtherConstraint = OtherConstraintAccessor.DefaultValue;
+            Ratio = RatioAccessor.DefaultValue;
+            OtherBody = OtherBodyAccessor.DefaultValue;
+            CollideConnected = CollideConnectedAccessor.DefaultValue;
+            AttachedConstraint = AttachedConstraintAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public ConstraintGear2DPrefab(ConstraintGear2D val)
         {
-            _ownerConstraint = val.OwnerConstraint;
-            _otherConstraint = val.OtherConstraint;
-            _ratio = val.Ratio;
-            _otherBody = val.OtherBody;
-            _collideConnected = val.CollideConnected;
-            _attachedConstraint = val.AttachedConstraint;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            OwnerConstraint = val.OwnerConstraint;
+            OtherConstraint = val.OtherConstraint;
+            Ratio = val.Ratio;
+            OtherBody = val.OtherBody;
+            CollideConnected = val.CollideConnected;
+            AttachedConstraint = val.AttachedConstraint;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public Constraint2D OwnerConstraint {get { return _ownerConstraint;} set { _ownerConstraint=value; } }
-        public bool OwnerConstraintHasValue {get { return !PrefabUtils.AreEqual(ref _ownerConstraint, ref OwnerConstraintDefaultValue); } }
-        public Constraint2D OtherConstraint {get { return _otherConstraint;} set { _otherConstraint=value; } }
-        public bool OtherConstraintHasValue {get { return !PrefabUtils.AreEqual(ref _otherConstraint, ref OtherConstraintDefaultValue); } }
-        public float Ratio {get { return _ratio;} set { _ratio=value; } }
-        public bool RatioHasValue {get { return !PrefabUtils.AreEqual(ref _ratio, ref RatioDefaultValue); } }
-        public RigidBody2D OtherBody {get { return _otherBody;} set { _otherBody=value; } }
-        public bool OtherBodyHasValue {get { return !PrefabUtils.AreEqual(ref _otherBody, ref OtherBodyDefaultValue); } }
-        public bool CollideConnected {get { return _collideConnected;} set { _collideConnected=value; } }
-        public bool CollideConnectedHasValue {get { return !PrefabUtils.AreEqual(ref _collideConnected, ref CollideConnectedDefaultValue); } }
-        public Constraint2D AttachedConstraint {get { return _attachedConstraint;} set { _attachedConstraint=value; } }
-        public bool AttachedConstraintHasValue {get { return !PrefabUtils.AreEqual(ref _attachedConstraint, ref AttachedConstraintDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override ConstraintGear2D Create()
         {
             var result = new ConstraintGear2D();
-            if(OwnerConstraintHasValue)
-                result.OwnerConstraint = _ownerConstraint;
-            if(OtherConstraintHasValue)
-                result.OtherConstraint = _otherConstraint;
-            if(RatioHasValue)
-                result.Ratio = _ratio;
-            if(OtherBodyHasValue)
-                result.OtherBody = _otherBody;
-            if(CollideConnectedHasValue)
-                result.CollideConnected = _collideConnected;
-            if(AttachedConstraintHasValue)
-                result.AttachedConstraint = _attachedConstraint;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            OwnerConstraintAccessor.Instance.ApplyIfChanged(this, result);
+            OtherConstraintAccessor.Instance.ApplyIfChanged(this, result);
+            RatioAccessor.Instance.ApplyIfChanged(this, result);
+            OtherBodyAccessor.Instance.ApplyIfChanged(this, result);
+            CollideConnectedAccessor.Instance.ApplyIfChanged(this, result);
+            AttachedConstraintAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -106,28 +70,175 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "OwnerConstraint":
+                    OwnerConstraintAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "OtherConstraint":
+                    OtherConstraintAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Ratio":
+                    RatioAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "OtherBody":
+                    OtherBodyAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollideConnected":
+                    CollideConnectedAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AttachedConstraint":
+                    AttachedConstraintAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return OwnerConstraintAccessor.Instance;
+                yield return OtherConstraintAccessor.Instance;
+                yield return RatioAccessor.Instance;
+                yield return OtherBodyAccessor.Instance;
+                yield return CollideConnectedAccessor.Instance;
+                yield return AttachedConstraintAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class OwnerConstraintAccessor : Constraint2DAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly OwnerConstraintAccessor Instance = new OwnerConstraintAccessor();
+            public static readonly Constraint2D DefaultValue = null;
+            public override Constraint2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.OwnerConstraint);
+            public override Constraint2D GetPrefab(ConstraintGear2DPrefab instance) { return instance.OwnerConstraint; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, Constraint2D value) { instance.OwnerConstraint = value; }
+            public override Constraint2D GetUrho(ConstraintGear2D instance) { return instance.OwnerConstraint; }
+            public override void SetUrho(ConstraintGear2D instance, Constraint2D value) { instance.OwnerConstraint = value; }
+        }
+
+        internal class OtherConstraintAccessor : Constraint2DAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly OtherConstraintAccessor Instance = new OtherConstraintAccessor();
+            public static readonly Constraint2D DefaultValue = null;
+            public override Constraint2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.OtherConstraint);
+            public override Constraint2D GetPrefab(ConstraintGear2DPrefab instance) { return instance.OtherConstraint; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, Constraint2D value) { instance.OtherConstraint = value; }
+            public override Constraint2D GetUrho(ConstraintGear2D instance) { return instance.OtherConstraint; }
+            public override void SetUrho(ConstraintGear2D instance, Constraint2D value) { instance.OtherConstraint = value; }
+        }
+
+        internal class RatioAccessor : SingleAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly RatioAccessor Instance = new RatioAccessor();
+            public static readonly float DefaultValue = 1f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.Ratio);
+            public override float GetPrefab(ConstraintGear2DPrefab instance) { return instance.Ratio; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, float value) { instance.Ratio = value; }
+            public override float GetUrho(ConstraintGear2D instance) { return instance.Ratio; }
+            public override void SetUrho(ConstraintGear2D instance, float value) { instance.Ratio = value; }
+        }
+
+        internal class OtherBodyAccessor : RigidBody2DAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly OtherBodyAccessor Instance = new OtherBodyAccessor();
+            public static readonly RigidBody2D DefaultValue = null;
+            public override RigidBody2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.OtherBody);
+            public override RigidBody2D GetPrefab(ConstraintGear2DPrefab instance) { return instance.OtherBody; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, RigidBody2D value) { instance.OtherBody = value; }
+            public override RigidBody2D GetUrho(ConstraintGear2D instance) { return instance.OtherBody; }
+            public override void SetUrho(ConstraintGear2D instance, RigidBody2D value) { instance.OtherBody = value; }
+        }
+
+        internal class CollideConnectedAccessor : BooleanAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly CollideConnectedAccessor Instance = new CollideConnectedAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.CollideConnected);
+            public override bool GetPrefab(ConstraintGear2DPrefab instance) { return instance.CollideConnected; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, bool value) { instance.CollideConnected = value; }
+            public override bool GetUrho(ConstraintGear2D instance) { return instance.CollideConnected; }
+            public override void SetUrho(ConstraintGear2D instance, bool value) { instance.CollideConnected = value; }
+        }
+
+        internal class AttachedConstraintAccessor : Constraint2DAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly AttachedConstraintAccessor Instance = new AttachedConstraintAccessor();
+            public static readonly Constraint2D DefaultValue = null;
+            public override Constraint2D DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.AttachedConstraint);
+            public override Constraint2D GetPrefab(ConstraintGear2DPrefab instance) { return instance.AttachedConstraint; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, Constraint2D value) { instance.AttachedConstraint = value; }
+            public override Constraint2D GetUrho(ConstraintGear2D instance) { return instance.AttachedConstraint; }
+            public override void SetUrho(ConstraintGear2D instance, Constraint2D value) { instance.AttachedConstraint = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.Enabled);
+            public override bool GetPrefab(ConstraintGear2DPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(ConstraintGear2D instance) { return instance.Enabled; }
+            public override void SetUrho(ConstraintGear2D instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.AnimationEnabled);
+            public override bool GetPrefab(ConstraintGear2DPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(ConstraintGear2D instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(ConstraintGear2D instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.Temporary);
+            public override bool GetPrefab(ConstraintGear2DPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(ConstraintGear2D instance) { return instance.Temporary; }
+            public override void SetUrho(ConstraintGear2D instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<ConstraintGear2DPrefab, ConstraintGear2D>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(ConstraintGear2D.BlockEvents);
+            public override bool GetPrefab(ConstraintGear2DPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(ConstraintGear2DPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(ConstraintGear2D instance) { return instance.BlockEvents; }
+            public override void SetUrho(ConstraintGear2D instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

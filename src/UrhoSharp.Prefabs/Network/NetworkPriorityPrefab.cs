@@ -1,87 +1,59 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using NetworkPriority = Urho.Network.NetworkPriority;
 
 using Urho.Network;
 
 namespace UrhoSharp.Prefabs
 {
-    public class NetworkPriorityPrefab: AbstractComponentPrefab<NetworkPriority>, IPrefab
+    public partial class NetworkPriorityPrefab: AbstractComponentPrefab<NetworkPriority>, IPrefab
     {
-        private static  float BasePriorityDefaultValue = 100f;
-        private static  float DistanceFactorDefaultValue = 0f;
-        private static  float MinPriorityDefaultValue = 0f;
-        private static  bool AlwaysUpdateOwnerDefaultValue = true;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private float _basePriority;
-        private float _distanceFactor;
-        private float _minPriority;
-        private bool _alwaysUpdateOwner;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return NetworkPriority.TypeNameStatic; } }
+        public float BasePriority { get; set; }
+        public float DistanceFactor { get; set; }
+        public float MinPriority { get; set; }
+        public bool AlwaysUpdateOwner { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public NetworkPriorityPrefab()
         {
-            _basePriority = BasePriorityDefaultValue;
-            _distanceFactor = DistanceFactorDefaultValue;
-            _minPriority = MinPriorityDefaultValue;
-            _alwaysUpdateOwner = AlwaysUpdateOwnerDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            BasePriority = BasePriorityAccessor.DefaultValue;
+            DistanceFactor = DistanceFactorAccessor.DefaultValue;
+            MinPriority = MinPriorityAccessor.DefaultValue;
+            AlwaysUpdateOwner = AlwaysUpdateOwnerAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public NetworkPriorityPrefab(NetworkPriority val)
         {
-            _basePriority = val.BasePriority;
-            _distanceFactor = val.DistanceFactor;
-            _minPriority = val.MinPriority;
-            _alwaysUpdateOwner = val.AlwaysUpdateOwner;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            BasePriority = val.BasePriority;
+            DistanceFactor = val.DistanceFactor;
+            MinPriority = val.MinPriority;
+            AlwaysUpdateOwner = val.AlwaysUpdateOwner;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public float BasePriority {get { return _basePriority;} set { _basePriority=value; } }
-        public bool BasePriorityHasValue {get { return !PrefabUtils.AreEqual(ref _basePriority, ref BasePriorityDefaultValue); } }
-        public float DistanceFactor {get { return _distanceFactor;} set { _distanceFactor=value; } }
-        public bool DistanceFactorHasValue {get { return !PrefabUtils.AreEqual(ref _distanceFactor, ref DistanceFactorDefaultValue); } }
-        public float MinPriority {get { return _minPriority;} set { _minPriority=value; } }
-        public bool MinPriorityHasValue {get { return !PrefabUtils.AreEqual(ref _minPriority, ref MinPriorityDefaultValue); } }
-        public bool AlwaysUpdateOwner {get { return _alwaysUpdateOwner;} set { _alwaysUpdateOwner=value; } }
-        public bool AlwaysUpdateOwnerHasValue {get { return !PrefabUtils.AreEqual(ref _alwaysUpdateOwner, ref AlwaysUpdateOwnerDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override NetworkPriority Create()
         {
             var result = new NetworkPriority();
-            if(BasePriorityHasValue)
-                result.BasePriority = _basePriority;
-            if(DistanceFactorHasValue)
-                result.DistanceFactor = _distanceFactor;
-            if(MinPriorityHasValue)
-                result.MinPriority = _minPriority;
-            if(AlwaysUpdateOwnerHasValue)
-                result.AlwaysUpdateOwner = _alwaysUpdateOwner;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            BasePriorityAccessor.Instance.ApplyIfChanged(this, result);
+            DistanceFactorAccessor.Instance.ApplyIfChanged(this, result);
+            MinPriorityAccessor.Instance.ApplyIfChanged(this, result);
+            AlwaysUpdateOwnerAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -90,24 +62,143 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "BasePriority":
+                    BasePriorityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "DistanceFactor":
+                    DistanceFactorAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "MinPriority":
+                    MinPriorityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AlwaysUpdateOwner":
+                    AlwaysUpdateOwnerAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return BasePriorityAccessor.Instance;
+                yield return DistanceFactorAccessor.Instance;
+                yield return MinPriorityAccessor.Instance;
+                yield return AlwaysUpdateOwnerAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class BasePriorityAccessor : SingleAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly BasePriorityAccessor Instance = new BasePriorityAccessor();
+            public static readonly float DefaultValue = 100f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.BasePriority);
+            public override float GetPrefab(NetworkPriorityPrefab instance) { return instance.BasePriority; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, float value) { instance.BasePriority = value; }
+            public override float GetUrho(NetworkPriority instance) { return instance.BasePriority; }
+            public override void SetUrho(NetworkPriority instance, float value) { instance.BasePriority = value; }
+        }
+
+        internal class DistanceFactorAccessor : SingleAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly DistanceFactorAccessor Instance = new DistanceFactorAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.DistanceFactor);
+            public override float GetPrefab(NetworkPriorityPrefab instance) { return instance.DistanceFactor; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, float value) { instance.DistanceFactor = value; }
+            public override float GetUrho(NetworkPriority instance) { return instance.DistanceFactor; }
+            public override void SetUrho(NetworkPriority instance, float value) { instance.DistanceFactor = value; }
+        }
+
+        internal class MinPriorityAccessor : SingleAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly MinPriorityAccessor Instance = new MinPriorityAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.MinPriority);
+            public override float GetPrefab(NetworkPriorityPrefab instance) { return instance.MinPriority; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, float value) { instance.MinPriority = value; }
+            public override float GetUrho(NetworkPriority instance) { return instance.MinPriority; }
+            public override void SetUrho(NetworkPriority instance, float value) { instance.MinPriority = value; }
+        }
+
+        internal class AlwaysUpdateOwnerAccessor : BooleanAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly AlwaysUpdateOwnerAccessor Instance = new AlwaysUpdateOwnerAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.AlwaysUpdateOwner);
+            public override bool GetPrefab(NetworkPriorityPrefab instance) { return instance.AlwaysUpdateOwner; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, bool value) { instance.AlwaysUpdateOwner = value; }
+            public override bool GetUrho(NetworkPriority instance) { return instance.AlwaysUpdateOwner; }
+            public override void SetUrho(NetworkPriority instance, bool value) { instance.AlwaysUpdateOwner = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.Enabled);
+            public override bool GetPrefab(NetworkPriorityPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(NetworkPriority instance) { return instance.Enabled; }
+            public override void SetUrho(NetworkPriority instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.AnimationEnabled);
+            public override bool GetPrefab(NetworkPriorityPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(NetworkPriority instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(NetworkPriority instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.Temporary);
+            public override bool GetPrefab(NetworkPriorityPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(NetworkPriority instance) { return instance.Temporary; }
+            public override void SetUrho(NetworkPriority instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<NetworkPriorityPrefab, NetworkPriority>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(NetworkPriority.BlockEvents);
+            public override bool GetPrefab(NetworkPriorityPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(NetworkPriorityPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(NetworkPriority instance) { return instance.BlockEvents; }
+            public override void SetUrho(NetworkPriority instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }

@@ -1,199 +1,115 @@
 using System;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Urho;
+using UrhoSharp.Prefabs.Accessors;
 using RigidBody = Urho.Physics.RigidBody;
 
 using Urho.Physics;
 
 namespace UrhoSharp.Prefabs
 {
-    public class RigidBodyPrefab: AbstractComponentPrefab<RigidBody>, IPrefab
+    public partial class RigidBodyPrefab: AbstractComponentPrefab<RigidBody>, IPrefab
     {
-        private static  float MassDefaultValue = 0f;
-        private static  float LinearRestThresholdDefaultValue = 0f;
-        private static  float LinearDampingDefaultValue = 0f;
-        private static  float AngularRestThresholdDefaultValue = 0f;
-        private static  float AngularDampingDefaultValue = 0f;
-        private static  float FrictionDefaultValue = 0f;
-        private static  float RollingFrictionDefaultValue = 0f;
-        private static  float RestitutionDefaultValue = 0f;
-        private static  float ContactProcessingThresholdDefaultValue = 0f;
-        private static  float CcdRadiusDefaultValue = 0f;
-        private static  float CcdMotionThresholdDefaultValue = 0f;
-        private static  bool UseGravityDefaultValue = true;
-        private static  Vector3 GravityOverrideDefaultValue = new Vector3(0f, 0f, 0f);
-        private static  bool KinematicDefaultValue = false;
-        private static  bool TriggerDefaultValue = false;
-        private static  uint CollisionLayerDefaultValue = 1;
-        private static  uint CollisionMaskDefaultValue = 4294967295;
-        private static  CollisionEventMode CollisionEventModeDefaultValue = CollisionEventMode.Active;
-        private static  bool EnabledDefaultValue = true;
-        private static  bool AnimationEnabledDefaultValue = true;
-        private static  bool TemporaryDefaultValue = false;
-        private static  bool BlockEventsDefaultValue = false;
-        private float _mass;
-        private float _linearRestThreshold;
-        private float _linearDamping;
-        private float _angularRestThreshold;
-        private float _angularDamping;
-        private float _friction;
-        private float _rollingFriction;
-        private float _restitution;
-        private float _contactProcessingThreshold;
-        private float _ccdRadius;
-        private float _ccdMotionThreshold;
-        private bool _useGravity;
-        private Vector3 _gravityOverride;
-        private bool _kinematic;
-        private bool _trigger;
-        private uint _collisionLayer;
-        private uint _collisionMask;
-        private CollisionEventMode _collisionEventMode;
-        private bool _enabled;
-        private bool _animationEnabled;
-        private bool _temporary;
-        private bool _blockEvents;
+        public override string TypeName { get { return RigidBody.TypeNameStatic; } }
+        public float Mass { get; set; }
+        public float LinearRestThreshold { get; set; }
+        public float LinearDamping { get; set; }
+        public float AngularRestThreshold { get; set; }
+        public float AngularDamping { get; set; }
+        public float Friction { get; set; }
+        public float RollingFriction { get; set; }
+        public float Restitution { get; set; }
+        public float ContactProcessingThreshold { get; set; }
+        public float CcdRadius { get; set; }
+        public float CcdMotionThreshold { get; set; }
+        public bool UseGravity { get; set; }
+        public Vector3 GravityOverride { get; set; }
+        public bool Kinematic { get; set; }
+        public bool Trigger { get; set; }
+        public uint CollisionLayer { get; set; }
+        public uint CollisionMask { get; set; }
+        public CollisionEventMode CollisionEventMode { get; set; }
+        public bool Enabled { get; set; }
+        public bool AnimationEnabled { get; set; }
+        public bool Temporary { get; set; }
+        public bool BlockEvents { get; set; }
         public RigidBodyPrefab()
         {
-            _mass = MassDefaultValue;
-            _linearRestThreshold = LinearRestThresholdDefaultValue;
-            _linearDamping = LinearDampingDefaultValue;
-            _angularRestThreshold = AngularRestThresholdDefaultValue;
-            _angularDamping = AngularDampingDefaultValue;
-            _friction = FrictionDefaultValue;
-            _rollingFriction = RollingFrictionDefaultValue;
-            _restitution = RestitutionDefaultValue;
-            _contactProcessingThreshold = ContactProcessingThresholdDefaultValue;
-            _ccdRadius = CcdRadiusDefaultValue;
-            _ccdMotionThreshold = CcdMotionThresholdDefaultValue;
-            _useGravity = UseGravityDefaultValue;
-            _gravityOverride = GravityOverrideDefaultValue;
-            _kinematic = KinematicDefaultValue;
-            _trigger = TriggerDefaultValue;
-            _collisionLayer = CollisionLayerDefaultValue;
-            _collisionMask = CollisionMaskDefaultValue;
-            _collisionEventMode = CollisionEventModeDefaultValue;
-            _enabled = EnabledDefaultValue;
-            _animationEnabled = AnimationEnabledDefaultValue;
-            _temporary = TemporaryDefaultValue;
-            _blockEvents = BlockEventsDefaultValue;
+            Mass = MassAccessor.DefaultValue;
+            LinearRestThreshold = LinearRestThresholdAccessor.DefaultValue;
+            LinearDamping = LinearDampingAccessor.DefaultValue;
+            AngularRestThreshold = AngularRestThresholdAccessor.DefaultValue;
+            AngularDamping = AngularDampingAccessor.DefaultValue;
+            Friction = FrictionAccessor.DefaultValue;
+            RollingFriction = RollingFrictionAccessor.DefaultValue;
+            Restitution = RestitutionAccessor.DefaultValue;
+            ContactProcessingThreshold = ContactProcessingThresholdAccessor.DefaultValue;
+            CcdRadius = CcdRadiusAccessor.DefaultValue;
+            CcdMotionThreshold = CcdMotionThresholdAccessor.DefaultValue;
+            UseGravity = UseGravityAccessor.DefaultValue;
+            GravityOverride = GravityOverrideAccessor.DefaultValue;
+            Kinematic = KinematicAccessor.DefaultValue;
+            Trigger = TriggerAccessor.DefaultValue;
+            CollisionLayer = CollisionLayerAccessor.DefaultValue;
+            CollisionMask = CollisionMaskAccessor.DefaultValue;
+            CollisionEventMode = CollisionEventModeAccessor.DefaultValue;
+            Enabled = EnabledAccessor.DefaultValue;
+            AnimationEnabled = AnimationEnabledAccessor.DefaultValue;
+            Temporary = TemporaryAccessor.DefaultValue;
+            BlockEvents = BlockEventsAccessor.DefaultValue;
         }
         public RigidBodyPrefab(RigidBody val)
         {
-            _mass = val.Mass;
-            _linearRestThreshold = val.LinearRestThreshold;
-            _linearDamping = val.LinearDamping;
-            _angularRestThreshold = val.AngularRestThreshold;
-            _angularDamping = val.AngularDamping;
-            _friction = val.Friction;
-            _rollingFriction = val.RollingFriction;
-            _restitution = val.Restitution;
-            _contactProcessingThreshold = val.ContactProcessingThreshold;
-            _ccdRadius = val.CcdRadius;
-            _ccdMotionThreshold = val.CcdMotionThreshold;
-            _useGravity = val.UseGravity;
-            _gravityOverride = val.GravityOverride;
-            _kinematic = val.Kinematic;
-            _trigger = val.Trigger;
-            _collisionLayer = val.CollisionLayer;
-            _collisionMask = val.CollisionMask;
-            _collisionEventMode = val.CollisionEventMode;
-            _enabled = val.Enabled;
-            _animationEnabled = val.AnimationEnabled;
-            _temporary = val.Temporary;
-            _blockEvents = val.BlockEvents;
+            ID = val.ID;
+            Mass = val.Mass;
+            LinearRestThreshold = val.LinearRestThreshold;
+            LinearDamping = val.LinearDamping;
+            AngularRestThreshold = val.AngularRestThreshold;
+            AngularDamping = val.AngularDamping;
+            Friction = val.Friction;
+            RollingFriction = val.RollingFriction;
+            Restitution = val.Restitution;
+            ContactProcessingThreshold = val.ContactProcessingThreshold;
+            CcdRadius = val.CcdRadius;
+            CcdMotionThreshold = val.CcdMotionThreshold;
+            UseGravity = val.UseGravity;
+            GravityOverride = val.GravityOverride;
+            Kinematic = val.Kinematic;
+            Trigger = val.Trigger;
+            CollisionLayer = val.CollisionLayer;
+            CollisionMask = val.CollisionMask;
+            CollisionEventMode = val.CollisionEventMode;
+            Enabled = val.Enabled;
+            AnimationEnabled = val.AnimationEnabled;
+            Temporary = val.Temporary;
+            BlockEvents = val.BlockEvents;
         }
-        public float Mass {get { return _mass;} set { _mass=value; } }
-        public bool MassHasValue {get { return !PrefabUtils.AreEqual(ref _mass, ref MassDefaultValue); } }
-        public float LinearRestThreshold {get { return _linearRestThreshold;} set { _linearRestThreshold=value; } }
-        public bool LinearRestThresholdHasValue {get { return !PrefabUtils.AreEqual(ref _linearRestThreshold, ref LinearRestThresholdDefaultValue); } }
-        public float LinearDamping {get { return _linearDamping;} set { _linearDamping=value; } }
-        public bool LinearDampingHasValue {get { return !PrefabUtils.AreEqual(ref _linearDamping, ref LinearDampingDefaultValue); } }
-        public float AngularRestThreshold {get { return _angularRestThreshold;} set { _angularRestThreshold=value; } }
-        public bool AngularRestThresholdHasValue {get { return !PrefabUtils.AreEqual(ref _angularRestThreshold, ref AngularRestThresholdDefaultValue); } }
-        public float AngularDamping {get { return _angularDamping;} set { _angularDamping=value; } }
-        public bool AngularDampingHasValue {get { return !PrefabUtils.AreEqual(ref _angularDamping, ref AngularDampingDefaultValue); } }
-        public float Friction {get { return _friction;} set { _friction=value; } }
-        public bool FrictionHasValue {get { return !PrefabUtils.AreEqual(ref _friction, ref FrictionDefaultValue); } }
-        public float RollingFriction {get { return _rollingFriction;} set { _rollingFriction=value; } }
-        public bool RollingFrictionHasValue {get { return !PrefabUtils.AreEqual(ref _rollingFriction, ref RollingFrictionDefaultValue); } }
-        public float Restitution {get { return _restitution;} set { _restitution=value; } }
-        public bool RestitutionHasValue {get { return !PrefabUtils.AreEqual(ref _restitution, ref RestitutionDefaultValue); } }
-        public float ContactProcessingThreshold {get { return _contactProcessingThreshold;} set { _contactProcessingThreshold=value; } }
-        public bool ContactProcessingThresholdHasValue {get { return !PrefabUtils.AreEqual(ref _contactProcessingThreshold, ref ContactProcessingThresholdDefaultValue); } }
-        public float CcdRadius {get { return _ccdRadius;} set { _ccdRadius=value; } }
-        public bool CcdRadiusHasValue {get { return !PrefabUtils.AreEqual(ref _ccdRadius, ref CcdRadiusDefaultValue); } }
-        public float CcdMotionThreshold {get { return _ccdMotionThreshold;} set { _ccdMotionThreshold=value; } }
-        public bool CcdMotionThresholdHasValue {get { return !PrefabUtils.AreEqual(ref _ccdMotionThreshold, ref CcdMotionThresholdDefaultValue); } }
-        public bool UseGravity {get { return _useGravity;} set { _useGravity=value; } }
-        public bool UseGravityHasValue {get { return !PrefabUtils.AreEqual(ref _useGravity, ref UseGravityDefaultValue); } }
-        public Vector3 GravityOverride {get { return _gravityOverride;} set { _gravityOverride=value; } }
-        public bool GravityOverrideHasValue {get { return !PrefabUtils.AreEqual(ref _gravityOverride, ref GravityOverrideDefaultValue); } }
-        public bool Kinematic {get { return _kinematic;} set { _kinematic=value; } }
-        public bool KinematicHasValue {get { return !PrefabUtils.AreEqual(ref _kinematic, ref KinematicDefaultValue); } }
-        public bool Trigger {get { return _trigger;} set { _trigger=value; } }
-        public bool TriggerHasValue {get { return !PrefabUtils.AreEqual(ref _trigger, ref TriggerDefaultValue); } }
-        public uint CollisionLayer {get { return _collisionLayer;} set { _collisionLayer=value; } }
-        public bool CollisionLayerHasValue {get { return !PrefabUtils.AreEqual(ref _collisionLayer, ref CollisionLayerDefaultValue); } }
-        public uint CollisionMask {get { return _collisionMask;} set { _collisionMask=value; } }
-        public bool CollisionMaskHasValue {get { return !PrefabUtils.AreEqual(ref _collisionMask, ref CollisionMaskDefaultValue); } }
-        public CollisionEventMode CollisionEventMode {get { return _collisionEventMode;} set { _collisionEventMode=value; } }
-        public bool CollisionEventModeHasValue {get { return !PrefabUtils.AreEqual(ref _collisionEventMode, ref CollisionEventModeDefaultValue); } }
-        public bool Enabled {get { return _enabled;} set { _enabled=value; } }
-        public bool EnabledHasValue {get { return !PrefabUtils.AreEqual(ref _enabled, ref EnabledDefaultValue); } }
-        public bool AnimationEnabled {get { return _animationEnabled;} set { _animationEnabled=value; } }
-        public bool AnimationEnabledHasValue {get { return !PrefabUtils.AreEqual(ref _animationEnabled, ref AnimationEnabledDefaultValue); } }
-        public bool Temporary {get { return _temporary;} set { _temporary=value; } }
-        public bool TemporaryHasValue {get { return !PrefabUtils.AreEqual(ref _temporary, ref TemporaryDefaultValue); } }
-        public bool BlockEvents {get { return _blockEvents;} set { _blockEvents=value; } }
-        public bool BlockEventsHasValue {get { return !PrefabUtils.AreEqual(ref _blockEvents, ref BlockEventsDefaultValue); } }
         public override RigidBody Create()
         {
             var result = new RigidBody();
-            if(MassHasValue)
-                result.Mass = _mass;
-            if(LinearRestThresholdHasValue)
-                result.LinearRestThreshold = _linearRestThreshold;
-            if(LinearDampingHasValue)
-                result.LinearDamping = _linearDamping;
-            if(AngularRestThresholdHasValue)
-                result.AngularRestThreshold = _angularRestThreshold;
-            if(AngularDampingHasValue)
-                result.AngularDamping = _angularDamping;
-            if(FrictionHasValue)
-                result.Friction = _friction;
-            if(RollingFrictionHasValue)
-                result.RollingFriction = _rollingFriction;
-            if(RestitutionHasValue)
-                result.Restitution = _restitution;
-            if(ContactProcessingThresholdHasValue)
-                result.ContactProcessingThreshold = _contactProcessingThreshold;
-            if(CcdRadiusHasValue)
-                result.CcdRadius = _ccdRadius;
-            if(CcdMotionThresholdHasValue)
-                result.CcdMotionThreshold = _ccdMotionThreshold;
-            if(UseGravityHasValue)
-                result.UseGravity = _useGravity;
-            if(GravityOverrideHasValue)
-                result.GravityOverride = _gravityOverride;
-            if(KinematicHasValue)
-                result.Kinematic = _kinematic;
-            if(TriggerHasValue)
-                result.Trigger = _trigger;
-            if(CollisionLayerHasValue)
-                result.CollisionLayer = _collisionLayer;
-            if(CollisionMaskHasValue)
-                result.CollisionMask = _collisionMask;
-            if(CollisionEventModeHasValue)
-                result.CollisionEventMode = _collisionEventMode;
-            if(EnabledHasValue)
-                result.Enabled = _enabled;
-            if(AnimationEnabledHasValue)
-                result.AnimationEnabled = _animationEnabled;
-            if(TemporaryHasValue)
-                result.Temporary = _temporary;
-            if(BlockEventsHasValue)
-                result.BlockEvents = _blockEvents;
+            MassAccessor.Instance.ApplyIfChanged(this, result);
+            LinearRestThresholdAccessor.Instance.ApplyIfChanged(this, result);
+            LinearDampingAccessor.Instance.ApplyIfChanged(this, result);
+            AngularRestThresholdAccessor.Instance.ApplyIfChanged(this, result);
+            AngularDampingAccessor.Instance.ApplyIfChanged(this, result);
+            FrictionAccessor.Instance.ApplyIfChanged(this, result);
+            RollingFrictionAccessor.Instance.ApplyIfChanged(this, result);
+            RestitutionAccessor.Instance.ApplyIfChanged(this, result);
+            ContactProcessingThresholdAccessor.Instance.ApplyIfChanged(this, result);
+            CcdRadiusAccessor.Instance.ApplyIfChanged(this, result);
+            CcdMotionThresholdAccessor.Instance.ApplyIfChanged(this, result);
+            UseGravityAccessor.Instance.ApplyIfChanged(this, result);
+            GravityOverrideAccessor.Instance.ApplyIfChanged(this, result);
+            KinematicAccessor.Instance.ApplyIfChanged(this, result);
+            TriggerAccessor.Instance.ApplyIfChanged(this, result);
+            CollisionLayerAccessor.Instance.ApplyIfChanged(this, result);
+            CollisionMaskAccessor.Instance.ApplyIfChanged(this, result);
+            CollisionEventModeAccessor.Instance.ApplyIfChanged(this, result);
+            EnabledAccessor.Instance.ApplyIfChanged(this, result);
+            AnimationEnabledAccessor.Instance.ApplyIfChanged(this, result);
+            TemporaryAccessor.Instance.ApplyIfChanged(this, result);
+            BlockEventsAccessor.Instance.ApplyIfChanged(this, result);
             return result;
         }
 
@@ -202,52 +118,367 @@ namespace UrhoSharp.Prefabs
             switch (name)
             {
                 case "Mass":
+                    MassAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LinearRestThreshold":
+                    LinearRestThresholdAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "LinearDamping":
+                    LinearDampingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AngularRestThreshold":
+                    AngularRestThresholdAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AngularDamping":
+                    AngularDampingAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Friction":
+                    FrictionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "RollingFriction":
+                    RollingFrictionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Restitution":
+                    RestitutionAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "ContactProcessingThreshold":
+                    ContactProcessingThresholdAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CcdRadius":
+                    CcdRadiusAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CcdMotionThreshold":
+                    CcdMotionThresholdAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "UseGravity":
+                    UseGravityAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "GravityOverride":
+                    GravityOverrideAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Kinematic":
+                    KinematicAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Trigger":
+                    TriggerAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollisionLayer":
+                    CollisionLayerAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollisionMask":
+                    CollisionMaskAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "CollisionEventMode":
+                    CollisionEventModeAccessor.Instance.ParseAndSet(value, this);
                     break;
-                case "Enabled":
+                case "Is Enabled":
+                    EnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "AnimationEnabled":
+                    AnimationEnabledAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "Temporary":
+                    TemporaryAccessor.Instance.ParseAndSet(value, this);
                     break;
                 case "BlockEvents":
+                    BlockEventsAccessor.Instance.ParseAndSet(value, this);
                     break;
                 default:
                     throw new NotImplementedException("Property "+name+" not implemented yet.");
             }
         }
+        #region Accessors
+        public override IEnumerable<IAccessor> Properties {
+            get {
+                yield return MassAccessor.Instance;
+                yield return LinearRestThresholdAccessor.Instance;
+                yield return LinearDampingAccessor.Instance;
+                yield return AngularRestThresholdAccessor.Instance;
+                yield return AngularDampingAccessor.Instance;
+                yield return FrictionAccessor.Instance;
+                yield return RollingFrictionAccessor.Instance;
+                yield return RestitutionAccessor.Instance;
+                yield return ContactProcessingThresholdAccessor.Instance;
+                yield return CcdRadiusAccessor.Instance;
+                yield return CcdMotionThresholdAccessor.Instance;
+                yield return UseGravityAccessor.Instance;
+                yield return GravityOverrideAccessor.Instance;
+                yield return KinematicAccessor.Instance;
+                yield return TriggerAccessor.Instance;
+                yield return CollisionLayerAccessor.Instance;
+                yield return CollisionMaskAccessor.Instance;
+                yield return CollisionEventModeAccessor.Instance;
+                yield return EnabledAccessor.Instance;
+                yield return AnimationEnabledAccessor.Instance;
+                yield return TemporaryAccessor.Instance;
+                yield return BlockEventsAccessor.Instance;
+            }
+        }
+
+        internal class MassAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly MassAccessor Instance = new MassAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Mass);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.Mass; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.Mass = value; }
+            public override float GetUrho(RigidBody instance) { return instance.Mass; }
+            public override void SetUrho(RigidBody instance, float value) { instance.Mass = value; }
+        }
+
+        internal class LinearRestThresholdAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly LinearRestThresholdAccessor Instance = new LinearRestThresholdAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.LinearRestThreshold);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.LinearRestThreshold; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.LinearRestThreshold = value; }
+            public override float GetUrho(RigidBody instance) { return instance.LinearRestThreshold; }
+            public override void SetUrho(RigidBody instance, float value) { instance.LinearRestThreshold = value; }
+        }
+
+        internal class LinearDampingAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly LinearDampingAccessor Instance = new LinearDampingAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.LinearDamping);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.LinearDamping; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.LinearDamping = value; }
+            public override float GetUrho(RigidBody instance) { return instance.LinearDamping; }
+            public override void SetUrho(RigidBody instance, float value) { instance.LinearDamping = value; }
+        }
+
+        internal class AngularRestThresholdAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly AngularRestThresholdAccessor Instance = new AngularRestThresholdAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.AngularRestThreshold);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.AngularRestThreshold; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.AngularRestThreshold = value; }
+            public override float GetUrho(RigidBody instance) { return instance.AngularRestThreshold; }
+            public override void SetUrho(RigidBody instance, float value) { instance.AngularRestThreshold = value; }
+        }
+
+        internal class AngularDampingAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly AngularDampingAccessor Instance = new AngularDampingAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.AngularDamping);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.AngularDamping; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.AngularDamping = value; }
+            public override float GetUrho(RigidBody instance) { return instance.AngularDamping; }
+            public override void SetUrho(RigidBody instance, float value) { instance.AngularDamping = value; }
+        }
+
+        internal class FrictionAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly FrictionAccessor Instance = new FrictionAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Friction);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.Friction; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.Friction = value; }
+            public override float GetUrho(RigidBody instance) { return instance.Friction; }
+            public override void SetUrho(RigidBody instance, float value) { instance.Friction = value; }
+        }
+
+        internal class RollingFrictionAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly RollingFrictionAccessor Instance = new RollingFrictionAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.RollingFriction);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.RollingFriction; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.RollingFriction = value; }
+            public override float GetUrho(RigidBody instance) { return instance.RollingFriction; }
+            public override void SetUrho(RigidBody instance, float value) { instance.RollingFriction = value; }
+        }
+
+        internal class RestitutionAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly RestitutionAccessor Instance = new RestitutionAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Restitution);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.Restitution; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.Restitution = value; }
+            public override float GetUrho(RigidBody instance) { return instance.Restitution; }
+            public override void SetUrho(RigidBody instance, float value) { instance.Restitution = value; }
+        }
+
+        internal class ContactProcessingThresholdAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly ContactProcessingThresholdAccessor Instance = new ContactProcessingThresholdAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.ContactProcessingThreshold);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.ContactProcessingThreshold; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.ContactProcessingThreshold = value; }
+            public override float GetUrho(RigidBody instance) { return instance.ContactProcessingThreshold; }
+            public override void SetUrho(RigidBody instance, float value) { instance.ContactProcessingThreshold = value; }
+        }
+
+        internal class CcdRadiusAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly CcdRadiusAccessor Instance = new CcdRadiusAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.CcdRadius);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.CcdRadius; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.CcdRadius = value; }
+            public override float GetUrho(RigidBody instance) { return instance.CcdRadius; }
+            public override void SetUrho(RigidBody instance, float value) { instance.CcdRadius = value; }
+        }
+
+        internal class CcdMotionThresholdAccessor : SingleAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly CcdMotionThresholdAccessor Instance = new CcdMotionThresholdAccessor();
+            public static readonly float DefaultValue = 0f;
+            public override float DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.CcdMotionThreshold);
+            public override float GetPrefab(RigidBodyPrefab instance) { return instance.CcdMotionThreshold; }
+            public override void SetPrefab(RigidBodyPrefab instance, float value) { instance.CcdMotionThreshold = value; }
+            public override float GetUrho(RigidBody instance) { return instance.CcdMotionThreshold; }
+            public override void SetUrho(RigidBody instance, float value) { instance.CcdMotionThreshold = value; }
+        }
+
+        internal class UseGravityAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly UseGravityAccessor Instance = new UseGravityAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.UseGravity);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.UseGravity; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.UseGravity = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.UseGravity; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.UseGravity = value; }
+        }
+
+        internal class GravityOverrideAccessor : Vector3Accessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly GravityOverrideAccessor Instance = new GravityOverrideAccessor();
+            public static readonly Vector3 DefaultValue = new Vector3(0f, 0f, 0f);
+            public override Vector3 DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.GravityOverride);
+            public override Vector3 GetPrefab(RigidBodyPrefab instance) { return instance.GravityOverride; }
+            public override void SetPrefab(RigidBodyPrefab instance, Vector3 value) { instance.GravityOverride = value; }
+            public override Vector3 GetUrho(RigidBody instance) { return instance.GravityOverride; }
+            public override void SetUrho(RigidBody instance, Vector3 value) { instance.GravityOverride = value; }
+        }
+
+        internal class KinematicAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly KinematicAccessor Instance = new KinematicAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Kinematic);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.Kinematic; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.Kinematic = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.Kinematic; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.Kinematic = value; }
+        }
+
+        internal class TriggerAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly TriggerAccessor Instance = new TriggerAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Trigger);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.Trigger; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.Trigger = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.Trigger; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.Trigger = value; }
+        }
+
+        internal class CollisionLayerAccessor : UInt32Accessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly CollisionLayerAccessor Instance = new CollisionLayerAccessor();
+            public static readonly uint DefaultValue = 1;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.CollisionLayer);
+            public override uint GetPrefab(RigidBodyPrefab instance) { return instance.CollisionLayer; }
+            public override void SetPrefab(RigidBodyPrefab instance, uint value) { instance.CollisionLayer = value; }
+            public override uint GetUrho(RigidBody instance) { return instance.CollisionLayer; }
+            public override void SetUrho(RigidBody instance, uint value) { instance.CollisionLayer = value; }
+        }
+
+        internal class CollisionMaskAccessor : UInt32Accessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly CollisionMaskAccessor Instance = new CollisionMaskAccessor();
+            public static readonly uint DefaultValue = 4294967295;
+            public override uint DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.CollisionMask);
+            public override uint GetPrefab(RigidBodyPrefab instance) { return instance.CollisionMask; }
+            public override void SetPrefab(RigidBodyPrefab instance, uint value) { instance.CollisionMask = value; }
+            public override uint GetUrho(RigidBody instance) { return instance.CollisionMask; }
+            public override void SetUrho(RigidBody instance, uint value) { instance.CollisionMask = value; }
+        }
+
+        internal class CollisionEventModeAccessor : EnumAccessor<RigidBodyPrefab, RigidBody, CollisionEventMode>
+        {
+            public static readonly CollisionEventModeAccessor Instance = new CollisionEventModeAccessor();
+            public static readonly CollisionEventMode DefaultValue = CollisionEventMode.Active;
+            public override CollisionEventMode DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.CollisionEventMode);
+            public override CollisionEventMode GetPrefab(RigidBodyPrefab instance) { return instance.CollisionEventMode; }
+            public override void SetPrefab(RigidBodyPrefab instance, CollisionEventMode value) { instance.CollisionEventMode = value; }
+            public override CollisionEventMode GetUrho(RigidBody instance) { return instance.CollisionEventMode; }
+            public override void SetUrho(RigidBody instance, CollisionEventMode value) { instance.CollisionEventMode = value; }
+        }
+
+        internal class EnabledAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly EnabledAccessor Instance = new EnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Enabled);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.Enabled; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.Enabled = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.Enabled; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.Enabled = value; }
+        }
+
+        internal class AnimationEnabledAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly AnimationEnabledAccessor Instance = new AnimationEnabledAccessor();
+            public static readonly bool DefaultValue = true;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.AnimationEnabled);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.AnimationEnabled; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.AnimationEnabled = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.AnimationEnabled; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.AnimationEnabled = value; }
+        }
+
+        internal class TemporaryAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly TemporaryAccessor Instance = new TemporaryAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.Temporary);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.Temporary; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.Temporary = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.Temporary; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.Temporary = value; }
+        }
+
+        internal class BlockEventsAccessor : BooleanAccessor<RigidBodyPrefab, RigidBody>
+        {
+            public static readonly BlockEventsAccessor Instance = new BlockEventsAccessor();
+            public static readonly bool DefaultValue = false;
+            public override bool DefaultPrefabValue => DefaultValue; 
+            public override string Name => nameof(RigidBody.BlockEvents);
+            public override bool GetPrefab(RigidBodyPrefab instance) { return instance.BlockEvents; }
+            public override void SetPrefab(RigidBodyPrefab instance, bool value) { instance.BlockEvents = value; }
+            public override bool GetUrho(RigidBody instance) { return instance.BlockEvents; }
+            public override void SetUrho(RigidBody instance, bool value) { instance.BlockEvents = value; }
+        }
+
+        #endregion
     }
 }
