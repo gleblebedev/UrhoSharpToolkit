@@ -68,9 +68,9 @@ namespace UrhoSharp.Toolkit.Demo
 
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
-            for (var i = 0; i < 10; ++i)
+            for (var i = 0; i < 100; ++i)
             {
-                progress.ReportProgress(i, 10, "Loading game");
+                progress.ReportProgress(i, 100, "Loading game");
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
         }

@@ -183,6 +183,7 @@
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\NugetPackageViewModel.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
+    <Compile Include="ViewModel\Properties\BooleanPropertyViewModel.cs" />
     <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="View\AssetStoreWindow.xaml.cs">
       <DependentUpon>AssetStoreWindow.xaml</DependentUpon>

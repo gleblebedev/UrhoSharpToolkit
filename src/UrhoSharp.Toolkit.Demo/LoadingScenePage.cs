@@ -1,4 +1,7 @@
-﻿using System.Reactive.Concurrency;
+﻿using System;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Urho;
 using Urho.Gui;
@@ -27,6 +30,9 @@ namespace UrhoSharp.Toolkit.Demo
             UI.AddChild(_text);
         }
 
+        private float _angle = 0.0f;
+        private Node _animatedNode;
+
         public void ReportProgress(int index, int count, string message)
         {
             _scheduler.Schedule(() => _text.Value = string.Format("{0}/{1} {2}", index, count, message));
@@ -36,7 +42,21 @@ namespace UrhoSharp.Toolkit.Demo
         {
             _scheduler = scheduler;
 
+            _animatedNode = Scene.CreateChild("WaitAnimation");
+            var geometry = EmplyLoadingScenePage.MakeLoadingModel(0.5f);
+            _animatedNode.AddComponent(geometry);
+            _animatedNode.Position = Vector3.Forward * 2;
+            Camera.Node.LookAt(_animatedNode.Position, Vector3.Up);
+
             return base.PrepareAsync(scheduler, progress);
+        }
+
+        public override void Update(float timeStep)
+        {
+            base.Update(timeStep);
+
+            _animatedNode.Rotation = Quaternion.FromAxisAngle(Vector3.Forward, -_angle);
+            _angle += timeStep * 180;
         }
 
         public override void OnActivated()
