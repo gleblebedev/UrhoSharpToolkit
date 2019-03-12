@@ -5,6 +5,7 @@ using Autofac;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.View;
 using UrhoSharp.Editor.ViewModel;
+using UnhandledExceptionEventArgs = Urho.UnhandledExceptionEventArgs;
 
 namespace UrhoSharp.Editor
 {
@@ -18,6 +19,8 @@ namespace UrhoSharp.Editor
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            Urho.Application.UnhandledException += HandleUnhandledException;
+
             var builder = new ContainerBuilder();
             builder.RegisterType<HubWindow>().SingleInstance();
             builder.RegisterType<HubWindowViewModel>().SingleInstance();
@@ -38,11 +41,23 @@ namespace UrhoSharp.Editor
             Urho.Application.Started += () => _appSubject.OnNext(Urho.Application.Current as EditorApp);
 
             // Misc.
+            _log = new Subject<LogMessage>();
+            builder.RegisterInstance(_log).As<IObservable<LogMessage>>().SingleInstance();
+            builder.RegisterType<PreviewFactory>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<LogViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<StatusBarViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<AssetsWatcher>().As<IObservable<AssetFileEventArgs>>().InstancePerLifetimeScope();
             _container = builder.Build();
             MainWindow = _container.Resolve<HubWindow>();
             MainWindow.Show();
             ShutdownMode = ShutdownMode.OnLastWindowClose;
+        }
+
+        private Subject<LogMessage> _log;
+        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            _log.OnNext(new LogMessage(e));
         }
 
         private AssetsView GetAssetsView(IComponentContext arg)

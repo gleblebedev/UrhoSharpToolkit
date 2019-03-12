@@ -17,6 +17,7 @@ namespace UrhoSharp.Editor.ViewModel
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
         private readonly ProjectReference _projectReference;
         private readonly Lazy<EditorWindow> _window;
+        private readonly StatusBarViewModel _statusBar;
         private EditorApp _app;
         private IDisposable _appSubscription;
         private bool _hasUnsavedChanged;
@@ -28,12 +29,14 @@ namespace UrhoSharp.Editor.ViewModel
             AssetsViewModel assets,
             Lazy<EditorWindow> window,
             Lazy<AssetStoreWindow> assetStore,
+            StatusBarViewModel statusBar,
             IObservable<EditorApp> app
         )
         {
             _projectReference = projectReference;
             _configuration = configuration;
             _window = window;
+            _statusBar = statusBar;
             _disposable.Add(app.ObserveOnDispatcher().Subscribe(SetApp, _ => SetApp(null), () => SetApp(null)));
             Assets = assets;
             ExitCommand = new ActionCommand(Exit);
@@ -68,6 +71,11 @@ namespace UrhoSharp.Editor.ViewModel
         {
             get => _hasUnsavedChanged;
             set => Set(ref _hasUnsavedChanged, value);
+        }
+
+        public StatusBarViewModel StatusBar
+        {
+            get { return _statusBar; }
         }
 
         public void Dispose()

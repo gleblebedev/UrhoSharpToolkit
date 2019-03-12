@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -157,8 +158,10 @@
     <Compile Include="Model\Importers\SceneFileImporter.cs" />
     <Compile Include="Model\Importers\ZipFileImporter.cs" />
     <Compile Include="Model\JsonFileContainer.cs" />
+    <Compile Include="Model\LogMessage.cs" />
     <Compile Include="Model\ModelPage.cs" />
     <Compile Include="Model\NugetPackageConfiguration.cs" />
+    <Compile Include="Model\PreviewFactory.cs" />
     <Compile Include="Model\ProjectConfiguration.cs" />
     <Compile Include="Model\ProjectReference.cs" />
     <Compile Include="Model\SceneChangeEventArgs.cs" />
@@ -184,11 +187,13 @@
     <Compile Include="ViewModel\InspectorViewModel.cs" />
     <Compile Include="ViewModel\LabelViewModel.cs" />
     <Compile Include="ViewModel\ListTail.cs" />
+    <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\NugetPackageViewModel.cs" />
     <Compile Include="ViewModel\ProjectReferenceViewModel.cs" />
     <Compile Include="ViewModel\Properties\BooleanPropertyViewModel.cs" />
     <Compile Include="ViewModel\PropertyViewModel.cs" />
+    <Compile Include="ViewModel\StatusBarViewModel.cs" />
     <Compile Include="View\AssetStoreWindow.xaml.cs">
       <DependentUpon>AssetStoreWindow.xaml</DependentUpon>
     </Compile>
@@ -312,7 +317,7 @@
     <EmbeddedResource Include="Icons\xml.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\UrhoSharp.1.9.67\build\net45\UrhoSharp.targets" Condition="Exists('..\packages\UrhoSharp.1.9.67\build\net45\UrhoSharp.targets')" />
+  <Import Project="..\packages\UrhoSharp.1.9.67\build\net45\UrhoSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>

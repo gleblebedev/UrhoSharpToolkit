@@ -52,6 +52,8 @@
             <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch" />
         </Grid>
-        <StatusBar x:Name="_statusBar" Grid.Row="3" MinHeight="16" />
+        <StatusBar x:Name="_statusBar" Grid.Row="3" MinHeight="16"  >
+            <TextBlock Text="{Binding StatusBar.Message}"></TextBlock>
+        </StatusBar>
     </Grid>
 </Window>
