@@ -4,23 +4,62 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
+             xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
+             xmlns:properties="clr-namespace:UrhoSharp.Editor.ViewModel.Properties"
+             xmlns:converters="clr-namespace:UrhoSharp.Editor.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <ItemsControl ItemsSource="{Binding Properties}">
+    <UserControl.Resources>
+        <converters:CollapsedIconConverter x:Key="collapsedIconConverter"></converters:CollapsedIconConverter>
+        <converters:VisibilityConverter x:Key="visibilityConverter"
+                                        IfTrue="Collapsed"
+                                        IfFalse="Visible"/>
+    </UserControl.Resources>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button BorderThickness="0" MinWidth="32" Margin="2" Command="{Binding ToggleCollapseCommand}">
+                <TextBlock Text="{Binding IsCollapsed, Converter={StaticResource collapsedIconConverter}}"></TextBlock></Button>
+            <TextBlock Text="{Binding Name}"></TextBlock>
+        </StackPanel>
+        <Grid Visibility="{Binding IsCollapsed, Converter={StaticResource visibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3px"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="_nameWidth" LayoutUpdated="UpdateNameWidth"></Grid>
+            <ItemsControl Grid.ColumnSpan="3" ItemsSource="{Binding Properties}">
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type properties:BooleanPropertyViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding NameWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=local:PropertiesView}}"/>
+                            <ColumnDefinition Width="3px"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}"/>
+                        <CheckBox Grid.Column="3" MinWidth="100" IsChecked="{Binding Value}" Grid.Row="{Binding Index}"  />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModel:PropertyViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding NameWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=local:PropertiesView}}"/>
+                            <ColumnDefinition Width="3px"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBox  Grid.Column="2" MinWidth="100" Text="{Binding Value}" Grid.Row="{Binding Index}" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.Resources>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel />
+                    <StackPanel></StackPanel>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" />
-                        <TextBox MinWidth="100" Text="{Binding Value}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </Grid>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
+        </Grid>
+    </StackPanel>
 </UserControl>

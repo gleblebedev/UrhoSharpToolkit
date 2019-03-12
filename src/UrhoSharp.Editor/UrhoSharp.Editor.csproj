@@ -137,6 +137,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\PreviewSource.cs" />
     <Compile Include="Model\AssetFileEventArgs.cs" />
     <Compile Include="Model\AssetsWatcher.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Model\ProjectReference.cs" />
     <Compile Include="Model\SceneChangeEventArgs.cs" />
     <Compile Include="Model\ScenePage.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\AssetsViewModel.cs" />
@@ -178,7 +180,9 @@
     <Compile Include="ViewModel\Importers\BspFileImporterViewModel.cs" />
     <Compile Include="ViewModel\Importers\FileImporterViewModel.cs" />
     <Compile Include="ViewModel\Importers\MultifileImporterViewModel.cs" />
+    <Compile Include="ViewModel\InspectableViewModel.cs" />
     <Compile Include="ViewModel\InspectorViewModel.cs" />
+    <Compile Include="ViewModel\LabelViewModel.cs" />
     <Compile Include="ViewModel\ListTail.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\NugetPackageViewModel.cs" />

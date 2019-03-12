@@ -88,7 +88,7 @@ namespace UrhoSharp.Prefabs
             public static readonly PositionAccessor Instance = new PositionAccessor();
             public static readonly string DefaultValue = null;
             public override string DefaultPrefabValue => DefaultValue;
-            public override string Name => nameof(Node.Position);
+            public override string Name => nameof(Node.Name);
 
             public override string GetPrefab(NodePrefab instance) { return instance.Name; }
 

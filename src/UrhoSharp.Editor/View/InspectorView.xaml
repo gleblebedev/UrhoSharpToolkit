@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UrhoSharp.Editor.View"
              xmlns:viewModel="clr-namespace:UrhoSharp.Editor.ViewModel"
+             xmlns:converters="clr-namespace:UrhoSharp.Editor.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,14 +17,12 @@
                         <ItemsControl ItemsSource="{Binding Components}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel />
+                                    <StackPanel></StackPanel>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <GroupBox Header="{Binding Name}">
-                                        <local:PropertiesView />
-                                    </GroupBox>
+                                    <local:PropertiesView />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

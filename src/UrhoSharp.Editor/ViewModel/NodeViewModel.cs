@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GalaSoft.MvvmLight;
 using UrhoSharp.Prefabs;
+using UrhoSharp.Prefabs.Accessors;
 
 namespace UrhoSharp.Editor.ViewModel
 {
-    public class NodeViewModel : ViewModelBase
+    public class NodeViewModel : InspectableViewModel
     {
         private readonly INodePrefab _state;
 
@@ -14,14 +14,13 @@ namespace UrhoSharp.Editor.ViewModel
             _state = state;
             Children = state.Children.Select(_ => new NodeViewModel(_)).ToList();
             Components = state.Components.Select(_ => new ComponentViewModel(_)).ToList();
-            Properties = state.Properties.Select(_ => new PropertyViewModel(_state, _)).ToList();
+            Properties = state.Properties.Select((_,i) => CreatePropertyViewModel(_state,_, i)).ToList();
         }
+
 
         public uint Id => _state.ID ?? 0;
 
         public string Name => _state.Name ?? "Node";
-
-        public List<PropertyViewModel> Properties { get; set; }
 
         public List<NodeViewModel> Children { get; set; }
 

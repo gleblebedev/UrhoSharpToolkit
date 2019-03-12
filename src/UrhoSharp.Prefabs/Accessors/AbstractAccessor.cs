@@ -49,6 +49,42 @@ namespace UrhoSharp.Prefabs.Accessors
                 throw new FormatException($"Can\'t parse {Name} value \"{value}\"");
         }
 
+        protected IEnumerable<float> SplitVector(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                yield break;
+            var parts =  text.Split(whitespaceChars, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                float v;
+                if (!TryParseFloat(part, out v))
+                    yield return 0.0f;
+                else
+                    yield return v;
+            }
+        }
+
+        protected static readonly char[] whitespaceChars = new char[]
+        {
+            (char)32,
+            (char)9,
+            (char)10,
+            (char)11,
+            (char)12,
+            (char)13,
+            (char)160,
+            (char)133,
+        };
+        protected bool TryParseFloat(string text, out float v)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                v = 0.0f;
+                return true;
+            }
+            return float.TryParse(text, NumberStyles.Any, InvariantCulture, out v);
+        }
+
         public virtual bool PrefabHasValue(TPrefab instance)
         {
             return !EqualityComparer<TPrefabProperty>.Default.Equals(GetPrefab(instance), DefaultPrefabValue);
@@ -134,9 +170,10 @@ namespace UrhoSharp.Prefabs.Accessors
 
         public virtual string ToStringPrefab(TPrefabProperty value)
         {
-            return string.Format("{0}", value, CultureInfo.InvariantCulture);
+            return string.Format("{0}", value, InvariantCulture);
         }
 
+        public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
         public virtual void BackgroundLoadResource(IPrefab prefab)
         {
         }
