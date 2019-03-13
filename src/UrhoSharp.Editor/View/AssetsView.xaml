@@ -8,9 +8,6 @@
              xmlns:converters="clr-namespace:UrhoSharp.Editor.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <converters:PreviewSource x:Key="iconSource" />
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -75,7 +72,7 @@
                                         <RowDefinition />
                                         <RowDefinition Height="32" />
                                     </Grid.RowDefinitions>
-                                    <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                    <Image Source="{Binding Preview.ImageSource}"
                                            VerticalAlignment="Top"
                                            HorizontalAlignment="Center" />
                                     <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"
@@ -99,7 +96,7 @@
                                         <RowDefinition />
                                         <RowDefinition Height="32" />
                                     </Grid.RowDefinitions>
-                                    <Image Source="{Binding ., Converter={StaticResource iconSource}}"
+                                    <Image Source="{Binding Preview.ImageSource}"
                                            VerticalAlignment="Top"
                                            HorizontalAlignment="Center" />
                                     <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap"

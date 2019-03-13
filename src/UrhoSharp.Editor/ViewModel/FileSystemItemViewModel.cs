@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Media;
+using GalaSoft.MvvmLight;
+using UrhoSharp.Editor.Annotations;
 using UrhoSharp.Editor.Model;
 
 namespace UrhoSharp.Editor.ViewModel
 {
+
     public abstract class FileSystemItemViewModel
     {
         protected readonly AssetsViewModel _assets;
@@ -28,6 +34,7 @@ namespace UrhoSharp.Editor.ViewModel
                 ? Path.GetFileName(Path.GetDirectoryName(fullPath))
                 : Path.GetFileName(FullPath);
         }
+
 
         public ICommand ViewInExplorerCommand =>
             _viewInExplorerCommand ?? (_viewInExplorerCommand = new ActionCommand(ViewInExplorer));

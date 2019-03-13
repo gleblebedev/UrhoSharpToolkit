@@ -9,11 +9,20 @@ namespace UrhoSharp.Editor.ViewModel
 {
     public class FolderViewModel : FileSystemItemViewModel
     {
+        private ImageSourceContainer _preview;
+
         public FolderViewModel(string fullPath, string rootPath, FileSystemItemViewModel parent, AssetsViewModel assets)
             : base(fullPath, rootPath, parent, assets)
         {
             OpenCommand = new ActionCommand(Select);
             ExportPackageCommand = new ActionCommand(ExportPackage);
+            Preview = assets.PreviewFactory.CreateFolderPreview(ResourcePath, fullPath);
+        }
+
+        public ImageSourceContainer Preview
+        {
+            get { return _preview; }
+            set { _preview = value; }
         }
 
         public ICommand OpenCommand { get; set; }

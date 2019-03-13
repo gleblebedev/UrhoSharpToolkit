@@ -28,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.9.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -139,7 +141,6 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanConverter.cs" />
-    <Compile Include="Converters\PreviewSource.cs" />
     <Compile Include="Model\AssetFileEventArgs.cs" />
     <Compile Include="Model\AssetsWatcher.cs" />
     <Compile Include="Model\ConfigurationContainer.cs" />
@@ -147,7 +148,9 @@
     <Compile Include="Model\ExtensionMethods.cs" />
     <Compile Include="Model\HubConfiguration.cs" />
     <Compile Include="Model\IConfigurationContainer.cs" />
+    <Compile Include="Model\IHashFunction.cs" />
     <Compile Include="Model\IImporter.cs" />
+    <Compile Include="Model\ImageSourceContainer.cs" />
     <Compile Include="Model\Importers\AbstractImporter.cs" />
     <Compile Include="Model\Importers\BatchImporter.cs" />
     <Compile Include="Model\Importers\BspFileImporter.cs" />
@@ -159,6 +162,7 @@
     <Compile Include="Model\Importers\ZipFileImporter.cs" />
     <Compile Include="Model\JsonFileContainer.cs" />
     <Compile Include="Model\LogMessage.cs" />
+    <Compile Include="Model\MD5HashFunction.cs" />
     <Compile Include="Model\ModelPage.cs" />
     <Compile Include="Model\NugetPackageConfiguration.cs" />
     <Compile Include="Model\PreviewFactory.cs" />

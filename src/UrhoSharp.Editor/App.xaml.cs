@@ -43,6 +43,7 @@ namespace UrhoSharp.Editor
             // Misc.
             _log = new Subject<LogMessage>();
             builder.RegisterInstance(_log).As<IObservable<LogMessage>>().SingleInstance();
+            builder.RegisterType<MD5HashFunction>().As<IHashFunction>().SingleInstance();
             builder.RegisterType<PreviewFactory>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<LogViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<StatusBarViewModel>().AsSelf().InstancePerLifetimeScope();

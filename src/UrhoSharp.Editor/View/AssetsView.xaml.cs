@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using UrhoSharp.Editor.Converters;
 using UrhoSharp.Editor.ViewModel;
 
 namespace UrhoSharp.Editor.View
