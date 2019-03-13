@@ -11,7 +11,7 @@
     <Window.Title>
         <Binding Path="Name" StringFormat="Urh3D/UrhoSharp - {0}" />
     </Window.Title>
-    <Grid>
+    <Grid Background="{DynamicResource MainBGcolor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -26,9 +26,12 @@
                 <MenuItem Header="Asset Store" Command="{Binding AssetStoreCommand}" />
                 <MenuItem Header="Export Package" Command="{Binding ExportPackageCommand}" />
             </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Styles" x:Name="MenuStyles"/>
+            </MenuItem>
         </Menu>
         <ToolBar Grid.Row="1" />
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="5px" />
@@ -43,7 +46,7 @@
             </Grid.RowDefinitions>
             <local:HierarchyView Grid.Row="0" Grid.Column="0" DataContext="{Binding HierarchyViewModel}" />
             <wpf:UrhoSurface x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
-            <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+            <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
                               DataContext="{Binding Assets}" />
             <local:InspectorView Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" DataContext="{Binding Inspector}" />
             <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
@@ -52,7 +55,7 @@
             <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch" />
         </Grid>
-        <StatusBar x:Name="_statusBar" Grid.Row="3" MinHeight="16"  >
+        <StatusBar x:Name="_statusBar" Grid.Row="3" MinHeight="16" Background="{DynamicResource StatuSBarColor}" >
             <TextBlock Text="{Binding StatusBar.Message}"></TextBlock>
         </StatusBar>
     </Grid>
