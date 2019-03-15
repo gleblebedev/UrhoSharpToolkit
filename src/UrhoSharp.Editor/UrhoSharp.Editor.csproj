@@ -166,6 +166,11 @@
     <Compile Include="Model\ModelPage.cs" />
     <Compile Include="Model\NugetPackageConfiguration.cs" />
     <Compile Include="Model\PreviewFactory.cs" />
+    <Compile Include="Model\PreviewScenes\AbstractPreviewScene.cs" />
+    <Compile Include="Model\PreviewScenes\MaterialPreviewScene.cs" />
+    <Compile Include="Model\PreviewScenes\ModelPreviewScene.cs" />
+    <Compile Include="Model\PreviewScenes\PrefabPreviewScene.cs" />
+    <Compile Include="Model\PreviewScenes\TexturePreviewScene.cs" />
     <Compile Include="Model\ProjectConfiguration.cs" />
     <Compile Include="Model\ProjectReference.cs" />
     <Compile Include="Model\SceneChangeEventArgs.cs" />

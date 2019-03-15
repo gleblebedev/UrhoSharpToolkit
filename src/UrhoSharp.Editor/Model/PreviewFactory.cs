@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using Urho;
 using Urho.Urho2D;
 using UrhoSharp.Editor.Converters;
+using UrhoSharp.Editor.Model.PreviewScenes;
 using UrhoSharp.Interfaces;
 
 namespace UrhoSharp.Editor.Model
@@ -16,10 +19,10 @@ namespace UrhoSharp.Editor.Model
         private readonly IHashFunction _hashFunction;
         private Texture2D _renderTexture;
 
-        public PreviewFactory(ProjectReference project, IHashFunction hashFunction)
+        public PreviewFactory(ProjectReference project, IConfigurationContainer<ProjectConfiguration> config, IHashFunction hashFunction)
         {
             _hashFunction = hashFunction;
-            _previewFolder = Path.Combine(project.Path, ".meta\\previews");
+            _previewFolder = Path.Combine(project.Path, config.Value.MetaInfoFolder, "previews");
             Directory.CreateDirectory(_previewFolder);
             Urho.Application.Started += StartPreviewFactory;
         }
@@ -37,14 +40,22 @@ namespace UrhoSharp.Editor.Model
 
         private PreviewRequest _current;
 
+        Lazy<ModelPreviewScene> _modelPreview = new Lazy<ModelPreviewScene>(()=>new ModelPreviewScene());
+        Lazy<TexturePreviewScene> _texturePreview = new Lazy<TexturePreviewScene>(() => new TexturePreviewScene());
+        Lazy<PrefabPreviewScene> _prefabPreview = new Lazy<PrefabPreviewScene>(() => new PrefabPreviewScene());
+        Lazy<MaterialPreviewScene> _materialPreview = new Lazy<MaterialPreviewScene>(() => new MaterialPreviewScene());
+
         private void Tick(UpdateEventArgs obj)
         {
             if (_current == null)
             {
                 if (!_queue.TryDequeue(out _current))
                     return;
-                Urho.Application.Current.ResourceCache.BackgroundLoadResource(_current.ResourceType,
-                    _current.ResourceName, false);
+                if (_current.ResourceType.Code != 0)
+                {
+                    Urho.Application.Current.ResourceCache.BackgroundLoadResource(_current.ResourceType,
+                        _current.ResourceName, false);
+                }
             }
 
             if (!_current.Ready)
@@ -58,10 +69,16 @@ namespace UrhoSharp.Editor.Model
                     }
 
                     _current.Ready = true;
-                    var scene = _current.CreateSceneAndCamera();
+                    var scene = _current.PreviewScene.Value;
                     _renderTexture.RenderSurface.SetViewport(0, new Viewport(Urho.Application.CurrentContext, scene.Scene, scene.Camera));
                     _renderTexture.RenderSurface.UpdateMode = RenderSurfaceUpdateMode.Updatealways;
                 }
+                return;
+            }
+
+            if (_current.TimeoutCounter > 0)
+            {
+                --_current.TimeoutCounter;
                 return;
             }
 
@@ -95,11 +112,7 @@ namespace UrhoSharp.Editor.Model
             _current = null;
         }
 
-        class SceneAndCamera
-        {
-            public Scene Scene;
-            public Camera Camera;
-        }
+   
         class PreviewRequest
         {
             private string _imagePath;
@@ -108,6 +121,7 @@ namespace UrhoSharp.Editor.Model
             private ImageSourceContainer _container;
             private StringHash _resourceType;
             private bool _ready;
+            public int TimeoutCounter { get; set; } = 4;
 
             public string ImagePath
             {
@@ -115,7 +129,7 @@ namespace UrhoSharp.Editor.Model
                 set { _imagePath = value; }
             }
 
-            public Func<SceneAndCamera> CreateSceneAndCamera { get; set; }
+            public Lazy<AbstractPreviewScene> PreviewScene { get; set; }
 
             public string ResourceName
             {
@@ -155,12 +169,16 @@ namespace UrhoSharp.Editor.Model
         private readonly long MaxImageSize = 2 * 1024 * 1024;
         public ImageSourceContainer CreateFilePreview(string resourceName, string fullPath, long size)
         {
-            if (IsImage(resourceName) && size  < MaxImageSize)
-                return new ImageSourceContainer(new BitmapImage(new Uri(fullPath)));
+            //if (IsImage(resourceName) && size  < MaxImageSize)
+            //    return new ImageSourceContainer(new BitmapImage(new Uri(fullPath)));
             return ConvertExtension(resourceName, fullPath);
         }
         private ImageSourceContainer ConvertExtension(string resourceName, string fullPath)
         {
+            var previewImage = Path.Combine(_previewFolder, _hashFunction.GetHash(resourceName) + ".png");
+            if (File.Exists(previewImage))
+                return new ImageSourceContainer(BitmapFrame.Create(new Uri(previewImage)));
+
             var ex = Path.GetExtension(resourceName);
             switch (ex.ToLower())
             {
@@ -169,7 +187,7 @@ namespace UrhoSharp.Editor.Model
                 case ".cs":
                     return _cs.Value;
                 case ".xml":
-                    return _xml.Value;
+                    return CreateXmlPreview(resourceName, fullPath);
                 case ".mdl":
                     return CreateModelPreview(resourceName, fullPath);
                 case ".dae":
@@ -182,81 +200,106 @@ namespace UrhoSharp.Editor.Model
                     return _mesh.Value;
                 case ".ani":
                     return _animation.Value;
+                case ".dds":
+                case ".png":
+                case ".tga":
+                case ".jpg":
+                    return CreateTexturePreview(resourceName, fullPath);
             }
 
             return _unknown.Value;
         }
 
+        private ImageSourceContainer CreateXmlPreview(string resourceName, string fullPath)
+        {
+            try
+            {
+                XDocument doc = XDocument.Load(fullPath);
+                switch (doc.Root.Name.LocalName)
+                {
+                    case "material":
+                        return CreateMaterialPreview(resourceName, fullPath);
+                    case "node":
+                        return CreatePrefabPreview(resourceName, fullPath);
+                    default:
+                        return _xml.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+                return _xml.Value;
+            }
+        }
+        private ImageSourceContainer CreatePrefabPreview(string resourceName, string fullPath)
+        {
+            Func<AbstractPreviewScene> valueFactory = () =>
+            {
+                var previewScene = _prefabPreview.Value;
+                previewScene.SetPrefab(resourceName);
+                return previewScene;
+            };
+            var resourceType = new StringHash(0);
+
+            return CreatePreviewScene(resourceName, fullPath, resourceType, valueFactory);
+        }
+        private ImageSourceContainer CreateMaterialPreview(string resourceName, string fullPath)
+        {
+            Func<AbstractPreviewScene> valueFactory = () =>
+            {
+                var previewScene = _materialPreview.Value;
+                previewScene.SetMaterial(Urho.Application.Current.ResourceCache.GetMaterial(resourceName));
+                return previewScene;
+            };
+            var resourceType = Urho.Material.TypeStatic;
+
+            return CreatePreviewScene(resourceName, fullPath, resourceType, valueFactory);
+        }
         private ImageSourceContainer CreateModelPreview(string resourceName, string fullPath)
         {
-            var previewImage = Path.Combine(_previewFolder, _hashFunction.GetHash(resourceName)+".png");
+            Func<AbstractPreviewScene> valueFactory = () =>
+            {
+                var previewScene = _modelPreview.Value;
+                previewScene.SetModel(Urho.Application.Current.ResourceCache.GetModel(resourceName));
+                return previewScene;
+            };
+            var resourceType = Urho.Model.TypeStatic;
+
+            return CreatePreviewScene(resourceName, fullPath, resourceType, valueFactory);
+        }
+
+        private ImageSourceContainer CreatePreviewScene(string resourceName, string fullPath, StringHash resourceType,
+            Func<AbstractPreviewScene> valueFactory)
+        {
+            var previewImage = Path.Combine(_previewFolder, _hashFunction.GetHash(resourceName) + ".png");
             if (File.Exists(previewImage))
                 return new ImageSourceContainer(BitmapFrame.Create(new Uri(previewImage)));
             var imageSourceContainer = new ImageSourceContainer(_mesh.Value.ImageSource);
             _queue.Enqueue(new PreviewRequest()
             {
-                ResourceType = Urho.Model.TypeStatic,
+                ResourceType = resourceType,
                 ImagePath = previewImage,
                 ResourceName = resourceName,
                 FullPath = fullPath,
                 Container = imageSourceContainer,
-                CreateSceneAndCamera = ()=>CreateModelScene(resourceName)
+                PreviewScene = new Lazy<AbstractPreviewScene>(valueFactory)
             });
             return imageSourceContainer;
         }
 
-        private SceneAndCamera CreateModelScene(string resourceName)
+        private ImageSourceContainer CreateTexturePreview(string resourceName, string fullPath)
         {
-            ResetScene();
-            var node = Scene.CreateChild();
-            var mdl = node.CreateComponent<StaticModel>();
-            mdl.Model = Urho.Application.Current.ResourceCache.GetModel(resourceName);
-            CameraNode.Position = mdl.Model.BoundingBox.Size;
-            CameraNode.LookAt(Vector3.Zero, Vector3.Up);
-            return new SceneAndCamera() {Scene = _scene.Value, Camera = _camera.Value.GetComponent<Camera>()};
-        }
-
-        private void ResetScene()
-        {
-            if (!_scene.HasValue)
+            Func<AbstractPreviewScene> valueFactory = () =>
             {
-                var sceneValue = new Scene();
-                sceneValue.CreateComponent<Octree>();
-                var z = sceneValue.CreateComponent<Zone>();
-                z.AmbientColor = new Urho.Color(1,1,1,1);
-                _scene.Value = sceneValue;
-            }
-            else
-            {
-                Scene.RemoveAllChildren();
-            }
+                var previewScene = _texturePreview.Value;
+                previewScene.SetTexture(Urho.Application.Current.ResourceCache.GetTexture2D(resourceName,true));
+                return previewScene;
+            };
+            var resourceType = Texture2D.TypeStatic;
 
-            if (!_camera.HasValue)
-            {
-                _camera.Value = new Node() {Name = "MainCamera"};
-                CameraNode.CreateComponent<Camera>();
-            }
+            return CreatePreviewScene(resourceName, fullPath, resourceType, valueFactory);
+        }
 
-            Scene.AddChild(CameraNode);
-        }
-        private Scene Scene
-        {
-            get { return _scene.Value; }
-        }
-        private Node CameraNode
-        {
-            get { return _camera.Value; }
-        }
-        private UrhoRef<Scene> _scene = new UrhoRef<Scene>();
-        private UrhoRef<Node> _camera = new UrhoRef<Node>();
-
-    private bool IsImage(string name)
-        {
-            var ex = Path.GetExtension(name);
-            if (ex == ".png" || ex == ".jpg")
-                return true;
-            return false;
-        }
         private static readonly string DefaultIcon = "UrhoSharp.Editor.Icons.unknown.png";
 
         private static readonly Lazy<ImageSourceContainer> _unknown =
