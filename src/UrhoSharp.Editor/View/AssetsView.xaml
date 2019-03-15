@@ -14,11 +14,11 @@
             <ColumnDefinition Width="5px" />
             <ColumnDefinition Width="6*" />
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="_treeView" ItemsSource="{Binding Folders}" SelectedItemChanged="UpdateSelectedItem">
+        <TreeView x:Name="_treeView" Background="{DynamicResource MainBGcolor}" ItemsSource="{Binding Folders}" SelectedItemChanged="UpdateSelectedItem">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModel:FolderViewModel}"
                                           ItemsSource="{Binding Path=Folders}">
-                    <TextBlock Text="{Binding Name}">
+                    <TextBlock Text="{Binding Name}" Foreground="{DynamicResource FontColor}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Open Folder in File Explorer"
@@ -31,13 +31,13 @@
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
         </TreeView>
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Grid Column="2">
+        <GridSplitter Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Grid Column="2" Background="{DynamicResource MainBGcolor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ListView ItemsSource="{Binding SelectedFolder.Breadcrumbs}">
+            <ListView ItemsSource="{Binding SelectedFolder.Breadcrumbs}" Background="{DynamicResource MainBGcolor}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -49,7 +49,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Grid Grid.Row="1"
+            <Grid Grid.Row="1" 
                   Drop="ImportAssets"
                   AllowDrop="True"
                   PreviewDragOver="PreviewDragFiles">

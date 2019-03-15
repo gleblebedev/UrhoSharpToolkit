@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TreeView x:Name="_tree" ItemsSource="{Binding Root}" SelectedItemChanged="UpdateSelectedItem">
+        <TreeView Background="{DynamicResource MainBGcolor}" x:Name="_tree" ItemsSource="{Binding Root}" SelectedItemChanged="UpdateSelectedItem">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModel:NodeViewModel}"
                                           ItemsSource="{Binding Path=Children}">
