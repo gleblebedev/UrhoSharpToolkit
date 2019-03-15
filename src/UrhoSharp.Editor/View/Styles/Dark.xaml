@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:UrhoSharp.Editor.View.Styles">
+
+    <SolidColorBrush x:Key="MainBGcolor" Color="Black"/>
+    <SolidColorBrush x:Key="FontColor" Color="#FFDEDFE0"/>
+    <SolidColorBrush x:Key="StatuSBarColor" Color="#007ACC"/>
+
+    <Style TargetType="{x:Type GridSplitter}">
+        <Setter Property="Background" Value="#FF0C4F7C"/>
+    </Style>
+
+   
+    
+</ResourceDictionary>

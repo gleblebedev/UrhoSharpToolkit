@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using Autofac;
 using Urho;
@@ -17,6 +18,22 @@ namespace UrhoSharp.Editor.View
         public EditorWindow()
         {
             InitializeComponent();
+
+            MenuStyles.ItemsSource= new[] { "Dark", "White", "Gray" };
+            MenuStyles.Click += SetStyle;
+        }
+
+        private void SetStyle(object sender, RoutedEventArgs e) {
+            if( e.OriginalSource is System.Windows.Controls.MenuItem mi) {
+                ResourceDictionary dir = new ResourceDictionary() {
+                    Source = new Uri(@"View\Styles\" + mi.Header.ToString()+".xaml",UriKind.Relative)
+                };
+
+                System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
+                System.Windows.Application.Current.Resources.MergedDictionaries.Add(dir);
+
+            }
+            
         }
 
         public EditorWindow(EditorViewModel vm, ILifetimeScope scope) : this()
