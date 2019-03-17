@@ -23,14 +23,16 @@ namespace UrhoSharp.Editor.View
             MenuStyles.Click += SetStyle;
         }
 
+        ResourceDictionary mainStyle = new ResourceDictionary() {Source = new Uri(@"View\Styles\WinStyle\WinStyle.xaml", UriKind.Relative) };
         private void SetStyle(object sender, RoutedEventArgs e) {
             if( e.OriginalSource is System.Windows.Controls.MenuItem mi) {
-                ResourceDictionary dir = new ResourceDictionary() {
-                    Source = new Uri(@"View\Styles\" + mi.Header.ToString()+".xaml",UriKind.Relative)
+                ResourceDictionary dir = new ResourceDictionary() { 
+                    Source = new Uri(@"View\Styles\" + mi.Header.ToString() + ".xaml", UriKind.Relative)
                 };
-
-                System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
+                System.Windows.Application.Current.Resources.Clear();
+                //System.Windows.Application.Current.Resources.Remove(System.Windows.Application.Current.Resources.MergedDictionaries[0]);
                 System.Windows.Application.Current.Resources.MergedDictionaries.Add(dir);
+                System.Windows.Application.Current.Resources.MergedDictionaries.Add(mainStyle);
 
             }
             
