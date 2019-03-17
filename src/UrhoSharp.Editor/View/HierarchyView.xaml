@@ -12,7 +12,7 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModel:NodeViewModel}"
                                           ItemsSource="{Binding Path=Children}">
-                    <TextBlock Text="{Binding Name}">
+                    <TextBlock Text="{Binding Name}"  Foreground="{DynamicResource FontColor}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
                                 <!--<MenuItem Header="Open Folder in File Explorer"

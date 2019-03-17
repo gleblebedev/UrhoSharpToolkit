@@ -30,7 +30,7 @@
                 <MenuItem Header="Styles" x:Name="MenuStyles"/>
             </MenuItem>
         </Menu>
-        <ToolBar Grid.Row="1" />
+        <ToolBar Grid.Row="1" Background="{DynamicResource MainBGcolor}"/>
         <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
