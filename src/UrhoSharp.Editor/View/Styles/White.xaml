@@ -8,6 +8,5 @@
 
     <Style TargetType="{x:Type GridSplitter}">
         <Setter Property="Background" Value="Black"/>
-
     </Style>
 </ResourceDictionary>

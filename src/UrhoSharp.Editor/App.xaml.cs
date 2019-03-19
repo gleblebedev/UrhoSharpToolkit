@@ -2,6 +2,7 @@
 using System.Reactive.Subjects;
 using System.Windows;
 using Autofac;
+using UrhoSharp.AssetStore;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.View;
 using UrhoSharp.Editor.ViewModel;
@@ -28,11 +29,12 @@ namespace UrhoSharp.Editor
 
             // View models.
             builder.RegisterType<AssetsViewModel>().InstancePerLifetimeScope();
+            builder.RegisterType<AssetStoreViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<EditorViewModel>().InstancePerLifetimeScope();
 
             // Views.
             builder.RegisterType<EditorWindow>().InstancePerLifetimeScope();
-            builder.RegisterType<AssetStoreWindow>().InstancePerLifetimeScope();
+            builder.RegisterType<AssetStoreWindow>().InstancePerDependency().ExternallyOwned();
             builder.Register(GetAssetsView).As<AssetsView>().InstancePerLifetimeScope();
             //builder.Register(GetEditorApp).As<EditorApp>().InstancePerDependency().ExternallyOwned();
 
@@ -43,6 +45,7 @@ namespace UrhoSharp.Editor
             // Misc.
             _log = new Subject<LogMessage>();
             builder.RegisterInstance(_log).As<IObservable<LogMessage>>().SingleInstance();
+            builder.RegisterType<NugetWebStore>().As<IAssetStore>().SingleInstance();
             builder.RegisterType<MD5HashFunction>().As<IHashFunction>().SingleInstance();
             builder.RegisterType<PreviewFactory>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<LogViewModel>().AsSelf().InstancePerLifetimeScope();

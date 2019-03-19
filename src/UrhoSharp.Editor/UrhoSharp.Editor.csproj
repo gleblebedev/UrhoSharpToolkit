@@ -178,6 +178,8 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
+    <Compile Include="ViewModel\AssetPackageViewModel.cs" />
+    <Compile Include="ViewModel\AssetStoreViewModel.cs" />
     <Compile Include="ViewModel\AssetsViewModel.cs" />
     <Compile Include="ViewModel\ComponentViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
@@ -308,6 +310,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UrhoSharp.AssetStore\UrhoSharp.AssetStore.csproj">
+      <Project>{a5612feb-11c7-4142-9b55-73577b1fcb23}</Project>
+      <Name>UrhoSharp.AssetStore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UrhoSharp.Input\UrhoSharp.Input.csproj">
       <Project>{A54A49ED-E796-492B-9089-71791581582A}</Project>
       <Name>UrhoSharp.Input</Name>

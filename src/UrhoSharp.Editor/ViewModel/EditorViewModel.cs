@@ -17,6 +17,7 @@ namespace UrhoSharp.Editor.ViewModel
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
         private readonly ProjectReference _projectReference;
         private readonly Lazy<EditorWindow> _window;
+        private readonly Func<AssetStoreWindow> _assetStore;
         private readonly StatusBarViewModel _statusBar;
         private EditorApp _app;
         private IDisposable _appSubscription;
@@ -28,7 +29,7 @@ namespace UrhoSharp.Editor.ViewModel
             IConfigurationContainer<ProjectConfiguration> configuration,
             AssetsViewModel assets,
             Lazy<EditorWindow> window,
-            Lazy<AssetStoreWindow> assetStore,
+            Func<AssetStoreWindow> assetStore,
             StatusBarViewModel statusBar,
             IObservable<EditorApp> app
         )
@@ -36,6 +37,7 @@ namespace UrhoSharp.Editor.ViewModel
             _projectReference = projectReference;
             _configuration = configuration;
             _window = window;
+            _assetStore = assetStore;
             _statusBar = statusBar;
             _disposable.Add(app.ObserveOnDispatcher().Subscribe(SetApp, _ => SetApp(null), () => SetApp(null)));
             Assets = assets;
@@ -97,7 +99,9 @@ namespace UrhoSharp.Editor.ViewModel
 
         private void AssetStore()
         {
-            Process.Start("https://www.nuget.org/packages?q=Urho3DAsset");
+            var window = _assetStore();
+            window.ShowDialog();
+            //Process.Start("https://www.nuget.org/packages?q=Urho3DAsset");
         }
 
         private void Exit()

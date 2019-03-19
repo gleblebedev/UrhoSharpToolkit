@@ -10,6 +10,17 @@
         <Setter Property="Background" Value="#FF0C4F7C"/>
     </Style>
 
-   
-    
+    <!--<Style TargetType="{x:Type Window}">
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style TargetType="{x:Type StatusBar}">
+        <Setter Property="Background" Value="#007ACC"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>-->
+
+
 </ResourceDictionary>
