@@ -22,5 +22,10 @@ namespace UrhoSharp.Editor.View
         {
             InitializeComponent();
         }
+
+        private void OnCloseClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
     }
 }

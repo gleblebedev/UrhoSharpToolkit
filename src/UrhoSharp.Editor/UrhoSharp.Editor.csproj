@@ -141,6 +141,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\StringToImageConverter.cs" />
     <Compile Include="Model\AssetFileEventArgs.cs" />
     <Compile Include="Model\AssetsWatcher.cs" />
     <Compile Include="Model\ConfigurationContainer.cs" />

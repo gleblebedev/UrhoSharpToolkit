@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace UrhoSharp.Editor.ViewModel
@@ -42,6 +43,28 @@ namespace UrhoSharp.Editor.ViewModel
         public void Execute(object parameter)
         {
             _callback((T) parameter);
+        }
+
+        public event EventHandler CanExecuteChanged;
+    }
+
+    public class AsyncCommand : ICommand
+    {
+        private readonly Func<Task> _callback;
+
+        public AsyncCommand(Func<Task> callback)
+        {
+            _callback = callback;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            Task.Run(_callback);
         }
 
         public event EventHandler CanExecuteChanged;

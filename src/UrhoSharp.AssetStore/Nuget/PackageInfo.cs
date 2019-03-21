@@ -17,7 +17,7 @@ namespace UrhoSharp.AssetStore.Nuget
         public string Title { get; set; }
 
         [JsonProperty("iconUrl")]
-        public string iconUrl { get; set; }
+        public string IconUrl { get; set; }
 
         [JsonProperty("licenseUrl")]
         public string licenseUrl { get; set; }
@@ -35,7 +35,7 @@ namespace UrhoSharp.AssetStore.Nuget
         public string[] Tags { get; set; }
 
         [JsonProperty("versions")]
-        public PackageVesionRef[] versions { get; set; }
+        public PackageVesionRef[] Versions { get; set; }
 
     }
 }
