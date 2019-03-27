@@ -45,6 +45,8 @@ namespace UrhoSharp.Pages
             }
         }
 
+        public Node CameraNode => _camera.Value?.Node;
+
         public RenderPath RenderPath
         {
             get => _renderPath.Value;
@@ -119,6 +121,11 @@ namespace UrhoSharp.Pages
 
             if (_musicSoundSource.HasValue)
                 _musicSoundSource.Value.Stop();
+        }
+
+        public Ray GetScreenRay(int x, int y)
+        {
+            return Camera.GetScreenRay(x / (float) Graphics.Width, y / (float) Graphics.Height);
         }
 
         protected void PlayMusic(Sound track)

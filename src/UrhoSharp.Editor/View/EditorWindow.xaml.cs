@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using Autofac;
 using Urho;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.ViewModel;
+using Application = System.Windows.Application;
 
 namespace UrhoSharp.Editor.View
 {
@@ -19,21 +21,8 @@ namespace UrhoSharp.Editor.View
         {
             InitializeComponent();
 
-            MenuStyles.ItemsSource= new[] { "Dark", "White", "Gray" };
+            MenuStyles.ItemsSource = new[] {"Dark", "White", "Gray"};
             MenuStyles.Click += SetStyle;
-        }
-
-        private void SetStyle(object sender, RoutedEventArgs e) {
-            if( e.OriginalSource is System.Windows.Controls.MenuItem mi) {
-                ResourceDictionary dir = new ResourceDictionary() {
-                    Source = new Uri(@"View\Styles\" + mi.Header.ToString()+".xaml",UriKind.Relative)
-                };
-
-                System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
-                System.Windows.Application.Current.Resources.MergedDictionaries.Add(dir);
-
-            }
-            
         }
 
         public EditorWindow(EditorViewModel vm, ILifetimeScope scope) : this()
@@ -47,6 +36,20 @@ namespace UrhoSharp.Editor.View
         private EditorViewModel ViewModel => DataContext as EditorViewModel;
 
         public AssetsView AssetsView => _assetsView;
+
+        private void SetStyle(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is MenuItem mi)
+            {
+                var dir = new ResourceDictionary
+                {
+                    Source = new Uri(@"View\Styles\" + mi.Header + ".xaml", UriKind.Relative)
+                };
+
+                Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.MergedDictionaries.Add(dir);
+            }
+        }
 
         private async void ShowApp(object sender, RoutedEventArgs e)
         {

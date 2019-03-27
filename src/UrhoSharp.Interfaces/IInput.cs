@@ -1,9 +1,13 @@
 ﻿using System;
+using Urho;
 
 namespace UrhoSharp.Interfaces
 {
     public interface IInput
     {
+        MouseMode MouseMode { get; }
+        bool MouseLocked { get; }
+        bool MouseVisible { get; }
         event EventHandler<MouseButtonDownEventArguments> MouseButtonDown;
         event EventHandler<MouseButtonUpEventArguments> MouseButtonUp;
         event EventHandler<MouseMovedEventArguments> MouseMoved;

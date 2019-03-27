@@ -6,17 +6,17 @@ namespace UrhoSharp.Input.InputDeviceAdapters
     {
         public IInputSubscriber Page { get; private set; }
 
-        public virtual void ReleaseSubscriber(IInputSubscriber page)
+        public virtual void ReleaseSubscriber(IInputSubscriber inputSubscriber)
         {
-            if (page != Page)
+            if (inputSubscriber != Page)
                 throw new InvalidOperationException();
             OnFocusLost();
             Page = null;
         }
 
-        public virtual void AssignSubscriber(IInputSubscriber page)
+        public virtual void AssignSubscriber(IInputSubscriber inputSubscriber)
         {
-            Page = page;
+            Page = inputSubscriber;
         }
 
         public virtual void OnFocusLost()

@@ -35,5 +35,6 @@ namespace UrhoSharp.Input
         void OnDropFile(object sender, DropFileEventArguments args);
         void OnInputFocus(object sender, InputFocusEventArguments args);
         void OnExitRequested(object sender, ExitRequestedEventArguments args);
+        void Update(float timeStep);
     }
 }

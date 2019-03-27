@@ -7,6 +7,7 @@ namespace UrhoSharp.Input
     public class InputMapping : IInputSubscriber
     {
         private readonly List<int> _activeTouches = new List<int>(4);
+        private readonly Dictionary<int, ITriggerAction> _axisMapping = new Dictionary<int, ITriggerAction>();
         private readonly Dictionary<Key, ITriggerAction> _keyboardMapping = new Dictionary<Key, ITriggerAction>();
 
         private readonly Dictionary<MouseButton, ITriggerAction> _mouseButtonMapping =
@@ -19,7 +20,7 @@ namespace UrhoSharp.Input
         private ITouchAction _touchAction;
         private bool _touchAdded;
 
-        public IInputSubscriber UnhandledInputSubscriber
+        public IInputSubscriber NextInputSubscriber
         {
             get => _unhandledInput.Subscriber;
             set => _unhandledInput.Subscriber = value;
@@ -156,6 +157,13 @@ namespace UrhoSharp.Input
 
         public virtual void OnJoystickAxisMove(object sender, JoystickAxisMoveEventArguments args)
         {
+            ITriggerAction action;
+            if (_axisMapping.TryGetValue(args.Axis, out action))
+            {
+                action.StartOrUpdate(args.Position);
+                return;
+            }
+
             _unhandledInput.OnJoystickAxisMove(sender, args);
         }
 
@@ -276,12 +284,25 @@ namespace UrhoSharp.Input
             _unhandledInput.OnExitRequested(sender, args);
         }
 
+        public virtual void Update(float timeStep)
+        {
+            NextInputSubscriber?.Update(timeStep);
+        }
+
         public void MapKey(Key key, ITriggerAction action)
         {
             if (action == null)
                 _keyboardMapping.Remove(key);
             else
                 _keyboardMapping[key] = action;
+        }
+
+        public void MapJoystickAxis(int axis, ITriggerAction action)
+        {
+            if (action == null)
+                _axisMapping.Remove(axis);
+            else
+                _axisMapping[axis] = action;
         }
 
         public void MapMouseButton(MouseButton button, ITriggerAction action)

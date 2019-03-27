@@ -33,14 +33,12 @@ namespace UrhoSharp.Pages
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 if (CurrentPageContainer != null)
                 {
                     CurrentPageContainer.PageActivated -= OnPageActivated;
                     CurrentPageContainer.PageDeactivated -= OnPageDeactivated;
                     CurrentPageContainer.Dispose();
                 }
-            }
 
             base.Dispose(disposing);
         }

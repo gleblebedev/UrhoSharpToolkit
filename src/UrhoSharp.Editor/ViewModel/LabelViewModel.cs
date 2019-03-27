@@ -1,6 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using UrhoSharp.Prefabs;
-using UrhoSharp.Prefabs.Accessors;
 
 namespace UrhoSharp.Editor.ViewModel
 {
@@ -14,9 +12,7 @@ namespace UrhoSharp.Editor.ViewModel
         }
 
         public string Name => _property.Name;
-        public int Index
-        {
-            get { return _property.Index; }
-        }
+
+        public int Index => _property.Index;
     }
 }

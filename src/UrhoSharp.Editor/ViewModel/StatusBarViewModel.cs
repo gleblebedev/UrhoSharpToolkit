@@ -7,28 +7,28 @@ namespace UrhoSharp.Editor.ViewModel
 {
     public class StatusBarViewModel : ViewModelBase, IDisposable
     {
-        private IDisposable _subscription;
         private string _message;
+        private readonly IDisposable _subscription;
 
         public StatusBarViewModel(IObservable<LogMessage> _messages)
         {
             _subscription = _messages.ObserveOnDispatcher().Subscribe(OnLogMessage);
         }
 
-        public void OnLogMessage(LogMessage msg)
-        {
-            Message = msg.Message;
-        }
-
         public string Message
         {
             get => _message;
-            set => Set(ref _message , value);
+            set => Set(ref _message, value);
         }
 
         public void Dispose()
         {
             _subscription?.Dispose();
+        }
+
+        public void OnLogMessage(LogMessage msg)
+        {
+            Message = msg.Message;
         }
     }
 }

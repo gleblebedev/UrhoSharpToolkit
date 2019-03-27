@@ -9,8 +9,6 @@ namespace UrhoSharp.Editor.ViewModel
 {
     public class FolderViewModel : FileSystemItemViewModel
     {
-        private ImageSourceContainer _preview;
-
         public FolderViewModel(string fullPath, string rootPath, FileSystemItemViewModel parent, AssetsViewModel assets)
             : base(fullPath, rootPath, parent, assets)
         {
@@ -19,11 +17,7 @@ namespace UrhoSharp.Editor.ViewModel
             Preview = assets.PreviewFactory.CreateFolderPreview(ResourcePath, fullPath);
         }
 
-        public ImageSourceContainer Preview
-        {
-            get { return _preview; }
-            set { _preview = value; }
-        }
+        public ImageSourceContainer Preview { get; set; }
 
         public ICommand OpenCommand { get; set; }
         public ICommand ExportPackageCommand { get; set; }

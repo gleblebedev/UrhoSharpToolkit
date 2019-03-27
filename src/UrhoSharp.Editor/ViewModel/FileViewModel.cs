@@ -20,12 +20,9 @@ namespace UrhoSharp.Editor.ViewModel
 
         public ImageSourceContainer Preview
         {
-            get
-            {
-                return _preview ?? (_preview =
-                           _assets.PreviewFactory.CreateFilePreview(ResourceName, FullPath, _info.Value.Length));
-            }
-            set { _preview = value; }
+            get => _preview ?? (_preview =
+                       _assets.PreviewFactory.CreateFilePreview(ResourceName, FullPath, _info.Value.Length));
+            set => _preview = value;
         }
 
         public long Size => _info.Value.Length;

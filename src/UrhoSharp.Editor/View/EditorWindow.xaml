@@ -27,11 +27,16 @@
                 <MenuItem Header="Export Package" Command="{Binding ExportPackageCommand}" />
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="Styles" x:Name="MenuStyles"/>
+                <MenuItem Header="Styles" x:Name="MenuStyles" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Debug">
+                    <MenuItem Header="Load all models" Command="{Binding LoadAllModelsCommand}" />
+                </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBar Grid.Row="1" />
-        <Grid Grid.Row="2" >
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="5px" />
@@ -46,7 +51,7 @@
             </Grid.RowDefinitions>
             <local:HierarchyView Grid.Row="0" Grid.Column="0" DataContext="{Binding HierarchyViewModel}" />
             <wpf:UrhoSurface x:Name="_urhoContainer" Grid.Row="0" Grid.Column="2" />
-            <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
+            <local:AssetsView x:Name="_assetsView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                               DataContext="{Binding Assets}" />
             <local:InspectorView Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" DataContext="{Binding Inspector}" />
             <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
@@ -56,7 +61,7 @@
                           VerticalAlignment="Stretch" />
         </Grid>
         <StatusBar x:Name="_statusBar" Grid.Row="3" MinHeight="16">
-            <TextBlock Text="{Binding StatusBar.Message}"></TextBlock>
+            <TextBlock Text="{Binding StatusBar.Message}" />
         </StatusBar>
     </Grid>
 </Window>

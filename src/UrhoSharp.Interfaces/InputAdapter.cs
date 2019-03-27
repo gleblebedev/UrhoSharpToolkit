@@ -202,6 +202,12 @@ namespace UrhoSharp.Interfaces
             _mouseWheel?.Invoke(this, new MouseWheelEventArguments(args));
         }
 
+        public MouseMode MouseMode => _input.MouseMode;
+
+        public bool MouseLocked => _input.MouseLocked;
+
+        public bool MouseVisible => _input.MouseVisible;
+
         #endregion
 
 

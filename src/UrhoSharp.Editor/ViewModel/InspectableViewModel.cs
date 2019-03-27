@@ -10,17 +10,12 @@ namespace UrhoSharp.Editor.ViewModel
 {
     public class InspectableViewModel : ViewModelBase
     {
-        private List<PropertyViewModel> _properties;
         private bool _isCollapsed;
+        private List<PropertyViewModel> _properties;
 
         public InspectableViewModel()
         {
             ToggleCollapseCommand = new ActionCommand(ToggleCollapse);
-        }
-
-        private void ToggleCollapse()
-        {
-            IsCollapsed = !IsCollapsed;
         }
 
         public List<PropertyViewModel> Properties
@@ -41,6 +36,14 @@ namespace UrhoSharp.Editor.ViewModel
 
         public ICommand ToggleCollapseCommand { get; }
 
+        public IEnumerable<ViewModelBase> PropertiesAndLabels =>
+            _properties.Select(_ => new ViewModelBase[] {new LabelViewModel(_), _}).SelectMany(_ => _);
+
+        private void ToggleCollapse()
+        {
+            IsCollapsed = !IsCollapsed;
+        }
+
         protected PropertyViewModel CreatePropertyViewModel(IPrefab prefab, IAccessor accessor, int index)
         {
             if (accessor.PrefabPropertyType == typeof(bool))
@@ -48,10 +51,6 @@ namespace UrhoSharp.Editor.ViewModel
             return new PropertyViewModel(prefab, accessor, index);
         }
 
-        public IEnumerable<ViewModelBase> PropertiesAndLabels
-        {
-            get => _properties.Select(_=>new ViewModelBase[]{new LabelViewModel(_),_}).SelectMany(_=>_);
-        }
         private void UpdatePairs()
         {
             RaisePropertyChanged(nameof(PropertiesAndLabels));

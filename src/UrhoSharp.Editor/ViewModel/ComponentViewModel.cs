@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GalaSoft.MvvmLight;
+﻿using System.Linq;
 using UrhoSharp.Prefabs;
 
 namespace UrhoSharp.Editor.ViewModel
@@ -12,7 +10,7 @@ namespace UrhoSharp.Editor.ViewModel
         public ComponentViewModel(IComponentPrefab state)
         {
             _state = state;
-            Properties = state.Properties.Select((_,i) => CreatePropertyViewModel(_state, _,i)).ToList();
+            Properties = state.Properties.Select((_, i) => CreatePropertyViewModel(_state, _, i)).ToList();
         }
 
         public uint Id => _state.ID ?? 0;

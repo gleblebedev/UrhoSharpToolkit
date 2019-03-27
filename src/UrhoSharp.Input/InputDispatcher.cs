@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Urho;
 using UrhoSharp.Input.InputDeviceAdapters;
 using UrhoSharp.Interfaces;
 
@@ -10,6 +11,9 @@ namespace UrhoSharp.Input
         private readonly KeyboardAdapter _keyboard;
         private readonly MouseAdapter _mouse;
         private readonly TouchAdapter _touch;
+        private bool _mouseLocked;
+        private MouseMode? _mouseMode;
+        private bool? _mouseVisibility;
 
         private IInputSubscriber _subscriber;
 
@@ -78,11 +82,14 @@ namespace UrhoSharp.Input
 
         public void OnMouseVisibleChanged(object sender, MouseVisibleChangedEventArguments args)
         {
+            _mouseVisibility = args.Visible;
             _subscriber?.OnMouseVisibleChanged(sender, args);
         }
 
         public void OnMouseModeChanged(object sender, MouseModeChangedEventArguments args)
         {
+            _mouseMode = args.Mode;
+            _mouseLocked = args.MouseLocked;
             _subscriber?.OnMouseModeChanged(sender, args);
         }
 
@@ -179,6 +186,10 @@ namespace UrhoSharp.Input
             _subscriber?.OnExitRequested(sender, args);
         }
 
+        public void Update(float timeStep)
+        {
+        }
+
         private void ReleaseSubscriber()
         {
             if (_subscriber == null)
@@ -191,6 +202,11 @@ namespace UrhoSharp.Input
             if (_subscriber == null)
                 return;
             foreach (var adapter in GetInputDeviceAdapters()) adapter.AssignSubscriber(_subscriber);
+            if (_mouseVisibility.HasValue)
+                _subscriber.OnMouseVisibleChanged(this, new MouseVisibleChangedEventArguments(_mouseVisibility.Value));
+            if (_mouseMode.HasValue)
+                _subscriber.OnMouseModeChanged(this,
+                    new MouseModeChangedEventArguments(_mouseMode.Value, _mouseLocked));
         }
 
         private IEnumerable<IInputDeviceAdapter> GetInputDeviceAdapters()

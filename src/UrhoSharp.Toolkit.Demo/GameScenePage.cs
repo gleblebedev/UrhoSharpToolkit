@@ -25,8 +25,8 @@ namespace UrhoSharp.Toolkit.Demo
             box.Position = new Vector3(0, 0, 4);
             var boxModel = box.CreateComponent<StaticModel>();
             boxModel.Model = ResourceCache.GetModel("Models/Box.mdl");
+            NextInputSubscriber = new FreeCameraController(CameraNode);
 
-            this.MapPointer(OnMouseMove, OnMouseCancel);
             this.MapTouch(OnTouch, OnTouchMove2, OnTouchComplete, OnTouchCancel2);
         }
 
@@ -35,16 +35,6 @@ namespace UrhoSharp.Toolkit.Demo
         public override bool MouseGrabbed => true;
 
         public override bool MouseVisible => false;
-
-        private void OnMouseCancel()
-        {
-            Trace.WriteLine("OnMouseCancel");
-        }
-
-        private void OnMouseMove(PointerArgs args)
-        {
-            Trace.WriteLine("OnMouseMove " + args);
-        }
 
         private void OnTouchCancel2()
         {
@@ -68,9 +58,10 @@ namespace UrhoSharp.Toolkit.Demo
 
         protected override async Task PrepareAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
-            for (var i = 0; i < 100; ++i)
+            var max = 10;
+            for (var i = 0; i < max; ++i)
             {
-                progress.ReportProgress(i, 100, "Loading game");
+                progress.ReportProgress(i, max, "Loading game");
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
         }

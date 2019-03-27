@@ -8,14 +8,9 @@ namespace UrhoSharp.Editor.View
     /// </summary>
     public partial class AssetStoreWindow : Window
     {
-        public AssetStoreWindow(AssetStoreViewModel viewModel):this()
+        public AssetStoreWindow(AssetStoreViewModel viewModel) : this()
         {
             DataContext = viewModel;
-        }
-
-        public AssetStoreViewModel viewModel
-        {
-            get { return DataContext as AssetStoreViewModel; }
         }
 
         public AssetStoreWindow()
@@ -23,9 +18,11 @@ namespace UrhoSharp.Editor.View
             InitializeComponent();
         }
 
+        public AssetStoreViewModel viewModel => DataContext as AssetStoreViewModel;
+
         private void OnCloseClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            DialogResult = true;
         }
     }
 }

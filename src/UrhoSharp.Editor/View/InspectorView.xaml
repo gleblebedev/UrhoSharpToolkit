@@ -17,7 +17,7 @@
                         <ItemsControl ItemsSource="{Binding Components}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel></StackPanel>
+                                    <StackPanel />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>

@@ -9,76 +9,82 @@
         mc:Ignorable="d"
         Title="Asset Store" Height="450" Width="800">
     <Window.Resources>
-        <converters:StringToImageConverter x:Key="stringToImageConverter"/>
-        <converters:VisibilityConverter x:Key="hideIfTrue" IfFalse="Visible" IfTrue="Collapsed"/>
-        <converters:VisibilityConverter x:Key="showIfTrue" IfFalse="Collapsed" IfTrue="Visible"/>
+        <converters:StringToImageConverter x:Key="stringToImageConverter" />
+        <converters:VisibilityConverter x:Key="hideIfTrue" IfFalse="Visible" IfTrue="Collapsed" />
+        <converters:VisibilityConverter x:Key="showIfTrue" IfFalse="Collapsed" IfTrue="Visible" />
     </Window.Resources>
     <Grid>
         <Grid Visibility="{Binding HasPackage, Converter={StaticResource hideIfTrue}}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid >
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="&#x1F50D;"/>
-                <TextBox MinWidth="100" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
-                <CheckBox IsChecked="{Binding IncludePrerelease}"></CheckBox>
-                <TextBlock Text="IncludePrerelease"></TextBlock>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="&#x1F50D;" />
+                    <TextBox MinWidth="100" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox IsChecked="{Binding IncludePrerelease}" />
+                    <TextBlock Text="IncludePrerelease" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Assets}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModel:AssetPackageViewModel}">
+                                <Button Command="{Binding SelectPackageCommand}">
+                                    <StackPanel>
+                                        <Grid Width="256" Height="256">
+                                            <Image
+                                                Source="{Binding IconUrl, Converter={StaticResource stringToImageConverter}, IsAsync=True}"
+                                                MaxWidth="256" MaxHeight="256" />
+                                        </Grid>
+                                        <TextBlock Text="{Binding Title}" />
+                                        <TextBlock Text="{Binding Version}" />
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                <Button Content="Close" MinWidth="100" Padding="2" Margin="2" Click="OnCloseClick" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Assets}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type viewModel:AssetPackageViewModel}">
-                            <Button Command="{Binding SelectPackageCommand}">
-                            <StackPanel>
-                                    <Grid Width="256" Height="256">
-                                    <Image Source="{Binding IconUrl, Converter={StaticResource stringToImageConverter}, IsAsync=True}" MaxWidth="256" MaxHeight="256"/>
-                                    </Grid>
-                                    <TextBlock Text="{Binding Title}"/>
-                                <TextBlock Text="{Binding Version}"/>
-                            </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel></WrapPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
-
-        </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Content="Close" MinWidth="100" Padding="2" Margin="2" Click="OnCloseClick" />
-        </StackPanel>
-    </Grid>
-        <Grid  Visibility="{Binding HasPackage, Converter={StaticResource showIfTrue}}">
+        <Grid Visibility="{Binding HasPackage, Converter={StaticResource showIfTrue}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Width="256" Height="256">
-                <Image Source="{Binding CurrentPackage.IconUrl, Converter={StaticResource stringToImageConverter}, IsAsync=True}" MaxWidth="256" MaxHeight="256"/>
+                <Image
+                    Source="{Binding CurrentPackage.IconUrl, Converter={StaticResource stringToImageConverter}, IsAsync=True}"
+                    MaxWidth="256" MaxHeight="256" />
             </Grid>
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
-                <TextBlock Text="{Binding CurrentPackage.Title}"/>
-                <TextBlock Text="{Binding CurrentPackage.Version}"/>
+                <TextBlock Text="{Binding CurrentPackage.Title}" />
+                <TextBlock Text="{Binding CurrentPackage.Version}" />
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <TextBlock Text="{Binding CurrentPackage.Description}"/>
+                <TextBlock Text="{Binding CurrentPackage.Description}" />
             </Grid>
-            <StackPanel  Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Download And Import" MinWidth="100" Padding="2" Margin="2" Command="{Binding InstallPackageCommand}" />
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Content="Download And Import" MinWidth="100" Padding="2" Margin="2"
+                        Command="{Binding InstallPackageCommand}" />
                 <Button Content="Close" MinWidth="100" Padding="2" Margin="2" Command="{Binding ClosePackageCommand}" />
             </StackPanel>
         </Grid>

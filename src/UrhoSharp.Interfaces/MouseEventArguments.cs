@@ -8,13 +8,13 @@ namespace UrhoSharp.Interfaces
         public MouseEventArguments(MouseButtonUpEventArgs args)
         {
             Qualifiers = args.Qualifiers;
-            Buttons = args.Buttons;
+            Buttons = (MouseButton) args.Buttons;
         }
 
         public MouseEventArguments(MouseButtonDownEventArgs args)
         {
             Qualifiers = args.Qualifiers;
-            Buttons = args.Buttons;
+            Buttons = (MouseButton) args.Buttons;
         }
 
         public MouseEventArguments(MouseButtonEventArguments args)
@@ -26,17 +26,17 @@ namespace UrhoSharp.Interfaces
         public MouseEventArguments(MouseMovedEventArgs args)
         {
             Qualifiers = args.Qualifiers;
-            Buttons = args.Buttons;
+            Buttons = (MouseButton) args.Buttons;
         }
 
         public MouseEventArguments(MouseWheelEventArgs args)
         {
             Qualifiers = args.Qualifiers;
-            Buttons = args.Buttons;
+            Buttons = (MouseButton) args.Buttons;
         }
 
         public int Qualifiers { get; }
 
-        public int Buttons { get; }
+        public MouseButton Buttons { get; }
     }
 }

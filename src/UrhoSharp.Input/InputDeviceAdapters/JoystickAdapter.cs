@@ -21,19 +21,19 @@ namespace UrhoSharp.Input.InputDeviceAdapters
             _joysticks.Remove(args.JoystickID);
         }
 
-        public override void AssignSubscriber(IInputSubscriber page)
+        public override void AssignSubscriber(IInputSubscriber inputSubscriber)
         {
-            base.AssignSubscriber(page);
+            base.AssignSubscriber(inputSubscriber);
 
             foreach (var joystickDeviceAdapter in _joysticks) joystickDeviceAdapter.Value.AssignPage(Page);
         }
 
-        public override void ReleaseSubscriber(IInputSubscriber page)
+        public override void ReleaseSubscriber(IInputSubscriber inputSubscriber)
         {
             if (Page != null)
                 foreach (var joystickDeviceAdapter in _joysticks)
                     joystickDeviceAdapter.Value.ReleasePage(Page);
-            base.ReleaseSubscriber(page);
+            base.ReleaseSubscriber(inputSubscriber);
         }
 
         public override void OnFocusLost()

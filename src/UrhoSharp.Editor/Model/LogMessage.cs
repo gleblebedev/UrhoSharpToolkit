@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Urho;
+﻿using Urho;
 
 namespace UrhoSharp.Editor.Model
 {
     public class LogMessage
     {
-        private string _message;
-
-        public LogMessage(Urho.UnhandledExceptionEventArgs e)
+        public LogMessage(UnhandledExceptionEventArgs e)
         {
-            _message = e.Exception?.Message;
+            Message = e.Exception?.Message;
         }
 
-        public string Message
+        public LogMessage(string message)
         {
-            get { return _message; }
+            Message = message;
         }
+
+        public string Message { get; }
     }
 }

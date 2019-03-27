@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Urho;
+using UrhoSharp.Interfaces;
 using UrhoSharp.Pages;
 using UrhoSharp.Rx;
 
@@ -26,6 +28,7 @@ namespace UrhoSharp.Editor.Model
                         LoadPrefab();
                     else
                         LoadScene();
+                    NextInputSubscriber = new FreeCameraController(CameraNode);
                 });
         }
 
@@ -45,6 +48,19 @@ namespace UrhoSharp.Editor.Model
             node.LoadXml(_sceneName);
             CreateSimpleScene();
             Scene.AddChild(node);
+        }
+
+        public override void OnMouseMoved(object sender, MouseMovedEventArguments args)
+        {
+            base.OnMouseMoved(sender, args);
+            var ray = GetScreenRay(args.X, args.Y);
+            var res = Scene.GetComponent<Octree>()
+                .RaycastSingle(ray, RayQueryLevel.Triangle, 1000, DrawableFlags.Geometry);
+            if (res != null)
+            {
+                var node = res.Value.Node;
+                Debug.WriteLine("Select node " + node.ID);
+            }
         }
 
         public override void OnResumed()

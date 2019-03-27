@@ -35,6 +35,8 @@ namespace UrhoSharp.Pages
 
         public UIElement UI => _ui.Value;
 
+        public Graphics Graphics => Application.Current.Graphics;
+
         public Task LoadPageAsync(IUrhoScheduler scheduler, ILoadingProgress progress)
         {
             _scheduler = scheduler;
@@ -60,9 +62,12 @@ namespace UrhoSharp.Pages
         public void Resume()
         {
             State = ScenePageState.Active;
-            Application.Current.Input.SetMouseMode(MouseMode);
-            Application.Current.Input.SetMouseGrabbed(MouseGrabbed);
-            Application.Current.Input.SetMouseVisible(MouseVisible);
+            var input = Application.Current.Input;
+            input.SetMouseMode(MouseMode);
+            input.SetMouseGrabbed(MouseGrabbed);
+            input.SetMouseVisible(MouseVisible);
+            OnMouseVisibleChanged(input, new MouseVisibleChangedEventArguments(input.MouseVisible));
+            OnMouseModeChanged(input, new MouseModeChangedEventArguments(input.MouseMode, input.MouseLocked));
             OnResumed();
         }
 
@@ -81,8 +86,9 @@ namespace UrhoSharp.Pages
             Application.Current.UI.Root.RemoveChild(UI);
         }
 
-        public virtual void Update(float timeStep)
+        public override void Update(float timeStep)
         {
+            base.Update(timeStep);
             if (_invalidViewports)
             {
                 ResetViewports();

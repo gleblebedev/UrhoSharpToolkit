@@ -14,17 +14,7 @@ namespace UrhoSharp.Editor.View
     {
         public static readonly DependencyProperty NameWidthProperty =
             DependencyProperty.Register("NameWidth", typeof(GridLength), typeof(PropertiesView), new
-                PropertyMetadata(GridLength.Auto, new PropertyChangedCallback(OnNameWidthChanged)));
-
-        private static void OnNameWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((PropertiesView)d).OnPropertyChanged(nameof(NameWidth));
-        }
-        public GridLength NameWidth
-        {
-            get { return (GridLength)GetValue(NameWidthProperty); }
-            set { SetValue(NameWidthProperty, value); }
-        }
+                PropertyMetadata(GridLength.Auto, OnNameWidthChanged));
 
         //public static readonly DependencyProperty NumRowsProperty = DependencyProperty.RegisterAttached(
         //    "NumRows",
@@ -46,12 +36,23 @@ namespace UrhoSharp.Editor.View
             InitializeComponent();
         }
 
+        public GridLength NameWidth
+        {
+            get => (GridLength) GetValue(NameWidthProperty);
+            set => SetValue(NameWidthProperty, value);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private static void OnNameWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((PropertiesView) d).OnPropertyChanged(nameof(NameWidth));
+        }
+
         private void UpdateNameWidth(object sender, EventArgs e)
         {
             NameWidth = new GridLength(_nameWidth.ActualWidth);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

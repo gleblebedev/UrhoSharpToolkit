@@ -7,16 +7,16 @@ namespace UrhoSharp.Editor.Model
 {
     public class ImageSourceContainer : INotifyPropertyChanged
     {
+        private ImageSource _imageSource;
 
         public ImageSourceContainer()
         {
-            
         }
+
         public ImageSourceContainer(ImageSource source)
         {
             _imageSource = source;
         }
-        private ImageSource _imageSource;
 
         public ImageSource ImageSource
         {

@@ -6,6 +6,7 @@ using UrhoSharp.AssetStore;
 using UrhoSharp.Editor.Model;
 using UrhoSharp.Editor.View;
 using UrhoSharp.Editor.ViewModel;
+using Application = System.Windows.Application;
 using UnhandledExceptionEventArgs = Urho.UnhandledExceptionEventArgs;
 
 namespace UrhoSharp.Editor
@@ -17,6 +18,8 @@ namespace UrhoSharp.Editor
     {
         private Subject<EditorApp> _appSubject;
         private IContainer _container;
+
+        private Subject<LogMessage> _log;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
@@ -44,7 +47,7 @@ namespace UrhoSharp.Editor
 
             // Misc.
             _log = new Subject<LogMessage>();
-            builder.RegisterInstance(_log).As<IObservable<LogMessage>>().SingleInstance();
+            builder.RegisterInstance(_log).As<IObservable<LogMessage>>().As<IObserver<LogMessage>>().SingleInstance();
             builder.RegisterType<NugetWebStore>().As<IAssetStore>().SingleInstance();
             builder.RegisterType<MD5HashFunction>().As<IHashFunction>().SingleInstance();
             builder.RegisterType<PreviewFactory>().AsSelf().InstancePerLifetimeScope();
@@ -57,7 +60,6 @@ namespace UrhoSharp.Editor
             ShutdownMode = ShutdownMode.OnLastWindowClose;
         }
 
-        private Subject<LogMessage> _log;
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             e.Handled = true;

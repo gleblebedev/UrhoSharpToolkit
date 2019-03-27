@@ -10,6 +10,11 @@ namespace UrhoSharp.Interfaces
             Visible = args.Visible;
         }
 
+        public MouseVisibleChangedEventArguments(bool visible)
+        {
+            Visible = visible;
+        }
+
         public bool Visible { get; }
     }
 }

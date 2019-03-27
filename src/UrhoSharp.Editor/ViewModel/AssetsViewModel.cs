@@ -12,7 +12,6 @@ namespace UrhoSharp.Editor.ViewModel
     public class AssetsViewModel : ViewModelBase, IDisposable
     {
         private readonly Lazy<AssetsView> _assets;
-        private readonly PreviewFactory _previewFactory;
         private readonly IConfigurationContainer<ProjectConfiguration> _configuration;
         private readonly CompositeDisposable _disposables;
         private readonly Lazy<EditorViewModel> _editor;
@@ -31,7 +30,7 @@ namespace UrhoSharp.Editor.ViewModel
             _projectReference = projectReference;
             _configuration = configuration;
             _assets = assets;
-            _previewFactory = previewFactory;
+            PreviewFactory = previewFactory;
             _editor = editor;
             _disposables = new CompositeDisposable();
             _disposables.Add(watcher.ObserveOnDispatcher().Subscribe(OnAssetChanged));
@@ -52,10 +51,7 @@ namespace UrhoSharp.Editor.ViewModel
             set => Set(ref _selectedFolder, value);
         }
 
-        public PreviewFactory PreviewFactory
-        {
-            get { return _previewFactory; }
-        }
+        public PreviewFactory PreviewFactory { get; }
 
 
         public void Dispose()

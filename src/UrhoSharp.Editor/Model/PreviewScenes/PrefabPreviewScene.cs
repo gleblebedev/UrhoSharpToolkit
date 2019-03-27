@@ -7,16 +7,17 @@ namespace UrhoSharp.Editor.Model.PreviewScenes
 {
     public class PrefabPreviewScene : AbstractPreviewScene
     {
-        private UrhoRef<Node> _lightNode;
+        private readonly UrhoRef<Node> _lightNode;
+
         public PrefabPreviewScene()
         {
             Zone.AmbientColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
             var lightNode = Scene.CreateChild();
             _lightNode = new UrhoRef<Node>(lightNode);
-            var dir = (Vector3.Down + Vector3.Back);
+            var dir = Vector3.Down + Vector3.Back;
             dir.Normalize();
             lightNode.SetDirection(dir);
-            Light light = lightNode.CreateComponent<Light>();
+            var light = lightNode.CreateComponent<Light>();
             light.LightType = LightType.Directional;
             light.Color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
             light.FadeDistance = 1000.0f;
@@ -24,6 +25,7 @@ namespace UrhoSharp.Editor.Model.PreviewScenes
 
             lightNode.LookAt(Vector3.Zero, Vector3.Up);
         }
+
         public void SetPrefab(string name)
         {
             PreviewContainer.RemoveAllChildren();

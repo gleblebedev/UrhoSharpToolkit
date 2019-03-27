@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UrhoSharp.Prefabs;
-using UrhoSharp.Prefabs.Accessors;
 
 namespace UrhoSharp.Editor.ViewModel
 {
@@ -14,7 +13,7 @@ namespace UrhoSharp.Editor.ViewModel
             _state = state;
             Children = state.Children.Select(_ => new NodeViewModel(_)).ToList();
             Components = state.Components.Select(_ => new ComponentViewModel(_)).ToList();
-            Properties = state.Properties.Select((_,i) => CreatePropertyViewModel(_state,_, i)).ToList();
+            Properties = state.Properties.Select((_, i) => CreatePropertyViewModel(_state, _, i)).ToList();
         }
 
 

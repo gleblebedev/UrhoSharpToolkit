@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:UrhoSharp.Editor.View.Styles">
 
-    <SolidColorBrush x:Key="MainBGcolor" Color="Gray"/>
-    <SolidColorBrush x:Key="FontColor" Color="DarkBlue"/>
-    <SolidColorBrush x:Key="StatuSBarColor" Color="Black"/>
+    <SolidColorBrush x:Key="MainBGcolor" Color="Gray" />
+    <SolidColorBrush x:Key="FontColor" Color="DarkBlue" />
+    <SolidColorBrush x:Key="StatuSBarColor" Color="Black" />
 
     <Style TargetType="{x:Type GridSplitter}">
-        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Background" Value="Black" />
     </Style>
 
 </ResourceDictionary>

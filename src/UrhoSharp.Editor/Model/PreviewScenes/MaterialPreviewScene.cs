@@ -2,9 +2,9 @@
 
 namespace UrhoSharp.Editor.Model.PreviewScenes
 {
-    public class MaterialPreviewScene: AbstractPreviewScene
+    public class MaterialPreviewScene : AbstractPreviewScene
     {
-        private CustomGeometry _model;
+        private readonly CustomGeometry _model;
 
         public MaterialPreviewScene()
         {
@@ -35,7 +35,7 @@ namespace UrhoSharp.Editor.Model.PreviewScenes
 
             _model.DefineVertex(new Vector3(1.0f, 1.0f, 0.0f));
             _model.DefineTexCoord(new Vector2(1.0f, 0.0f));
-            _model.DefineNormal(new Vector3(0,0,-1));
+            _model.DefineNormal(new Vector3(0, 0, -1));
 
             _model.Commit();
             CameraNode.Position = Vector3.Forward * -2 * 1.1708495661125392252006270756823f;
@@ -46,6 +46,7 @@ namespace UrhoSharp.Editor.Model.PreviewScenes
             light.Radius = 4.0f;
             lightNode.Position = CameraNode.Position;
         }
+
         public void SetMaterial(Material material)
         {
             _model.SetMaterial(material);

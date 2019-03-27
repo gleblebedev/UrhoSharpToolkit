@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Urho;
 
 namespace UrhoSharp.Pages
 {
     public class EmplyLoadingScenePage : AbstractSingleScenePage, ILoadingProgress
     {
-        private Node _animatedNode;
-        private float _angle = 0.0f;
+        private float _angle;
+        private readonly Node _animatedNode;
+
         public EmplyLoadingScenePage()
         {
             CreateSimpleScene(100);
@@ -19,18 +19,22 @@ namespace UrhoSharp.Pages
             Camera.Node.LookAt(_animatedNode.Position, Vector3.Up);
         }
 
+        public void ReportProgress(int index, int count, string message)
+        {
+        }
+
         public static CustomGeometry MakeLoadingModel(float radius)
         {
             var geometry = new CustomGeometry();
             geometry.BeginGeometry(0, PrimitiveType.TriangleList);
-            int numSegments = 10;
+            var numSegments = 10;
 
-            var k = Enumerable.Range(0, numSegments + 1).Select(_ => _ / ((float)numSegments)).ToList();
+            var k = Enumerable.Range(0, numSegments + 1).Select(_ => _ / (float) numSegments).ToList();
             var a = k.Select(_ => -MathHelper.Pi * _ * 0.25f).ToList();
-            var v = a.Select(_ => new Vector3((float)Math.Cos(_), (float)Math.Sin(_), 0.0f)).ToList();
+            var v = a.Select(_ => new Vector3((float) Math.Cos(_), (float) Math.Sin(_), 0.0f)).ToList();
             var r = k.Select(_ => Bernstein(new Vector4(0.0f, 0.02f, 0.1f, 0.005f), _)).ToList();
             var c = k.Select(_ => new Color(_, _, _, _)).ToList();
-            for (int i = 0; i < numSegments; ++i)
+            for (var i = 0; i < numSegments; ++i)
             {
                 var v1 = v[i];
                 var v2 = v[i + 1];
@@ -70,15 +74,13 @@ namespace UrhoSharp.Pages
                 geometry.DefineVertex(v2 * (radius - r2));
                 geometry.DefineColor(c2);
             }
+
             geometry.Commit();
             var mat = new Material();
-            mat.SetTechnique(0, Urho.Application.Current.ResourceCache.GetTechnique("Techniques/NoTextureUnlitVCol.xml"), 1, 1);
+            mat.SetTechnique(0, Application.Current.ResourceCache.GetTechnique("Techniques/NoTextureUnlitVCol.xml"), 1,
+                1);
             geometry.SetMaterial(mat);
             return geometry;
-        }
-
-        public void ReportProgress(int index, int count, string message)
-        {
         }
 
         public override void OnActivated()
@@ -94,7 +96,8 @@ namespace UrhoSharp.Pages
             _animatedNode.Rotation = Quaternion.FromAxisAngle(Vector3.Forward, -_angle);
             _angle += timeStep * 180;
         }
-        static float Bernstein(Vector4 k, float t)
+
+        private static float Bernstein(Vector4 k, float t)
         {
             var _t = 1.0f - t;
             return k.X * _t * _t * _t + 3.0f * k.Y * _t * _t * t + 3.0f * k.Z * _t * t * t + k.W * t * t * t;

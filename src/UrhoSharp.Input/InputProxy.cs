@@ -38,6 +38,10 @@ namespace UrhoSharp.Input
             _input.DropFile += OnDropFile;
             _input.InputFocus += OnInputFocus;
             _input.ExitRequested += OnExitRequested;
+
+            _subscriber.OnMouseModeChanged(this,
+                new MouseModeChangedEventArguments(_input.MouseMode, _input.MouseLocked));
+            _subscriber.OnMouseVisibleChanged(this, new MouseVisibleChangedEventArguments(_input.MouseVisible));
         }
 
         public void Dispose()

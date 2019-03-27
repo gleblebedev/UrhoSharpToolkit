@@ -2,9 +2,9 @@
 {
     public interface IInputDeviceAdapter
     {
-        void ReleaseSubscriber(IInputSubscriber page);
+        void ReleaseSubscriber(IInputSubscriber inputSubscriber);
 
-        void AssignSubscriber(IInputSubscriber page);
+        void AssignSubscriber(IInputSubscriber inputSubscriber);
         void OnFocusLost();
     }
 }
