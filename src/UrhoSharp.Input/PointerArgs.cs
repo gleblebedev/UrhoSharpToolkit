@@ -19,4 +19,9 @@ namespace UrhoSharp.Input
             return $"{Offset}@{Position}";
         }
     }
+
+    public class PointerTranslator:IInputSubscriber
+    {
+
+    }
 }

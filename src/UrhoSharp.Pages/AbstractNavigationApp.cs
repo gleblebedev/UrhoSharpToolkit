@@ -14,6 +14,7 @@ namespace UrhoSharp.Pages
 
         private IntVector2 _prevGraphicsSize;
         private UrhoManualScheduler _scheduler;
+        InputAdapter _inputAdapter;
 
         public AbstractNavigationApp(ApplicationOptions options) : base(options)
         {
@@ -51,6 +52,13 @@ namespace UrhoSharp.Pages
             Paused += OnPaused;
             Resumed += OnResumed;
             Input.InputFocus += OnInputFocusChanged;
+        }
+
+        protected override void Stop()
+        {
+            _inputAdapter.Dispose();
+            _inputAdapter = null;
+            base.Stop();
         }
 
         private void OnInputFocusChanged(InputFocusEventArgs args)
@@ -97,8 +105,8 @@ namespace UrhoSharp.Pages
 
         private void InitNavigation()
         {
-            CurrentPageContainer =
-                new CurrentPageContainer(new InputAdapter(Input), new RendererAdapter(Renderer), _scheduler);
+            _inputAdapter = new InputAdapter(Input);
+            CurrentPageContainer = new CurrentPageContainer(_inputAdapter, new RendererAdapter(Renderer), _scheduler);
             CurrentPageContainer.Resize(Graphics.Size);
             Navigation = new NavigationStack(CurrentPageContainer);
             CurrentPageContainer.PageActivated += OnPageActivated;

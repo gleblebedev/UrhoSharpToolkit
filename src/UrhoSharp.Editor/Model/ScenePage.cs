@@ -36,10 +36,11 @@ namespace UrhoSharp.Editor.Model
         {
             Scene = new Scene();
             Scene.LoadXml(_sceneName);
-            var cameraNode = Scene.GetChildrenWithComponent<Camera>().FirstOrDefault();
-            if (cameraNode == null)
-                cameraNode = Scene.CreateChild();
-            Camera = cameraNode.GetComponent<Camera>();
+            var existingCameraNode = Scene.GetChildrenWithComponent<Camera>().FirstOrDefault();
+            var cameraNode = new Node();
+            cameraNode.Position = existingCameraNode.WorldPosition;
+            cameraNode.Rotation = existingCameraNode.WorldRotation;
+            Camera = cameraNode.CreateComponent<Camera>();
         }
 
         private void LoadPrefab()

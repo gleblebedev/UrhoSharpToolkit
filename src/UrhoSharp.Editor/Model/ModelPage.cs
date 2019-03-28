@@ -39,6 +39,7 @@ namespace UrhoSharp.Editor.Model
                 var l = light.CreateComponent<Light>();
                 l.Radius = mdl.BoundingBox.Size.Length * 2.0f;
                 l.LightType = LightType.Point;
+                NextInputSubscriber = new FreeCameraController(CameraNode);
             }
 
             base.OnResumed();

@@ -3,13 +3,44 @@ using Urho;
 
 namespace UrhoSharp.Interfaces
 {
-    public class InputAdapter : IInput
+    public class InputAdapter : IInput, IDisposable
     {
         private readonly Input _input;
 
         public InputAdapter(Input input)
         {
             _input = input;
+        }
+
+        public void Dispose()
+        {
+            _input.KeyUp -= OnKeyUp;
+            _input.KeyDown -= OnKeyDown;
+            _input.TouchBegin -= OnTouchBegin;
+            _input.TouchEnd -= OnTouchEnd;
+            _input.TouchMove -= OnTouchMove;
+            _input.TextInput -= OnTextInput;
+            _input.MouseButtonDown -= OnMouseButtonDown;
+            _input.MouseButtonUp -= OnMouseButtonUp;
+            _input.MouseModeChanged -= OnMouseModeChanged;
+            _input.MouseWheel -= OnMouseWheel;
+            _input.MouseMoved -= OnMouseMoved;
+            _input.MultiGesture -= OnMultiGesture;
+
+            _input.TextInput -= OnTextInput;
+            _input.JoystickConnected -= OnJoystickConnected;
+            _input.JoystickDisconnected -= OnJoystickDisconnected;
+            _input.JoystickButtonDown -= OnJoystickButtonDown;
+            _input.JoystickButtonUp -= OnJoystickButtonUp;
+            _input.JoystickAxisMove -= OnJoystickAxisMove;
+            _input.JoystickHatMove -= OnJoystickHatMove;
+            _input.GestureRecorded -= OnGestureRecorded;
+            _input.GestureInput -= OnGestureInput;
+
+            _input.DropFile -= OnDropFile;
+            _input.InputFocus -= OnInputFocus;
+            _input.MouseVisibleChanged -= OnMouseVisibleChanged;
+            _input.ExitRequested -= OnExitRequested;
         }
 
         #region Keys

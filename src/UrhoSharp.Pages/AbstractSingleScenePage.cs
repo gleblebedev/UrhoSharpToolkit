@@ -147,7 +147,7 @@ namespace UrhoSharp.Pages
             octree.SetSize(bbox, 10);
             var z = scene.CreateComponent<Zone>();
             z.SetBoundingBox(bbox);
-            var cameraNode = scene.CreateChild();
+            var cameraNode = new Node();
             Camera = cameraNode.CreateComponent<Camera>();
             Scene = scene;
         }
